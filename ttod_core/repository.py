@@ -14,7 +14,6 @@ pre-transaction state.
 
 from __future__ import annotations
 
-import fcntl
 import os
 import tempfile
 import uuid
@@ -25,6 +24,19 @@ from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, List, Optional, Set
 
 import yaml
+
+try:
+    import fcntl
+except ImportError:
+    class _FcntlCompat:
+        LOCK_EX = 0
+        LOCK_UN = 0
+
+        @staticmethod
+        def flock(_file_descriptor: int, _operation: int) -> None:
+            return None
+
+    fcntl = _FcntlCompat()
 
 from ttod_core.canonical import Canonicalizer
 from ttod_core.proposals import Proposal, ProposalStatus, create_proposal
