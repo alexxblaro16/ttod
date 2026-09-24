@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from fastapi import Cookie, Depends, FastAPI, Header, HTTPException
 from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field
@@ -9,6 +11,7 @@ from .models import OracleProposeRequest, OracleQueryPayload
 from .oracle import OracleService
 from .favorites import add_favorite, get_favorites, remove_favorite
 from .storage import SnapshotService
+from ttod_core.repository import ProposalStore
 
 
 class FavoriteRequest(BaseModel):
@@ -20,13 +23,33 @@ def require_session_user(
     ttod_session: str | None = Cookie(default=None),
 ) -> str:
     """Resolve the authenticated user from the session boundary."""
-    if ttod_session and ttod_session.strip():
-        return ttod_session.strip()
-    if authorization and authorization.startswith("Bearer "):
-        user_id = authorization.removeprefix("Bearer ").strip()
-        if user_id:
-            return user_id
+    raw = ttod_session.strip() if ttod_session and ttod_session.strip() else None
+    if raw is None and authorization and authorization.startswith("Bearer "):
+        raw = authorization.removeprefix("Bearer ").strip()
+    if raw:
+        try:
+            claims = json.loads(raw)
+            user_id = claims.get("userId")
+            if isinstance(user_id, str) and user_id.strip():
+                return user_id.strip()
+        except json.JSONDecodeError:
+            return raw
     raise HTTPException(status_code=401, detail="Authentication required")
+
+
+def require_reviewer_session(
+    authorization: str | None = Header(default=None),
+    ttod_session: str | None = Cookie(default=None),
+) -> str:
+    user_id = require_session_user(authorization, ttod_session)
+    raw = ttod_session.strip() if ttod_session and ttod_session.strip() else authorization.removeprefix("Bearer ").strip() if authorization and authorization.startswith("Bearer ") else ""
+    try:
+        roles = json.loads(raw).get("roles", [])
+    except json.JSONDecodeError:
+        roles = []
+    if not isinstance(roles, list) or not {"reviewer", "instructor"}.intersection(roles):
+        raise HTTPException(status_code=403, detail="Reviewer role required")
+    return user_id
 
 
 def create_app(settings: Settings | None = None, oracle: OracleService | None = None) -> FastAPI:
@@ -59,8 +82,12 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         return StreamingResponse(oracle.stream(payload), media_type="text/event-stream")
 
     @app.post("/api/v1/oracle/propose", status_code=201)
-    async def oracle_propose(payload: OracleProposeRequest):
+    async def oracle_propose(payload: OracleProposeRequest, _user_id: str = Depends(require_session_user)):
         return await oracle.propose(payload)
+
+    @app.get("/api/v1/proposals")
+    def list_proposals(_user_id: str = Depends(require_reviewer_session)):
+        return [proposal.to_dict() for proposal in ProposalStore(settings.proposal_dir).list()]
 
     @app.post("/api/v1/favorites", status_code=201)
     def create_favorite(payload: FavoriteRequest, user_id: str = Depends(require_session_user)):

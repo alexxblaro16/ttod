@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -79,6 +80,30 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_a).json(), [created.json()])
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_a).status_code, 204)
 
+    def test_proposal_api_requires_a_session(self):
+        response = self.client.post("/api/v1/oracle/propose", json={
+            "query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en",
+        })
+        self.assertEqual(response.status_code, 401)
+
+    def test_proposal_creation_never_writes_canonical_yaml(self):
+        before = hashlib.sha256(self.settings.ttod_path.read_bytes()).digest()
+        response = self.client.post("/api/v1/oracle/propose", headers={"Authorization": "Bearer student-1"}, json={
+            "query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en",
+        })
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(hashlib.sha256(self.settings.ttod_path.read_bytes()).digest(), before)
+
+    def test_reviewer_queue_requires_reviewer_or_instructor_role(self):
+        payload = {"query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en"}
+        self.assertEqual(self.client.get("/api/v1/proposals").status_code, 401)
+        self.assertEqual(self.client.get("/api/v1/proposals", headers={"Authorization": "Bearer student-1"}).status_code, 403)
+        reviewer = {"Authorization": 'Bearer {"userId":"reviewer-1","roles":["reviewer"]}'}
+        instructor = {"Authorization": 'Bearer {"userId":"instructor-1","roles":["instructor"]}'}
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=reviewer).status_code, 200)
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=instructor).status_code, 200)
+        self.assertEqual(self.client.post("/api/v1/oracle/propose", headers={"Authorization": "Bearer student-1"}, json=payload).status_code, 201)
+
     def test_health_schema_and_public_projections(self):
         self.assertEqual(self.client.get("/health").status_code, 200)
         self.assertIn("properties", self.client.get("/api/v1/schema/definitions").json()["quote"])
@@ -129,7 +154,7 @@ class BackendTests(unittest.TestCase):
         response = self.client.post("/api/v1/oracle/propose", json={
             "query": "What should this teach?", "creativeAnswer": "A new candidate answer.",
             "locale": "en",
-        })
+        }, headers={"Authorization": "Bearer student-1"})
         self.assertEqual(response.status_code, 201)
         proposal = response.json()
         self.assertEqual(proposal["status"], "proposed")
