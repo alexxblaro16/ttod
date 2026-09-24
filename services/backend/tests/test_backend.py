@@ -4,6 +4,7 @@ import json
 import hashlib
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
 
@@ -80,6 +81,79 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_b).status_code, 404)
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_a).json(), [created.json()])
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_a).status_code, 204)
+
+    def test_access_token_is_separate_from_session_cookie(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        response = self.client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": session_cookie},
+        )
+        self.assertEqual(response.status_code, 200)
+        token = response.json()["access_token"]
+        self.assertEqual(response.json()["token_type"], "Bearer")
+        self.assertNotEqual(token, session_cookie)
+        self.assertEqual(
+            self.client.post("/api/v1/auth/token", headers={"Authorization": "Bearer student-1"}).status_code,
+            401,
+        )
+
+    def test_random_wisdom_accepts_valid_access_token(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        token = self.client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": session_cookie},
+        ).json()["access_token"]
+
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        self.assertEqual(response.status_code, 200)
+        quote = response.json()
+        self.assertTrue(quote["id"])
+        self.assertTrue(quote["text"])
+        self.assertIn("rights", quote)
+
+    def test_random_wisdom_rejects_missing_and_invalid_access_tokens(self):
+        self.assertEqual(self.client.get("/api/v1/wisdom/random").status_code, 401)
+        self.assertEqual(
+            self.client.get(
+                "/api/v1/wisdom/random",
+                headers={"Authorization": "Bearer invalid-token"},
+            ).status_code,
+            401,
+        )
+
+    def test_random_wisdom_rejects_session_cookie_as_access_token(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": f"Bearer {session_cookie}"},
+        )
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            self.client.get(
+                "/api/v1/wisdom/random",
+                cookies={"ttod_session": session_cookie},
+            ).status_code,
+            401,
+        )
+
+    def test_random_wisdom_rejects_expired_access_token(self):
+        expiring_settings = replace(self.settings, pat_ttl_seconds=-1)
+        expiring_client = TestClient(create_app(expiring_settings, self.oracle))
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        token = expiring_client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": session_cookie},
+        ).json()["access_token"]
+        self.assertEqual(
+            expiring_client.get(
+                "/api/v1/wisdom/random",
+                headers={"Authorization": f"Bearer {token}"},
+            ).status_code,
+            401,
+        )
 
     def test_proposal_api_requires_a_session(self):
         response = self.client.post("/api/v1/oracle/propose", json={
