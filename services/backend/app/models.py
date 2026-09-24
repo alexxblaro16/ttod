@@ -18,6 +18,12 @@ class ProposalRequest(BaseModel):
     origin: Literal["human", "studio", "blackbox"] = "human"
 
 
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: Literal["Bearer"] = "Bearer"
+    expires_in: int
+
+
 class OracleQueryPayload(BaseModel):
     query: str = Field(min_length=1, max_length=8000)
     contextTag: str | None = None

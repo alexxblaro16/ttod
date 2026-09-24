@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import random
 
 from fastapi import Cookie, Depends, FastAPI, Header, HTTPException
 from fastapi.responses import Response, StreamingResponse
@@ -10,7 +11,8 @@ from ttod_core.proposals import create_proposal
 from ttod_core.repository import ProposalStore
 
 from .config import Settings
-from .models import OracleProposeRequest, OracleQueryPayload, ProposalRequest
+from .auth import AccessTokenClaims, AuthService, RequireAccessToken
+from .models import OracleProposeRequest, OracleQueryPayload, ProposalRequest, TokenResponse
 from .oracle import OracleService
 from .favorites import add_favorite, get_favorites, remove_favorite
 from .storage import SnapshotService
@@ -54,10 +56,16 @@ def require_reviewer_session(
     return user_id
 
 
+def require_session_cookie_user(ttod_session: str | None = Cookie(default=None)) -> str:
+    return require_session_user(authorization=None, ttod_session=ttod_session)
+
+
 def create_app(settings: Settings | None = None, oracle: OracleService | None = None) -> FastAPI:
     settings = settings or Settings.from_env()
     snapshots = SnapshotService(settings.ttod_path, settings.schema_dir)
     oracle = oracle or OracleService(settings, snapshots)
+    auth_service = AuthService(settings.pat_secret, settings.pat_ttl_seconds)
+    require_access_token = RequireAccessToken(auth_service)
     app = FastAPI(title="TTOD Oracle Backend", version="1.0.0")
 
     @app.get("/health")
@@ -74,6 +82,20 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
     @app.get("/api/v1/wisdom/sample")
     def wisdom_sample():
         return snapshots.wisdom()
+
+    @app.post("/api/v1/auth/token", response_model=TokenResponse)
+    def issue_access_token(user_id: str = Depends(require_session_cookie_user)):
+        return TokenResponse(
+            access_token=auth_service.issue_pat(user_id),
+            expires_in=auth_service.pat_ttl_seconds,
+        )
+
+    @app.get("/api/v1/wisdom/random")
+    def wisdom_random(_claims: AccessTokenClaims = Depends(require_access_token)):
+        quotes = snapshots.wisdom()
+        if not quotes:
+            raise HTTPException(status_code=404, detail="No public wisdom available")
+        return random.choice(quotes)
 
     @app.get("/api/v1/graph")
     def graph():
