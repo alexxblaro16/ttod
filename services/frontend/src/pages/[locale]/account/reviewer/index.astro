@@ -1,0 +1,38 @@
+---
+import Page from '../../../../layouts/Page.astro';
+import { requireRole } from '../../../../lib/auth.server';
+
+const locale = Astro.params.locale;
+if (locale !== 'en' && locale !== 'es') return new Response(null, { status: 404 });
+const claims = await requireRole(Astro.request, ['reviewer', 'instructor']);
+const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
+const forwardedHeaders: Record<string, string> = { accept: 'application/json' };
+const cookie = Astro.request.headers.get('cookie');
+const authorization = Astro.request.headers.get('authorization');
+if (cookie) forwardedHeaders.cookie = cookie;
+if (authorization) forwardedHeaders.authorization = authorization;
+
+const response = await fetch(`${backend}/api/v1/proposals`, { headers: forwardedHeaders });
+if (!response.ok) throw new Error('Unable to load the reviewer queue');
+const proposals = await response.json() as Array<{
+  proposal_id: string;
+  status: string;
+  candidate_content: { text?: string; section?: string; origin?: string };
+}>;
+const copy = locale === 'es'
+  ? { title: 'Cola de revisión', empty: 'No hay propuestas pendientes.', status: 'Estado', section: 'Sección', role: claims.roles.join(', ') }
+  : { title: 'Reviewer queue', empty: 'There are no pending proposals.', status: 'Status', section: 'Section', role: claims.roles.join(', ') };
+---
+<Page lang={locale} title={copy.title}>
+  <main>
+    <h1>{copy.title}</h1>
+    <p class="meta">{copy.role}</p>
+    {proposals.length === 0 ? <p>{copy.empty}</p> : <section aria-label={copy.title}>
+      {proposals.map((proposal) => <article>
+        <h2>{proposal.proposal_id}</h2>
+        <blockquote>{proposal.candidate_content.text}</blockquote>
+        <p class="meta">{copy.status}: {proposal.status} · {copy.section}: {proposal.candidate_content.section} · {proposal.candidate_content.origin}</p>
+      </article>)}
+    </section>}
+  </main>
+</Page>

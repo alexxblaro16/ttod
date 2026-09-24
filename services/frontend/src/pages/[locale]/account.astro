@@ -1,0 +1,49 @@
+---
+import Page from '../../layouts/Page.astro';
+import { requireUser } from '../../lib/auth';
+import { isLocale } from '../../content/wisdom';
+
+export const prerender = false;
+
+const locale = Astro.params.locale;
+if (!isLocale(locale)) return new Response(null, { status: 404 });
+
+// La guarda se ejecuta en SSR antes de generar cualquier HTML protegido.
+const authenticatedUser = await requireUser(Astro);
+if (authenticatedUser instanceof Response) return authenticatedUser;
+
+const copy = locale === 'es'
+  ? {
+      title: 'Mi cuenta · TTOD',
+      home: 'Inicio',
+      heading: 'Mi cuenta',
+      email: 'Correo electrónico',
+      role: 'Rol',
+      admin: 'Administrador',
+      user: 'Usuario'
+    }
+  : {
+      title: 'My account · TTOD',
+      home: 'Home',
+      heading: 'My account',
+      email: 'Email',
+      role: 'Role',
+      admin: 'Administrator',
+      user: 'User'
+    };
+---
+
+<Page lang={locale} title={copy.title}>
+  <nav aria-label={locale === 'es' ? 'Navegación de cuenta' : 'Account navigation'}>
+    <a href={`/${locale}/`}>{copy.home}</a>
+  </nav>
+  <main>
+    <h1>{copy.heading}</h1>
+    <dl>
+      <dt>{copy.email}</dt>
+      <dd>{authenticatedUser.email}</dd>
+      <dt>{copy.role}</dt>
+      <dd>{authenticatedUser.role === 'admin' ? copy.admin : copy.user}</dd>
+    </dl>
+  </main>
+</Page>

@@ -5,12 +5,12 @@ import '../styles/tokens.css';
 
 const nav = {
   en: {
-    home: 'Home', wisdom: 'Wisdom', graph: 'Graph', oracle: 'Oracle', docs: 'Docs',
+    home: 'Home', wisdom: 'Wisdom', library: 'Library', graph: 'Graph', oracle: 'Oracle', docs: 'Docs',
     skip: 'Skip to content', switchTo: 'Español',
     footer: 'A pedagogical wisdom database — instructor reference build.',
   },
   es: {
-    home: 'Inicio', wisdom: 'Sabiduría', graph: 'Grafo', oracle: 'Oráculo', docs: 'Docs',
+    home: 'Inicio', wisdom: 'Sabiduría', library: 'Biblioteca', graph: 'Grafo', oracle: 'Oráculo', docs: 'Docs',
     skip: 'Saltar al contenido', switchTo: 'English',
     footer: 'Una base de datos de sabiduría pedagógica — build de referencia del profesorado.',
   },
@@ -22,6 +22,7 @@ const switchPath = '/' + otherLocale + Astro.url.pathname.replace(/^\/(en|es)/, 
 const links: Array<{ href: string; label: string }> = [
   { href: `/${lang}/`, label: nav.home },
   { href: `/${lang}/wisdom/`, label: nav.wisdom },
+  { href: `/${lang}/library`, label: nav.library },
   { href: `/${lang}/graph`, label: nav.graph },
   { href: `/${lang}/oracle`, label: nav.oracle },
   { href: `/${lang}/docs/`, label: nav.docs },
