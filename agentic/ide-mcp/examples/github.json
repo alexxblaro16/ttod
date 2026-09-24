@@ -1,0 +1,16 @@
+{
+  "_comment": "Opt-in only. Never merge this into .cursor/mcp.json as a cohort default — see AGENTIC-HARNESS.md 'GitHub MCP: opt-in only' for why. This is GitHub's own official github/github-mcp-server, run via its published Docker image (requires Docker; the project already uses Docker for `make up`, so this adds no new tooling). Requires GITHUB_PERSONAL_ACCESS_TOKEN in your own .env (copy .env.example -> .env at the repo root, fill in your token, never commit .env). See https://github.com/github/github-mcp-server for auth modes and scopes — SSH keys do not work here, only OAuth/PAT/GitHub App.",
+  "mcpServers": {
+    "github": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    }
+  }
+}
