@@ -14,7 +14,6 @@ from .models import OracleProposeRequest, OracleQueryPayload, ProposalRequest
 from .oracle import OracleService
 from .favorites import add_favorite, get_favorites, remove_favorite
 from .storage import SnapshotService
-from ttod_core.repository import ProposalStore
 
 
 class FavoriteRequest(BaseModel):
@@ -88,7 +87,6 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
     async def oracle_propose(payload: OracleProposeRequest, _user_id: str = Depends(require_session_user)):
         return await oracle.propose(payload)
 
-<<<<<<< HEAD
     @app.post("/api/v1/proposals", status_code=201)
     def create_user_proposal(
         payload: ProposalRequest,
@@ -124,11 +122,10 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         result = proposal.to_dict()
         result["stored_at"] = str(path)
         return result
-=======
+
     @app.get("/api/v1/proposals")
     def list_proposals(_user_id: str = Depends(require_reviewer_session)):
         return [proposal.to_dict() for proposal in ProposalStore(settings.proposal_dir).list()]
->>>>>>> 94fe475ccff0d83efcc6e507cefa08737af0187b
 
     @app.post("/api/v1/favorites", status_code=201)
     def create_favorite(payload: FavoriteRequest, user_id: str = Depends(require_session_user)):
