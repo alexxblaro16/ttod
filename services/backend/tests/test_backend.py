@@ -8,6 +8,7 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from services.backend.app.config import REPOSITORY_ROOT, Settings
+from services.backend.app.favorites import add_favorite, get_favorites, remove_favorite
 from services.backend.app.main import create_app
 from services.backend.app.oracle import (
     CREATIVE_PROMPT,
@@ -54,6 +55,29 @@ class BackendTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_favorite_storage_is_isolated_by_user(self):
+        add_favorite("storage-user-a", "wis-001")
+        add_favorite("storage-user-b", "wis-001")
+        self.assertEqual([entry["quoteId"] for entry in get_favorites("storage-user-a")], ["wis-001"])
+        self.assertTrue(remove_favorite("storage-user-a", "wis-001"))
+        self.assertEqual(get_favorites("storage-user-a"), [])
+        self.assertEqual([entry["quoteId"] for entry in get_favorites("storage-user-b")], ["wis-001"])
+
+    def test_favorite_api_requires_authentication(self):
+        self.assertEqual(self.client.get("/api/v1/favorites").status_code, 401)
+        self.assertEqual(self.client.post("/api/v1/favorites", json={"quoteId": "wis-001"}).status_code, 401)
+        self.assertEqual(self.client.delete("/api/v1/favorites/wis-001").status_code, 401)
+
+    def test_favorite_api_isolates_users(self):
+        user_a = {"Authorization": "Bearer user-a"}
+        user_b = {"Authorization": "Bearer user-b"}
+        created = self.client.post("/api/v1/favorites", headers=user_a, json={"quoteId": "wis-001"})
+        self.assertEqual(created.status_code, 201)
+        self.assertEqual(self.client.get("/api/v1/favorites", headers=user_b).json(), [])
+        self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_b).status_code, 404)
+        self.assertEqual(self.client.get("/api/v1/favorites", headers=user_a).json(), [created.json()])
+        self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_a).status_code, 204)
 
     def test_health_schema_and_public_projections(self):
         self.assertEqual(self.client.get("/health").status_code, 200)
