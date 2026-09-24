@@ -7,7 +7,7 @@ if (locale !== 'en' && locale !== 'es') return new Response(null, { status: 404 
 const copy = locale === 'es'
   ? { title: 'Una cita viva', back: 'Inicio', intro: 'Obtenida en directo del corpus gobernado.' }
   : { title: 'A live quote', back: 'Home', intro: 'Fetched live from the governed corpus.' };
-const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
+const backend = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';
 const response = await fetch(`${backend}/api/v1/wisdom/sample`, {
   headers: { accept: 'application/json' }
 });
