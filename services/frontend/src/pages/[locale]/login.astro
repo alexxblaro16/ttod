@@ -1,0 +1,68 @@
+---
+import Page from '../../layouts/Page.astro';
+import { isLocale } from '../../content/wisdom';
+
+export const prerender = false;
+
+const locale = Astro.params.locale;
+if (!isLocale(locale)) return new Response(null, { status: 404 });
+
+let loginError = false;
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const email = formData.get('email');
+  const password = formData.get('password');
+
+  if (email === 'admin@ttod.local' && password === 'seeded-user-token') {
+    Astro.cookies.set('session', 'seeded-user-token', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: import.meta.env.PROD,
+      path: '/'
+    });
+
+    return Astro.redirect(`/${locale}/account`);
+  }
+
+  loginError = true;
+}
+
+const copy = locale === 'es'
+  ? {
+      title: 'Iniciar sesión · TTOD',
+      heading: 'Iniciar sesión',
+      email: 'Correo electrónico',
+      password: 'Contraseña',
+      submit: 'Entrar',
+      error: 'Las credenciales no son válidas.'
+    }
+  : {
+      title: 'Log in · TTOD',
+      heading: 'Log in',
+      email: 'Email',
+      password: 'Password',
+      submit: 'Log in',
+      error: 'Invalid credentials.'
+    };
+---
+
+<Page lang={locale} title={copy.title}>
+  <main>
+    <h1>{copy.heading}</h1>
+
+    {loginError && <p role="alert">{copy.error}</p>}
+
+    <form method="post">
+      <p>
+        <label for="email">{copy.email}</label>
+        <input id="email" name="email" type="email" required autocomplete="email" />
+      </p>
+      <p>
+        <label for="password">{copy.password}</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password" />
+      </p>
+      <button type="submit">{copy.submit}</button>
+    </form>
+  </main>
+</Page>
