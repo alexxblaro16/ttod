@@ -659,6 +659,9 @@ class ProposalStore:
         data = json.loads(path.read_text(encoding="utf-8"))
         return _proposal_from_dict(data)
 
+    def list(self) -> list[Proposal]:
+        return [self.load(path.stem) for path in sorted(self.directory.glob("*.json"))]
+
     def load_path(self, path: Path) -> Proposal:
         import json
 
