@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
@@ -141,6 +142,57 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(persisted["status"], "proposed")
         self.assertNotEqual(persisted.get("status"), "active")
         self.assertNotIn("accepted_quote_id", persisted)
+
+    def test_proposal_api_requires_authentication(self):
+        response = self.client.post(
+            "/api/v1/proposals",
+            json={"text": "A useful quote", "section": "wisdom"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_proposal_api_validates_payload(self):
+        response = self.client.post(
+            "/api/v1/proposals",
+            headers={"Authorization": "Bearer student-1"},
+            json={"text": "", "section": "wisdom"},
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test_proposal_api_creates_and_persists_proposal(self):
+        payload = {
+            "text": "A useful quote",
+            "section": "wisdom",
+            "source": "student observation",
+            "level": "advanced",
+            "tags": ["simplicity"],
+            "teaches": "Prefer the smallest useful change.",
+            "lang": "en",
+        }
+        response = self.client.post(
+            "/api/v1/proposals",
+            headers={"Authorization": "Bearer student-1"},
+            json=payload,
+        )
+
+        self.assertEqual(response.status_code, 201)
+        result = response.json()
+        self.assertTrue(result["proposal_id"])
+        self.assertEqual(result["status"], "proposed")
+        self.assertEqual(result["proposer_id"], "student-1")
+        self.assertEqual(result["candidate_content"]["text"], payload["text"])
+        self.assertEqual(result["candidate_content"]["source"], payload["source"])
+        self.assertTrue(Path(result["stored_at"]).exists())
+
+    def test_proposal_api_returns_server_error_when_storage_fails(self):
+        client = TestClient(create_app(self.settings, self.oracle), raise_server_exceptions=False)
+        with patch("services.backend.app.main.ProposalStore.save", side_effect=OSError("disk full")):
+            response = client.post(
+                "/api/v1/proposals",
+                headers={"Authorization": "Bearer student-1"},
+                json={"text": "A useful quote", "section": "wisdom"},
+            )
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()["detail"], "Unable to save proposal")
 
     def test_r2_envelope_normalization(self):
         payload = {"results": [{
