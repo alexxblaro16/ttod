@@ -1,0 +1,52 @@
+---
+import Page from '../../layouts/Page.astro';
+import FavoriteButton from '../../components/favorites/FavoriteButton';
+import { requireUser } from '../../lib/auth.server';
+import type { FavoriteEntry, WisdomEntry } from '../../types/domain';
+
+const locale = Astro.params.locale;
+if (locale !== 'en' && locale !== 'es') return new Response(null, { status: 404 });
+const userId = requireUser(Astro.request);
+if (!userId) return Astro.redirect(`/${locale}/?auth=required`);
+
+const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
+const forwardedHeaders: Record<string, string> = { accept: 'application/json' };
+const cookie = Astro.request.headers.get('cookie');
+const authorization = Astro.request.headers.get('authorization');
+if (cookie) forwardedHeaders.cookie = cookie;
+if (authorization) forwardedHeaders.authorization = authorization;
+
+const [favoritesResponse, wisdomResponse] = await Promise.all([
+  fetch(`${backend}/api/v1/favorites`, { headers: forwardedHeaders }),
+  fetch(`${backend}/api/v1/wisdom/sample`, { headers: { accept: 'application/json' } }),
+]);
+if (!favoritesResponse.ok || !wisdomResponse.ok) {
+  throw new Error('Unable to load the personal library');
+}
+const favorites = (await favoritesResponse.json()) as FavoriteEntry[];
+const wisdom = (await wisdomResponse.json()) as WisdomEntry[];
+const quotes = favorites
+  .map((favorite) => ({ favorite, quote: wisdom.find((entry) => entry.id === favorite.quoteId) }))
+  .filter((entry): entry is { favorite: FavoriteEntry; quote: WisdomEntry } => Boolean(entry.quote));
+const copy = locale === 'es'
+  ? { title: 'Mi biblioteca', empty: 'Todavía no has guardado citas.', saved: 'Guardada' }
+  : { title: 'My library', empty: 'You have not saved any quotes yet.', saved: 'Saved' };
+---
+<Page lang={locale} title={copy.title}>
+  <style>
+    button { transition: opacity 160ms ease; }
+    @media (prefers-reduced-motion: reduce) {
+      button { transition: none; }
+    }
+  </style>
+  <main>
+    <h1>{copy.title}</h1>
+    {quotes.length === 0 ? <p>{copy.empty}</p> : <section aria-label={copy.title}>
+      {quotes.map(({ favorite, quote }) => <article>
+        <blockquote>{quote.text}</blockquote>
+        <p class="meta">{quote.id} · {quote.section} · {copy.saved} {favorite.savedAt}</p>
+        <FavoriteButton client:load quoteId={quote.id} />
+      </article>)}
+    </section>}
+  </main>
+</Page>
