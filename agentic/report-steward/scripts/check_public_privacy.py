@@ -19,10 +19,11 @@ import sys
 
 TEXT_SUFFIXES = {
     ".astro", ".css", ".html", ".js", ".json", ".md", ".mdc", ".mjs", ".py",
-    ".sh", ".svelte", ".toml", ".ts", ".tsx", ".txt", ".yaml", ".yml",
+    ".sh", ".svelte", ".tex", ".toml", ".ts", ".tsx", ".txt", ".yaml", ".yml",
 }
 HOME_PATH = re.compile(r"/(?:Users|home)/[^\s)`'\"]+|[A-Za-z]:\\Users\\[^\s)`'\"]+", re.I)
-TILDE_PATH = re.compile(r"(?<![\w])~/(?:[^\s)`'\"]+)")
+# Require a path-like segment after ~/ (avoids LaTeX date blanks ~/~ and guía~/ encargo).
+TILDE_PATH = re.compile(r"(?<![\w])~/(?:[A-Za-z0-9._-]+(?:/[^\s)`'\"]*)?)")
 MOUNT_PATH = re.compile(r"/(?:Volumes|private/(?:tmp|var))/[^\s)`'\"]+", re.I)
 IPV4 = re.compile(r"(?<![\w.])(?:\d{1,3}\.){3}\d{1,3}(?![\w.])")
 PRIVATE_IPV6 = re.compile(r"(?<![0-9a-f:])(?:f[cd][0-9a-f]{2}|fe[89ab][0-9a-f]):[0-9a-f:%.-]+", re.I)
@@ -63,6 +64,23 @@ def is_public_surface(path: Path) -> bool:
     return any(part in {"public", "_site-public"} for part in path.parts)
 
 
+def is_ethics_institutional(path: Path) -> bool:
+    parts = path.parts
+    for root in ("ethics", "institutional"):
+        if root in parts:
+            idx = parts.index(root)
+            if idx >= 2 and parts[idx - 2 : idx] == ("docs", "research"):
+                return True
+    return False
+
+
+def allowed_email_domain(domain: str, path: Path) -> bool:
+    lowered = domain.casefold()
+    if lowered == "crea-comm.net":
+        return True
+    return lowered == "udit.es" and is_ethics_institutional(path)
+
+
 def findings(path: Path, text: str, terms: list[str]) -> list[tuple[int, str]]:
     found: list[tuple[int, str]] = []
     lowered_terms = [(term, term.casefold()) for term in terms]
@@ -82,7 +100,10 @@ def findings(path: Path, text: str, terms: list[str]) -> list[tuple[int, str]]:
             reasons.add("private network address")
         if PRIVATE_IPV6.search(line):
             reasons.add("private IPv6 address")
-        if any(match.group(1).casefold() != "crea-comm.net" for match in EMAIL.finditer(line)):
+        if any(
+            not allowed_email_domain(match.group(1), path)
+            for match in EMAIL.finditer(line)
+        ):
             reasons.add("email outside approved studio domain")
         if public and PUBLIC_PHASE.search(line):
             reasons.add("internal development phase identifier in public documentation")

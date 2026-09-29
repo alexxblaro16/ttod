@@ -15,7 +15,14 @@ _backup/
 .env.stg
 *.code-workspace
 .privacy-denylist
-
+.playwright-mcp/*
+.playwright-mcp/.*
+.playwright-mcp/console-*.log
+.playwright-mcp/console-*.log.*
+.playwright-mcp/console-*.log.*.*
+.playwright-mcp/console-*.log.*.*.*
+.playwright-mcp/console-*.log.*.*.*.*
+.playwright-mcp/console-*.log.*.*.*.*.*
 # Node / Astro build artifacts and caches (services/frontend and any future Node service)
 node_modules/
 dist/
@@ -43,3 +50,33 @@ docs/public/Gemfile.lock
 # CI's ephemeral Jekyll build destination (see .github/workflows/public-docs-pages.yml) —
 # built fresh, checked, uploaded to Pages, and torn down every run; never meant to be tracked
 /_site-public/
+
+# Research ethics: never commit signed participant materials or consent registries with PII
+docs/research/ethics/signed/
+docs/research/ethics/**/*signed*
+docs/research/ethics/**/*.pdf
+docs/research/ethics/**/*.docx
+# Institutional CEI form (no participant PII) — keep with the ethics package
+!docs/research/ethics/FORMULARIO-SOLICITUD-CEI-UDIT-RELLENO.docx
+# Unsigned student info+consent PDF (templates only — never signed scans)
+!docs/research/ethics/HOJA-INFORMACION-Y-CONSENTIMIENTO-ES.pdf
+!docs/research/ethics/PAQUETE-REMISION-CEI-UDIT-ES.pdf
+!docs/research/ethics/PAQUETE-INSTITUCIONAL-DEPT-INVESTIGACION-ES.pdf
+!docs/research/institutional/*.pdf
+!docs/research/ethics/assets/
+!docs/research/ethics/latex/
+!docs/research/ethics/*.md
+
+# LaTeX build junk under ethics latex (keep .tex; never commit aux/log/out/toc)
+docs/research/ethics/latex/*.aux
+docs/research/ethics/latex/*.log
+docs/research/ethics/latex/*.out
+docs/research/ethics/latex/*.toc
+docs/research/ethics/latex/*.fls
+docs/research/ethics/latex/*.fdb_latexmk
+docs/research/ethics/latex/*.synctex.gz
+
+# LibreOffice lock files
+docs/research/ethics/.~lock.*
+.~lock.*
+

@@ -11,6 +11,14 @@ fresh check, [I] interpretive judgement, not a citable fact.
 
 # TTOD as a Research Line — design & venue projection
 
+> **Supersession note (2026-09-25):** for the active **Strand B** ethics submission and
+> learning-by-doing case, use
+> [`STRAND-B-PEDAGOGICAL-DESIGN.md`](STRAND-B-PEDAGOGICAL-DESIGN.md) and
+> [`ethics/`](ethics/). Philosophical work is parked in
+> [`STRAND-A-PHILOSOPHICAL-PARKED.md`](STRAND-A-PHILOSOPHICAL-PARKED.md). This file remains
+> useful for the broader RQ set, risk register, and venue ladder — treat its “pre-consent”
+> prose as historical where Strand B documents say otherwise.
+>
 > Evidence base to (re-)verify before citing as current: Athanor project
 > `profield-frontend-pedagogy` (Ahmes-extracted literature corpus) — see
 > [`PHASE-R-TTOD-ORACLE-PLATFORM-CASCADE-PROMPT.md`](../DEV_PLAN/PHASE-R-TTOD-ORACLE-PLATFORM-CASCADE-PROMPT.md)

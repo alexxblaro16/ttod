@@ -43,6 +43,7 @@ and why it matters—not the private indexing system used to orchestrate impleme
 | --- | --- | --- |
 | Phase ID in Archify card / evidence | `R6`, `Q4 transport`, `Phase Q` | Entrega 1 / Unit 4 / “bridge transport” / maturity language |
 | Internal hostname | `host.docker.internal`, `*.crea-comm.loc` | “Docker host gateway”, “Compose network”, “local Ollama” |
+| Studio host in ethics/OTRI pack | Lilith, Tanit, LAN IP in budget/hosting prose | “hosting institucional UDIT”, “VPS”, service names only |
 | Empty citation anchor | `<a id="ref-…"></a>` | `<span id="ref-…"></span>` |
 | Archify passport shell | `<a id="focus-repository" …></a>` with no `href` | Same attrs plus `href="https://github.com/ruvebal/ttod"` |
 

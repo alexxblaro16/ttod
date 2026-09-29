@@ -1,11 +1,16 @@
 <!--
 TTOD cohort case-study proposal — request to co-investigator and department/
 degree coordination. Author: Rubén Vega Balbás, PhD · 2026-09-04.
-Independent of and makes no reference to any other internal case-study draft.
-Draft for review — not an approved protocol; see docs/research/overview.md.
+Updated pointer 2026-09-25: operative Strand B design + ethics package supersede
+status claims here about "no consent documents yet"; §6 consent taxonomy remains
+authoritative. See docs/research/INDEX.md.
 -->
 
 # Proposal — TTOD Oracle Platform (Front-End II) as a documented cohort case study
+
+> **2026-09-25:** For the ethics committee and current Strand B RQ, start at
+> [`STRAND-B-PEDAGOGICAL-DESIGN.md`](STRAND-B-PEDAGOGICAL-DESIGN.md) and
+> [`ethics/`](ethics/). This proposal’s §6 taxonomy still defines C1–C4.
 
 **From:** Rubén Vega Balbás, PhD · Prof. Desarrollo Web Front-End I/II · UDIT
 **To:** co-investigator (research design/qualitative methods) · Front-End II degree
