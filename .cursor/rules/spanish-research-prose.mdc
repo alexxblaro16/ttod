@@ -1,0 +1,12 @@
+---
+description: Spanish ethics/institutional prose — columna metodológica; no visible Chicago label; italicize English/loanwords.
+globs: docs/research/ethics/**,docs/research/institutional/**
+alwaysApply: false
+---
+
+Canonical: `agentic/report-steward/rules/spanish-research-prose.md`. Read it before editing
+Spanish remisión / institutional / participant packs. Amend the canonical file, not this stub.
+
+- «columna metodológica» never «espina metodológica»
+- No visible «Chicago» / «Chicago author–date» (comment only)
+- English / non-Spanish loanwords in italics (*vault*, *harness*, *README*, …)

@@ -1,10 +1,13 @@
-# TTOD Oracle
+# TTOD Oráculo
 
 ## Propuesta de investigación y docencia front-end asistida por IA
 
 **Documento de decisión para departamento y grupo de investigación.**  
 **Estructura editorial:** Excelencia–Impacto–Implementación.  
-**Estado:** propuesta pre-pitch; no declara financiación, elegibilidad, presupuesto, consorcio, aprobación ética ni recogida de datos.
+**Estado (2026-09-25):** hebra B (pedagógica / aprender haciendo) con dossier ético y plantillas
+de consentimiento en `docs/research/ethics/`; revisión del comité en curso. Hebra A (filosófica)
+aparada. No declara financiación, elegibilidad, presupuesto ni análisis ya autorizado de datos
+estudiantiles.
 
 > “Before fixing, understand. Before understanding, observe. Before observing, breathe.”
 > — TTOD, `wis-002` (epígrafe pedagógico; no evidencia de investigación)
@@ -31,7 +34,7 @@ La primera fase ya ha producido una referencia técnica que valida que la arquit
 
 Nikolić y Basta Nikolić relacionan la invisibilidad del proceso con documentación, la ausencia de evidencia de comprensión inmediata con defensa oral y expectativas ambiguas con una política explícita de IA (2026, 3). Una síntesis de educación superior trata por separado los resultados cognitivos y el uso guiado frente al no guiado de herramientas generativas (Qu et al. 2025, 1); por ello, TTOD no reducirá el fenómeno a la mera presencia de una herramienta. Adopta estas relaciones como hipótesis de diseño, no como demostración de eficacia.
 
-El método propuesto es un caso cualitativo acotado. Las fuentes potenciales son declaraciones de IA, decisiones, pruebas, revisiones y defensas que la docencia ya produce, pero su uso investigador queda bloqueado hasta cumplir consentimiento, custodia, pseudonimización, protección de datos y revisión institucional. No se presentarán tamaños de efecto ni una cohorte pequeña como representativa. La dimensión de sexo, género y otras diversidades se determinará en el protocolo; no se presupone aquí que una categoría sea pertinente ni se usa el equilibrio del equipo como sustituto de análisis. La accesibilidad se tratará como una dimensión de calidad de la interfaz y de competencia profesional, no como un resultado que el proyecto ya haya demostrado; la literatura de educación informática identifica, entre otros componentes, conciencia, conocimiento técnico y oportunidades profesionales (Parthasarathy and Joshi 2024, 2).
+El método propuesto es un caso cualitativo acotado. Las fuentes potenciales son declaraciones de IA, decisiones, pruebas, revisiones y defensas que la docencia ya produce, pero su uso investigador queda bloqueado hasta cumplir consentimiento, custodia, pseudonimización, protección de datos y revisión institucional. No se presentarán tamaños de efecto ni un grupo pequeño como representativo. La dimensión de sexo, género y otras diversidades se determinará en el protocolo; no se presupone aquí que una categoría sea pertinente ni se usa el equilibrio del equipo como sustituto de análisis. La accesibilidad se tratará como una dimensión de calidad de la interfaz y de competencia profesional, no como un resultado que el proyecto ya haya demostrado; la literatura de educación informática identifica, entre otros componentes, conciencia, conocimiento técnico y oportunidades profesionales (Parthasarathy and Joshi 2024, 2).
 
 La propuesta combina ingeniería front-end, educación informática, evaluación y métodos cualitativos. Por ello requiere co-investigación: la competencia técnica no sustituye el diseño de instrumentos, la ética, el análisis cualitativo ni la custodia de datos. La ciencia abierta seguirá un modelo por capas: evidencias y licencias trazables, artefactos saneados antes de publicar y ningún dato de estudiante expuesto.
 
@@ -41,7 +44,7 @@ La propuesta combina ingeniería front-end, educación informática, evaluación
 
 El resultado inmediato verificable es una tarea docente explícita, con pruebas, revisión y defensa, junto con un protocolo sujeto a revisión. Para el departamento, ofrece una frontera clara entre docencia ordinaria e investigación propuesta. Para el grupo, ofrece un caso acotado para examinar agencia y comprensión bajo IA ambiental.
 
-El posible resultado científico no es demostrar eficacia, sino producir un protocolo sólido y, solo si se autorizan y consienten datos, una descripción situada de mecanismos, límites y hallazgos nulos. Cualquier transferencia a otras cohortes exigirá evidencia posterior.
+El posible resultado científico no es demostrar eficacia, sino producir un protocolo sólido y, solo si se autorizan y consienten datos, una descripción situada de mecanismos, límites y hallazgos nulos. Cualquier transferencia a otros grupos exigirá evidencia posterior.
 
 ## 2.2 Difusión, derechos y comunicación
 

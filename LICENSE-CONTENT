@@ -7,10 +7,21 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ---
 
-Scope and defaults: this is the repository-level default for TTOD content. Item-level
-`rights.license` on an individual quote, once schema v3 exists, takes precedence over this
-default and travels with the quote. See
+Scope and defaults: this is the repository-level default for TTOD **knowledge content** —
+the pedagogical wisdom (Tao of Development quotes), narrative docs, and sourced text.
+Item-level `rights.license` on an individual quote takes precedence over this default and
+travels with the quote. See
 `docs/DEV_PLAN/DECISIONS/Q0-2026-08-18-RIGHTS-LICENSE-NC.md` for the full decision record,
 including what this default does and does not do (it does not claw back prior CC BY-NC-SA 4.0
 grants, does not relicense third-party text inside quotes, and does not rewrite `ttod.yml` or
 `AGENTS.md` / legacy `CLAUDE.md` redirect before Q6).
+
+Not contradictory with MIT code (`LICENSE-CODE`):
+
+1. **Code** (application, tooling, student/instructor software contributions) → MIT.
+2. **Content** (quotes in `ttod.yml`, most of `docs/`, `sources/`) → CC BY-NC-SA 4.0.
+3. Naming cohort authors in the README for **what they built** (product authorship) does
+   **not** relicense the Tao knowledge to MIT, and MIT code contributions do **not** put
+   the quotes under MIT. The two surfaces stay separate by design: free software for the
+   machine path; NC share-alike stewardship for the wisdom corpus.
+4. Where a file states a different license, that file-level notice prevails for that file only.

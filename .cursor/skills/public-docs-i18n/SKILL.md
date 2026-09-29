@@ -9,6 +9,6 @@ description: >-
   hand-edits ttod.yml.
 ---
 
-Canonical: `agentic/skills/public-docs-i18n/SKILL.md`. Read it in full now, before any other
+Canonical: `agentic/public-docs-i18n/skills/public-docs-i18n/SKILL.md`. Read it in full now, before any other
 action — it is the complete skill, not this stub. This file exists only because Cursor reads
 `.cursor/skills/`, not `agentic/`; do not duplicate content here, amend the canonical file.

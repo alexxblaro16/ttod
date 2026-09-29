@@ -1,0 +1,315 @@
+% Paquete institucional — autorización pedagógica (A1) + solicitud de fondos producción
+% Distinto del PAQUETE-REMISION-CEI. Build: make institucional
+\documentclass[11pt,a4paper]{scrartcl}
+
+\usepackage[spanish]{babel}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{setspace}
+\IfFileExists{enumitem.sty}{%
+  \usepackage{enumitem}%
+  \setlist[itemize]{leftmargin=1.4em, itemsep=0.12em, topsep=0.15em}%
+  \setlist[enumerate]{leftmargin=1.6em, itemsep=0.12em, topsep=0.15em}%
+}{%
+  \setlength{\leftmargini}{1.4em}%
+}
+
+\input{cei-common.tex}
+
+\geometry{margin=2.2cm, top=2.0cm, bottom=2.2cm}
+\setkomafont{section}{\sffamily\bfseries\large}
+\setkomafont{subsection}{\sffamily\bfseries\normalsize}
+\setkomafont{disposition}{\sffamily}
+\setlength{\parskip}{0.32em}
+\setlength{\parindent}{0pt}
+\setstretch{1.04}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=uditnavy,
+  linkcolor=uditnavy,
+  pdftitle={Paquete institucional — autorización pedagógica y fondos TTOD},
+  pdfauthor={Rubén Vega Balbás, PhD · UDIT / ECSIT},
+  pdfsubject={Departamento / ECSIT / investigación — no es remisión CEI}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\scriptsize\color{uditnavy} Institucional · \TTODfull}
+\fancyfoot[C]{\scriptsize\color{uditink}\thepage}
+\fancyfoot[R]{\scriptsize\color{uditink}v.\ 2026-09-26}
+
+\newcommand{\AnnexTitle}[1]{%
+  \clearpage
+  \LogoRow
+  \begin{center}{\Large\sffamily\bfseries #1}\end{center}
+  \vspace{0.4em}
+  \noindent{\color{rulegray}\hrule height 0.4pt}
+  \vspace{0.5em}
+}
+
+\begin{document}
+
+%----------------------------------------------------------------------
+\LogoRow
+\begin{center}
+  {\LARGE\sffamily\bfseries Paquete institucional}\\[0.35em]
+  {\large\sffamily Autorización pedagógica · Fondos de producción}\\[0.5em]
+  {\normalsize\color{uditnavy} \TTODfull\ / Front-End~II}\\[0.35em]
+  {\small Código TTOD-FEII-2026-27 · 26 septiembre 2026}
+\end{center}
+
+\vspace{0.5em}
+\noindent{\sffamily\bfseries\small Destinatarios}\\[0.25em]
+\noindent
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm}X@{}}
+  \textbf{Coordinación grados tecnológicos} &
+    Sandra Garrido ---
+    \href{mailto:sandra.garrido@udit.es}{sandra.garrido@udit.es}\\[0.15em]
+  \textbf{Dirección de grados} &
+    Fernando Blázquez Piñeiro ---
+    \href{mailto:fernando.blazquez@udit.es}{fernando.blazquez@udit.es}\\[0.15em]
+  \textbf{IP del grupo ECSIT} &
+    Rafael Conde Melguizo, PhD ---
+    \href{mailto:rafael.conde@udit.es}{rafael.conde@udit.es}\\[0.15em]
+  \textbf{Directora OTRI / OTC} &
+    Dra.\ Adiela Batista Delgado ---
+    \href{mailto:otc@udit.es}{otc@udit.es}
+\end{tabularx}
+
+\vspace{0.45em}
+\noindent{\small\color{uditink}
+\textbf{Este PDF no es la remisión al CEI.} El comité recibe el formulario Word +
+el PDF de remisión CEI. Este pack pide (1)~confirmación pedagógica firmable y
+(2)~apoyo presupuestario para producción $\geq 24$~meses.}
+
+\vspace{0.4em}
+\noindent{\sffamily\bfseries\small Contenido}
+\begin{enumerate}
+  \item Carta de autorización pedagógica (A1) --- Sandra y Fernando
+  \item Fundamentación pedagógica y referencias
+  \item Solicitud de presupuesto de producción / hosting
+  \item Separación de trámites (pedagogía / CEI / fondos)
+\end{enumerate}
+
+\vspace{0.35em}
+\DocsPrototypeNote
+
+\vspace{0.45em}
+\noindent{\footnotesize\color{uditink}
+Incluye al final la \textbf{declaración de autoría asistida por IA} del PI
+(distinta de la declaración I2 del alumnado).}
+
+%----------------------------------------------------------------------
+\AnnexTitle{1.\ Solicitud de confirmación de encuadre pedagógico}
+
+\noindent\textbf{De:} Rubén Vega Balbás, PhD ---
+\href{mailto:ruben.vega@udit.es}{ruben.vega@udit.es}\\
+\textbf{Asunto:} Confirmación de encuadre pedagógico --- grupo \TTODfull\ / Front-End~II
+
+\subsection*{Solicitud}
+Se solicita \textbf{confirmación escrita} (correo o esta hoja firmada) de que la
+actividad del grupo \TTODfull\ / plataforma Oráculo, como entrega de
+\textbf{Front-End~II}, queda \textbf{autorizada pedagógicamente} en el marco de los
+grados tecnológicos de UDIT, con carga, calendario y evaluación coherentes con la
+guía docente.
+
+\subsection*{Qué se autoriza (docencia)}
+\begin{enumerate}
+  \item Pilotaje docente: construcción desde el \emph{cohort starter}, documentación
+        de proceso, declaración de uso de IA y defensa.
+  \item Coordinación de carga y coherencia de evaluación.
+  \item Que la actividad funcione pedagógicamente \textbf{aunque no se recoja ningún
+        dato} para investigación.
+\end{enumerate}
+
+\subsection*{Qué no se confunde}
+El uso investigador seudonimizado se tramita ante el CEI
+(\href{mailto:comite.etica.investigacion@udit.es}{comite.etica.investigacion@udit.es}).
+Esta carta \textbf{no} autoriza investigación ni open data. Las calificaciones
+\textbf{no} dependen del consentimiento investigador ni de la autorización de imagen.
+La autoría de producto (\emph{README} / MIT) es práctica docente del grupo, distinta del
+corpus investigador.
+
+\subsection*{Decisiones a marcar}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X c@{}}
+  \toprule
+  \textbf{\#} & \textbf{Decisión} & \textbf{Sí} \\
+  \midrule
+  1 & Autorizar el pilotaje docente TTOD Oráculo como entrega de Front-End~II & $\square$ \\
+  2 & Confirmar coordinación de carga, calendario y coherencia de evaluación & $\square$ \\
+  3 & Separar autorización pedagógica (esta carta) de la remisión al CEI & $\square$ \\
+  \bottomrule
+\end{tabularx}
+
+\subsection*{Conformidad}
+\vspace{0.6em}
+\noindent\textbf{Coordinación grados tecnológicos --- Sandra Garrido}\\[0.35em]
+Firma: \hrulefill\ Quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}\\
+{\scriptsize\href{mailto:sandra.garrido@udit.es}{sandra.garrido@udit.es}}
+
+\vspace{0.9em}
+\noindent\textbf{Dirección de grados --- Fernando Blázquez Piñeiro}\\[0.35em]
+Firma: \hrulefill\quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}\\
+{\scriptsize\href{mailto:fernando.blazquez@udit.es}{fernando.blazquez@udit.es}}
+
+\vspace{0.9em}
+\noindent\textbf{Enterado (opcional) --- IP ECSIT · Rafael Conde Melguizo, PhD}\\[0.35em]
+Firma: \hrulefill\quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}\\
+{\scriptsize\href{mailto:rafael.conde@udit.es}{rafael.conde@udit.es}}
+
+\vspace{0.5em}
+\noindent{\scriptsize Contexto interno: \texttt{docs/research/DEPARTMENT-DECISION-BRIEF.md}.
+Firmados fuera de git.}
+
+%----------------------------------------------------------------------
+\AnnexTitle{2.\ Fundamentación pedagógica y referencias}
+
+\noindent{\small
+Este anexo \textbf{fundamenta} la solicitud de encuadre docente (A1) y la continuidad
+del producto en producción. \textbf{No} sustituye el protocolo ético ni la remisión al CEI
+(PDF de remisión CEI), donde la misma \textbf{columna metodológica} aparece como marco del
+estudio de caso.}
+
+\subsection*{Por qué merece apoyo (síntesis)}
+\noindent{\small
+La actividad convierte la construcción de interfaz en una práctica situada
+(arquitectura, accesibilidad, \emph{i18n}, pruebas, despliegue local). En un contexto de
+IA generativa, el producto final no debería ser la única huella valorada:
+documentación de proceso, defensa oral y tareas auténticas hacen visible el
+razonamiento (Nikolić and Basta Nikolić 2026). Las herramientas de asistencia pueden
+modificar eficacia, eficiencia y procesos; no se presupone beneficio ni perjuicio ---
+se diseña observación prudente (Shihab et al.\ 2025). El componente investigador
+(uso secundario seudonimizado) queda condicionado al CEI y al consentimiento; la
+actividad docente funciona aunque no se recoja ningún dato de investigación.}
+
+\vspace{0.35em}
+\subsection*{Producción: procedencia y vía operativa}
+\ProductionRationale
+
+% Chicago author–date
+\subsection*{Referencias pedagógicas}
+\noindent{\footnotesize Citas verificadas del brief departamental.}
+\ChicagoPedagogicalRefs
+
+% Chicago author–date — methods backbone
+\subsection*{Columna metodológica}
+\noindent{\footnotesize
+Misma lista canónica que \path{docs/public/research/methodology.md}
+(también en el paquete de remisión CEI).}
+\ChicagoMethodsRefs
+
+\vspace{0.5em}
+\noindent{\footnotesize\color{uditink}
+Documentación pública (prototipo): \url{https://ruvebal.github.io/ttod/}}
+
+%----------------------------------------------------------------------
+\AnnexTitle{3.\ Solicitud de apoyo presupuestario --- producción $\geq 24$~meses}
+
+\noindent Se solicita partida o apoyo para mantener \TTODfull\ (Oráculo)
+\textbf{en producción} al menos \textbf{dos años}, de modo que el grupo disponga
+de un producto vivo, el caso pedagógico (tras CEI) conserve referencia estable,
+ECSIT/UDIT cuenten con un demostrador de innovación docente, y se pueda estudiar
+con datos reales de operación la infraestructura / \emph{DevOps} de un sistema
+agentico con IA local.
+
+\vspace{0.35em}
+\ProductionRationale
+
+\subsection*{Conceptos (importes a completar / validar con TI)}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.6cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Concepto} & \textbf{Est.~24 meses} \\
+  \midrule
+  H1 & Hosting / compute (VPS o imputación en infraestructura institucional) & {[}completar €{]} \\
+  H2 & Almacenamiento / copias de seguridad & {[}completar €{]} \\
+  H3 & Contingencia (10--15\,\%) & {[}completar €{]} \\
+  \midrule
+  & \textbf{Total propuesto} & \textbf{{[}completar €{]}} \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{0.35em}
+\noindent{\scriptsize
+Orden de magnitud orientativo de VPS pequeño: $\sim$15--60\,€/mes
+($\sim$360--1\,440\,€ / 24 meses). Preferencia: hosting institucional UDIT
+(servicios, no infraestructura privada del estudio) si es viable.}
+
+\vspace{0.45em}
+\noindent{\small\color{uditink}
+\textbf{Dominio / TLS / DNS --- fuera de esta solicitud.}
+El conocimiento Tao está bajo CC BY-NC-SA~4.0 (\texttt{LICENSE-CONTENT}).
+El PI / estudio crea-comm.net, como titular de ese contenido, registra y mantiene
+el dominio (y TLS) como \textbf{propiedad propia}, no con fondos UDIT: si cesan
+partidas institucionales, el nombre no debe quedar atrapado. Esta solicitud cubre
+compute / almacenamiento del servicio, no la titularidad DNS.}
+
+\subsection*{Qué no se pide aquí}
+Nómina del PI; LLM cloud; dominio/TLS/DNS (steward); open data estudiantil;
+sustituir el dictamen del CEI.
+
+\subsection*{Decisiones}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X c@{}}
+  \toprule
+  \textbf{\#} & \textbf{Decisión} & \textbf{Sí} \\
+  \midrule
+  1 & Apoyar continuidad en producción $\geq 24$ meses & $\square$ \\
+  2 & Canal: grado / ECSIT / investigación / mixto (especificar al firmar) & $\square$ \\
+  3 & Validar importes con servicios TI antes del compromiso & $\square$ \\
+  \bottomrule
+\end{tabularx}
+
+\subsection*{Conformidad / enterado}
+\vspace{0.55em}
+\noindent\textbf{Sandra Garrido}\\
+Firma: \hrulefill\quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}
+
+\vspace{0.7em}
+\noindent\textbf{Fernando Blázquez Piñeiro}\\
+Firma: \hrulefill\quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}
+
+\vspace{0.7em}
+\noindent\textbf{Rafael Conde Melguizo, PhD (IP ECSIT)}\\
+Firma: \hrulefill\quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}
+
+\vspace{0.7em}
+\noindent\textbf{Dra.\ Adiela Batista Delgado (Directora OTRI / OTC)}\\
+Firma: \hrulefill\quad Fecha: \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}
+
+%----------------------------------------------------------------------
+\AnnexTitle{4.\ Separación de trámites}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm}X>{\raggedright\arraybackslash}p{3.8cm}@{}}
+  \toprule
+  \textbf{Trámite} & \textbf{Contenido} & \textbf{Documento} \\
+  \midrule
+  Pedagógico (A1) & Autorizar la actividad como entrega FE~II & Anexo~1 de este PDF \\
+  Fundamentación & Referencias y columna metodológica & Anexo~2 de este PDF \\
+  Ética (CEI) & Uso investigador seudonimizado & Formulario Word + PDF de remisión CEI \\
+  Fondos & Producción $\geq 24$ meses & Anexo~3 de este PDF \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{0.6em}
+\noindent Los trámites pueden avanzar en paralelo. Ninguno sustituye a los otros.
+
+\vspace{1em}
+\AIAuthorshipDeclaration
+
+\vspace{0.8em}
+\AuthorshipLicenseBlock
+
+\vspace{1em}
+\AuthoritiesBlock
+
+\vspace{0.5em}
+\LegalEntities
+
+\end{document}

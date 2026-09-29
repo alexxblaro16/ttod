@@ -2,7 +2,7 @@
 
 **by Rubén Vega Balbás, PhD** — `ruvebal@crea-comm.net`
 
-```text
+```
 ═══════════════════════════════════════════════════════════════════════════════
                               道
                     THE TAO OF THE DEVELOPMENT
@@ -11,7 +11,7 @@
 ═══════════════════════════════════════════════════════════════════════════════
 ```
 
-> *"The Tao that can be prompted is not the eternal Tao. The code that can be generated without understanding is not true code."*  
+> _"The Tao that can be prompted is not the eternal Tao. The code that can be generated without understanding is not true code."_
 > — Lao Tzu, if he had lived to see Stack Overflow
 
 ---
@@ -37,7 +37,8 @@ planned teaching surfaces:
 - [Project](docs/public/project/index.md) — mission, governance, provenance, and licensing
 - [Product areas](docs/public/platform/index.md) — content, quotes, graph, Oracle, operations, and tests
 - [Teaching model](docs/public/teaching/index.md) — FE II Units 1–7, Entrega 1, mid-term defence
-- [Research](docs/public/research/index.md) — questions, maturity, method, and safeguards
+- [Research (public)](docs/public/research/index.md) — questions, maturity, method, and safeguards
+- [Research design map (internal)](docs/research/INDEX.md) — Strand A (parked) / Strand B (pedagogical) + [ethics package](docs/research/ethics/)
 - [Guides](docs/public/guides/index.md) — local setup, product use, and contribution
 - [Students](docs/public/audiences/students.md) — Entrega 1 product and Units 1–7 mid-term
 - [University partners](docs/public/audiences/partners.md) — academic value and release gates
@@ -76,24 +77,42 @@ suite, is listed in [`AGENTS.md`](AGENTS.md).
 
 ## Development Team
 
-**Rubén Vega Balbás, PhD. <ruben.vega@udit.es>**: Product owner, product manager  
-**Rodrigo García Sánchez <rodrigo.garcia.sanchez@alumnos.udit.es>**: Developer, Oracle Terminal  
-**Àvila Rodriguez Andrea <andrea.avila@alumnos.udit.es>**: Developer, Oracle Terminal  
-**Alejandro Blanco Rodríguez (alexxblaro16) <alejandro.blanco@alum.udit.es>**: Developer, Front End II  
-**Iván (@Gonsiii11)<ivan.herrera@alumnos.udit.es>**: Developer, Front End II  
-**Pablo Novoa Rodríguez (@PRNovoa)<pablo.novoa@alumnos.udit.es>**: PWA Local Operations  
-**Gonzalo Pérez Fernández-Corugedo (@gpfc-git)<gonzalo.perez.fernandezcorugedo@alumnos.udit.es>**: Knowledge Graph Developer  
+Format (same for every student): **Name (@github) &lt;email&gt;**: Team *N* — *module title*.
+Module titles match the [team task board](https://ruvebal.github.io/ttod/teaching/assignments/).
 
+**Rubén Vega Balbás, PhD (@ruvebal) <ruben.vega@udit.es>**: Product owner · product manager
+
+**Gonzalo Sanchez Alvarez (@gontugithub) <gonzalo.sanchez@alum.udit.es>**: Team 1 — Content, i18n & Proposals UI
+
+**Gabriel Calvo Ballesteros (@gabrielcclv) <gabriel.calvo@alumnos.udit.es>**: Team 1 — Content, i18n & Proposals UI
+
+**Gonzalo Pérez Fernández-Corugedo (@gpfc-git) <gonzalo.perez.fernandezcorugedo@alumnos.udit.es>**: Team 2 — Knowledge Graph
+
+**Rodrigo García Sánchez (@nbfrodri) <rodrigo.garcia.sanchez@alumnos.udit.es>**: Team 3 — Oracle Terminal
+
+**Andrea Ávila Rodríguez <andrea.avila@alumnos.udit.es>**: Team 3 — Oracle Terminal
+
+**Pablo Novoa Rodríguez (@PRNovoa) <pablo.novoa@alumnos.udit.es>**: Team 4 — PWA & Local Operations
+
+**Alejandro Blanco Rodríguez (@alexxblaro16) <alejandro.blanco@alum.udit.es>**: Team 5 — Accounts, Library, Proposals & Public API
+
+**Iván Herrera Gonzalez (@Gonsiii11) <ivan.herrera@alumnos.udit.es>**: Team 5 — Accounts, Library, Proposals & Public API
 
 ## License
 
-Code is MIT ([`LICENSE-CODE`](LICENSE-CODE)); content — `ttod.yml` quotes, `docs/`,
-`sources/` — is CC BY-NC-SA 4.0 ([`LICENSE-CONTENT`](LICENSE-CONTENT)), per
+Code is MIT ([`LICENSE-CODE`](LICENSE-CODE)): copyright Rubén Vega Balbás, PhD and
+individual contributors listed under **Development Team** (and any NOTICE), except where
+a file states otherwise. Cohort code contributions are inbound MIT (same terms out).
+Content — `ttod.yml` quotes, `docs/`, `sources/` — is CC BY-NC-SA 4.0
+([`LICENSE-CONTENT`](LICENSE-CONTENT)), per
 [`docs/DEV_PLAN/DECISIONS/Q0-2026-08-18-RIGHTS-LICENSE-NC.md`](docs/DEV_PLAN/DECISIONS/Q0-2026-08-18-RIGHTS-LICENSE-NC.md).
+**Not contradictory:** MIT is the software surface; CC BY-NC-SA is the Tao knowledge
+surface. README product authorship does not relicense the quotes.
+
+Product authorship credit (who built which part) lives in **Development Team** above; that
+naming is separate from any pseudonymized research corpus.
 
 ## Agent contract
 
 [`AGENTS.md`](AGENTS.md)
 ([agentsmd standard](https://github.com/agentsmd/agents.md)).
-
-## Tarea en curso - Alejandro e Iván

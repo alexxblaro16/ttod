@@ -7,7 +7,9 @@ permalink: /research/methodology/
 
 # Method before data
 
-The current work prepares an investigable teaching system. It does not authorize a study. Future empirical work would require explicit questions, participant information, ethics and data-protection review, defined access and retention, and a clear separation between teaching, assessment, and voluntary research participation.
+Strand B prepares and submits an educational case-study protocol: explicit questions, participant information, ethics and data-protection review, defined access and retention, and a clear separation between teaching, assessment, and voluntary research participation. Templates and the committee dossier live in the repository under `docs/research/ethics/`. **Analysis of student artifacts as research data does not begin** until the competent ethics body authorizes the protocol and valid consent is on file. Strand A (philosophical) remains parked and has no human subjects.
+
+Teaching may proceed without treating coursework as research evidence.
 
 ## Methodological stance
 
@@ -28,15 +30,29 @@ Assessment-facing designs in computing education already treat student-built web
 ## Safeguards
 
 - Course access and grading must not depend on research participation.
+- Pedagogical participation in the cohort project and research consent for secondary use are distinct (see consent forms A vs B).
 - The teaching repository and any research dataset must have different identities and access rules.
-- Data minimization, retention, pseudonymization, withdrawal, and reviewer access must be settled in advance.
+- Data minimization, retention, pseudonymization, withdrawal, and reviewer access must be settled in advance — special-category personal data are not collected; the research corpus, if authorized, holds pseudonymized process traces only.
 - The rich instructor reference must be isolated from the student artifact by evidence, not assertion.
 - Results must distinguish feasibility, teaching observation, assessment evidence, and research evidence.
 - Negative, mixed, or inconclusive findings remain valid outcomes.
+- Strand A philosophical claims must not be imported as empirical warrants for Strand B.
 
 ## Evidence anchors
 
 The following sources motivate, but do not validate, the proposed design. In-text author–date forms link to the Chicago list below.
+
+### Methods backbone (reporting, small-n, process-data ethics)
+
+- [Runeson and Höst 2009](#ref-runeson-host-2009) on conducting and reporting software-engineering case studies (process + checklists).
+- [Runeson, Höst, Rainer, and Regnell 2012](#ref-runeson-et-al-2012) — the extended Wiley handbook (*Case Study Research in Software Engineering*).
+- [Wohlin et al. 2012](#ref-wohlin-et-al-2012) on empirical software-engineering strategies (survey, experiment, case study); used here to keep Strand B clearly **non-experimental**.
+- [Heckman et al. 2022](#ref-heckman-et-al-2022) on empiricism and reporting norms in CER.
+- [Brown and Guzdial 2024](#ref-brown-guzdial-2024) on rich versus big data — small-n insight without population inference.
+- [McGill et al. 2023](#ref-mcgill-et-al-2023) on sound CER: transferability, consent reporting, null findings.
+- [Fischer et al. 2024](#ref-fischer-et-al-2024) on consent architectures for programming-process data.
+
+### Domain and phenomenon
 
 - [Shihab et al. 2025](#ref-shihab-et-al-2025) on Copilot effects and processes in brownfield coding tasks.
 - [Nikolić and Basta Nikolić 2026](#ref-nikolic-basta-nikolic-2026) on a four-pillar AI-resilient assessment framework (conceptual; no validation data reported).
@@ -44,9 +60,10 @@ The following sources motivate, but do not validate, the proposed design. In-tex
 - [López-Pernas et al. 2025](#ref-lopez-pernas-et-al-2025) on self-regulation dynamics in student–AI programming problem solving.
 - [Garcia 2025](#ref-garcia-2025) on self-coded portfolios as authentic assessment in web design and development.
 - [Davalos and Zhang 2026](#ref-davalos-zhang-2026) on learning visibility when AI enters the assessment loop.
+- [Prather et al. 2024](#ref-prather-et-al-2024) on benefits and harms of generative AI for novice programmers (performance versus learning).
 - [*Computer Science Curricula 2023*](#ref-cs2023) on curriculum-wide generative AI, ethics, and professional responsibility.
 
-These sources support studying process and assessment design. They do not establish effectiveness for this platform, course, or cohort. The AI-resilient assessment framework is explicitly conceptual; its indicators and instruments require empirical validation. The qualitative programming study is theory-building and context-bound. Those limits are carried into TTOD’s claim language.
+These sources support studying process and assessment design. They do not establish effectiveness for this platform, course, or cohort. The AI-resilient assessment framework is explicitly conceptual; its indicators and instruments require empirical validation. The qualitative programming study is theory-building and context-bound. Those limits are carried into TTOD’s claim language. Method inheritance from the studio’s STEM-code Profield digests is documented internally under `docs/research/PROFIELD-STEM-CODE-INHERITANCE.md` (discovery map, not a substitute for the DOI list above).
 
 ## Analysis and quality controls
 
@@ -70,10 +87,18 @@ The research preparation must deepen its evidence on worked-example fading, syst
 
 ## References
 
+- <span id="ref-brown-guzdial-2024"></span>Brown, Neil C. C., and Mark Guzdial. 2024. “Confidence vs Insight: Big and Rich Data in Computing Education Research.” In *Proceedings of the 55th ACM Technical Symposium on Computer Science Education V. 1*, 158–64. [https://doi.org/10.1145/3626252.3630813](https://doi.org/10.1145/3626252.3630813).
 - <span id="ref-cs2023"></span>*Computer Science Curricula 2023*. Association for Computing Machinery, IEEE Computer Society, and AAAI. [https://doi.org/10.1145/3664191](https://doi.org/10.1145/3664191).
 - <span id="ref-davalos-zhang-2026"></span>Davalos, Eduardo, and Yike Zhang. 2026. “AI Misuse in Education Is a Measurement Problem: Toward a Learning Visibility Framework.” arXiv. [https://doi.org/10.48550/arxiv.2603.07834](https://doi.org/10.48550/arxiv.2603.07834).
+- <span id="ref-fischer-et-al-2024"></span>Fischer, Björn, Berit Barthelmes, Sven Eric Panitz, Eva-Maria Iwer, and Ralf Dörner. 2024. “Seeking Consent for Programming Process Data Collection with Trustee-Based Encryption.” In *Proceedings of the 2024 ACM Conference on International Computing Education Research V.1*, 131–42. [https://doi.org/10.1145/3632620.3671125](https://doi.org/10.1145/3632620.3671125).
 - <span id="ref-garcia-2025"></span>Garcia, Manuel B. 2025. “Self-Coded Digital Portfolios as an Authentic Project-Based Learning Assessment in Computing Education: Evidence from a Web Design and Development Course.” *Education Sciences* 15 (9): 1150. [https://doi.org/10.3390/educsci15091150](https://doi.org/10.3390/educsci15091150).
+- <span id="ref-heckman-et-al-2022"></span>Heckman, Sarah, Jeffrey C. Carver, Mark Sherriff, and Ahmed Al-Zubidy. 2022. “A Systematic Literature Review of Empiricism and Norms of Reporting in Computing Education Research Literature.” *ACM Transactions on Computing Education* 22 (1): Article 3. [https://doi.org/10.1145/3470652](https://doi.org/10.1145/3470652).
 - <span id="ref-liu-fan-pan-2026"></span>Liu, Dandan, Guangrui Fan, and Lihu Pan. 2026. “Tool, Tutor, or Crutch?: A Grounded Theory of Cognitive Scaffolding and Offloading in AI-Assisted Programming Education.” *International Journal of STEM Education* 13: 10. [https://doi.org/10.1186/s40594-025-00592-w](https://doi.org/10.1186/s40594-025-00592-w).
 - <span id="ref-lopez-pernas-et-al-2025"></span>López-Pernas, Sonsoles, Kamila Misiejuk, Eduardo Oliveira, and Mohammed Saqr. 2025. “The Dynamics of the Self-Regulation Process in Student-AI Interactions: The Case of Problem-Solving in Programming Education.” In *Proceedings of the 25th Koli Calling International Conference on Computing Education Research*. [https://doi.org/10.1145/3769994.3770043](https://doi.org/10.1145/3769994.3770043).
+- <span id="ref-mcgill-et-al-2023"></span>McGill, Monica M., Sarah Heckman, Christos Chytas, et al. 2023. “Conducting Sound, Equity-Enabling Computing Education Research.” In *Proceedings of the 2023 Working Group Reports on Innovation and Technology in Computer Science Education*, 30–56. [https://doi.org/10.1145/3623762.3633495](https://doi.org/10.1145/3623762.3633495).
 - <span id="ref-nikolic-basta-nikolic-2026"></span>Nikolić, Dragan, and Marijana Basta Nikolić. 2026. “Designing AI-Resilient Assessment in Higher Education: A Four-Pillar Conceptual Framework.” *Frontiers in Artificial Intelligence* 9. [https://doi.org/10.3389/frai.2026.1841682](https://doi.org/10.3389/frai.2026.1841682).
+- <span id="ref-prather-et-al-2024"></span>Prather, James, et al. 2024. “The Widening Gap: The Benefits and Harms of Generative AI for Novice Programmers.” In *Proceedings of the 2024 ACM Conference on International Computing Education Research V.1*. [https://doi.org/10.1145/3632620.3671116](https://doi.org/10.1145/3632620.3671116).
+- <span id="ref-runeson-host-2009"></span>Runeson, Per, and Martin Höst. 2009. “Guidelines for Conducting and Reporting Case Study Research in Software Engineering.” *Empirical Software Engineering* 14 (2): 131–64. [https://doi.org/10.1007/s10664-008-9102-8](https://doi.org/10.1007/s10664-008-9102-8).
+- <span id="ref-runeson-et-al-2012"></span>Runeson, Per, Martin Höst, Austen Rainer, and Björn Regnell. 2012. *Case Study Research in Software Engineering: Guidelines and Examples*. Hoboken, NJ: Wiley. [https://doi.org/10.1002/9781118181034](https://doi.org/10.1002/9781118181034).
 - <span id="ref-shihab-et-al-2025"></span>Shihab, Md Istiak Hossain, Christopher Hundhausen, Ahsun Tariq, Summit Haque, Yunhan Qiao, and Brian Wise Mulanda. 2025. “The Effects of GitHub Copilot on Computing Students’ Programming Effectiveness, Efficiency, and Processes in Brownfield Coding Tasks.” In *Proceedings of the 2025 ACM Conference on International Computing Education Research V.1*. [https://doi.org/10.1145/3702652.3744219](https://doi.org/10.1145/3702652.3744219).
+- <span id="ref-wohlin-et-al-2012"></span>Wohlin, Claes, Per Runeson, Martin Höst, Magnus C. Ohlsson, Björn Regnell, and Anders Wesslén. 2012. *Experimentation in Software Engineering*. Berlin: Springer. [https://doi.org/10.1007/978-3-642-29044-2](https://doi.org/10.1007/978-3-642-29044-2).

@@ -1,8 +1,13 @@
 # Decisión solicitada al Departamento
 
+> **2026-09-25:** la hebra B (aprender haciendo en cohorte agentica) tiene diseño y paquete
+> ético en `docs/research/STRAND-B-PEDAGOGICAL-DESIGN.md` y `docs/research/ethics/`. La hebra A
+> filosófica está aparada. Este breve sigue siendo el encuadre de **autorización pedagógica**
+> de la actividad docente.
+
 ## Qué se propone ahora
 
-Autorizar un encuadre docente acotado para la primera entrega de Front-end II: cada estudiante construirá localmente la base de TTOD Oracle a partir del cohort starter, documentará su proceso y defenderá sus decisiones. No se solicita aprobar todavía una investigación con participantes ni una modificación automática de la evaluación.
+Autorizar un encuadre docente acotado para la primera entrega de Front-end II: cada estudiante construirá localmente la base de TTOD Oracle a partir del cohort starter, documentará su proceso y defenderá sus decisiones. El componente de **investigación** (uso secundario seudonimizado) se tramita por separado ante el comité de ética; no se confunde con esta autorización pedagógica.
 
 ## Por qué merece apoyo
 
@@ -24,7 +29,7 @@ La actividad convierte la construcción de interfaz en una práctica situada de 
 
 1. Permitir el pilotaje docente como entrega de Front-end II, sujeto a la comprobación de aislamiento de distribución.
 2. Designar una persona de coordinación para validar la carga, el calendario y la coherencia de evaluación.
-3. Mantener cualquier componente de investigación con estudiantes separado y condicionado a un protocolo, información/consentimiento cuando corresponda y las autorizaciones institucionales aplicables.
+3. Mantener el componente de investigación (Strand B) condicionado al protocolo en `docs/research/ethics/`, al consentimiento informado y a la autorización del comité ético — sin confundirlo con la autorización pedagógica de esta actividad.
 
 ## Referencias verificadas
 

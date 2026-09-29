@@ -53,8 +53,8 @@ service in `docker-compose.yml` and the comments in `.env.example` for both path
 | --------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `ttod.yml`                              | Canonical quote database (human-governed)                                                    |
 | `cli.py`                                | validate · stats · snapshot · export · migrate · proposal · bridge · add · deprecate · erase |
-| `agentic/`                              | **Edit-home** for TTOD-scoped agent rules/skills (e.g. `agentic/rules/ttod-editing.md`); `.cursor`/`.claude` are load-path landings only, not a second copy — see `agentic/README.md` |
-| `.cursor/rules/ttod-editing.mdc`        | Load-path landing (Cursor) → `agentic/rules/ttod-editing.md`; strict YAML editing checklist  |
+| `agentic/`                              | **Edit-home** for TTOD-scoped agent rules/skills (every child is a topic pack with a `PACK.md`, e.g. `agentic/ttod-editing/`); `.cursor`/`.claude` are load-path landings only, not a second copy — see `agentic/README.md` |
+| `.cursor/rules/ttod-editing.mdc`        | Load-path landing (Cursor) → `agentic/ttod-editing/rules/ttod-editing.md`; strict YAML editing checklist  |
 | `schema/`                               | v3 schema surface (Phase Q complete)                                                         |
 | `exports/`                              | Derived JSON/graph (gitignored)                                                              |
 | `sources/tao-of-ai-development/`        | Parked chapter — **not merged**; read README before extracting IDs                           |
@@ -92,7 +92,7 @@ Use the **ttod-bridge** skill for propose/search/read — never parse `ttod.yml`
 
 ### Edit existing quotes (human, post-Q3)
 
-1. Read `agentic/rules/ttod-editing.md` — Cursor loads the same content via the
+1. Read `agentic/ttod-editing/rules/ttod-editing.md` — Cursor loads the same content via the
    `.cursor/rules/ttod-editing.mdc` landing.
 2. Pick section + next free ID prefix (`meta.last_id_by_section`).
 3. Tags only from `tag_taxonomy` (extend taxonomy first if needed).
@@ -188,9 +188,12 @@ If you only staged a proposal, confirm `ttod.yml` hash unchanged and `pending/*.
 
 ```text
 AGENTS.md                          ← root contract (read first)
-  ├── agentic/                     ← IDE agent harness (rules, skills, packs)
+  ├── agentic/                     ← edit-home; every child is a topic pack (PACK.md)
+  │     ├── ttod-editing/          ← the ttod.yml editing rule
+  │     ├── public-docs-i18n/      ← bilingual public-docs skill
   │     ├── report-steward/        ← evidence + privacy watcher (CI uses this)
-  │     └── ide-mcp/                ← student IDE MCP configs, llms index, verify scripts
+  │     ├── ide-mcp/               ← student IDE MCP configs, llms index, verify scripts
+  │     └── lao-tzu-tao-compose/   ← compose lens (local, untracked)
   ├── .cursor/ · .claude/          ← landings only (tool loaders); .cursor/mcp.json = IDE MCP client config
   ├── services/mcp/                ← product FastMCP (read-only corpus retrieval)
   ├── services/frontend/ (Astro)   ← UI; Oracle island talks to backend
@@ -229,4 +232,4 @@ touches `ttod.yml`. See `docs/DEV_PLAN/PHASE-W-AGENTIC-HOMOGENIZATION/PHASE-W-AG
 | [`docs/DEV_PLAN/INDEX.md`](docs/DEV_PLAN/INDEX.md)                                       | Phase Q programme state                 |
 | [`~/src/.cursor/skills/ttod-bridge/SKILL.md`](../../.cursor/skills/ttod-bridge/SKILL.md) | Propose/read contract (studio skill — cited, not absorbed into `agentic/`; see `docs/DEV_PLAN/DECISIONS/W0-2026-09-18-AGENTIC-HOME.md`) |
 | [`agentic/README.md`](agentic/README.md)                                                | Map of TTOD's agent-facing tree: edit-home vs landings vs product MCP |
-| [`agentic/rules/ttod-editing.md`](agentic/rules/ttod-editing.md)                         | YAML editing gate (edit-home; loaded via the `.cursor/rules/ttod-editing.mdc` landing) |
+| [`agentic/ttod-editing/rules/ttod-editing.md`](agentic/ttod-editing/rules/ttod-editing.md) | YAML editing gate (edit-home; loaded via the `.cursor/rules/ttod-editing.mdc` landing) |

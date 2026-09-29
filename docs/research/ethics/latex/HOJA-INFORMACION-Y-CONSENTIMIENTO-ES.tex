@@ -1,0 +1,299 @@
+% Student-facing ethics pack — information sheet + informed consent (ES)
+% Build: make student  (XeLaTeX — CJK for 道)
+\documentclass[11pt,a4paper]{scrartcl}
+
+\usepackage[spanish]{babel}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{setspace}
+
+\input{cei-common.tex}
+
+\geometry{margin=2.2cm, top=2.0cm, bottom=2.2cm}
+\setkomafont{section}{\sffamily\bfseries\large}
+\setkomafont{subsection}{\sffamily\bfseries\normalsize}
+\setkomafont{disposition}{\sffamily}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\leftmargini}{1.4em}
+\setlength{\itemsep}{0.15em}
+\setlength{\topsep}{0.2em}
+\setstretch{1.05}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=uditnavy,
+  linkcolor=uditnavy,
+  pdftitle={Hoja de información y consentimiento — 道 The Tao of Development},
+  pdfauthor={Rubén Vega Balbás, PhD · UDIT / ECSIT},
+  pdfsubject={CEI UDIT — participantes estudiantes}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\scriptsize\color{uditnavy} \TTODfull\ · CEI · ECSIT}
+\fancyfoot[C]{\scriptsize\color{uditink}\thepage}
+\fancyfoot[R]{\scriptsize\color{uditink}v.\ 2026-09-26}
+
+\begin{document}
+
+\LogoRow
+
+\begin{center}
+  {\Large\sffamily\bfseries Hoja de información a participantes}\\[0.35em]
+  {\normalsize\sffamily y formulario de consentimiento informado}\\[0.6em]
+  {\large\sffamily Aprendizaje haciendo --- grupo \TTODfull\ / Front-End~II}\\[0.25em]
+  {\small\color{uditnavy} Estudio de caso educativo / investigación basada en diseño}
+\end{center}
+
+\vspace{0.4em}
+\noindent
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm}X@{}}
+  \textbf{Investigador principal} &
+    Rubén Vega Balbás, PhD ---
+    \href{mailto:ruben.vega@udit.es}{ruben.vega@udit.es}\\[0.12em]
+  \textbf{Afiliación académica} &
+    Grado Oficial en Desarrollo Full-Stack
+    (\emph{La evolución lógica de la ingeniería informática hacia una
+    titulación enfocada en el mundo real.})\\[0.12em]
+  \textbf{Grupo de investigación} &
+    ECSIT · \EcsitLink\\[0.12em]
+  \textbf{Comité} &
+    \href{mailto:comite.etica.investigacion@udit.es}{comite.etica.investigacion@udit.es}\\[0.12em]
+  \textbf{Versión del documento} &
+    2026-09-26 · cohorte pedagógica $n=8$
+    (uso investigador: solo con consentimiento, $n\leq 8$)
+\end{tabularx}
+
+\vspace{0.55em}
+\AuthoritiesBlock
+
+\vspace{0.45em}
+\noindent{\color{rulegray}\hrule height 0.4pt}
+
+\section*{1.\ ¿De qué trata este estudio?}
+
+Queremos comprender \textbf{cómo se aprende desarrollando de verdad}:
+participando como desarrollador/a en una aplicación real
+(la plataforma \TTODfull\ / Oráculo),
+con asistencia de herramientas de IA agentica, y en grupo con otros
+desarrolladores. No buscamos demostrar que <<la IA mejora las notas>>.
+Buscamos describir el proceso de aprendizaje y mejorar el diseño docente.
+
+Hay otra línea de investigación \textbf{filosófica} en el proyecto TTOD;
+\textbf{no forma parte} de este estudio y \textbf{no usa} vuestro trabajo
+de clase.
+
+\section*{2.\ ¿Por qué me piden participar?}
+
+Porque ya formáis parte de la actividad docente de Front-End~II.
+La asignatura sigue igual \textbf{aceptéis o no} el uso investigador
+de vuestros artefactos ni la autorización de imagen/comunicación.
+La autoría del producto (figurar en el \emph{README}) y la licencia MIT del código
+forman parte de la práctica docente (ítem~H).
+
+\section*{3.\ ¿Qué se os pide?}
+
+\textbf{Como estudiantes (docencia):} desarrollar, revisar, declarar el uso
+de IA y defender decisiones --- lo ya previsto en la guía~/ encargo.
+El código que aportéis al producto se licencia bajo \textbf{MIT}
+(\texttt{LICENSE-CODE}), y figuraréis como \textbf{autores} en el \emph{README}
+(\emph{Development Team}) con el rol o área en que participéis. Eso es
+\textbf{crédito de producto}, no el corpus investigador.
+
+\textbf{Como participantes en investigación (opcional y separable):}
+permitir que, \textbf{una vez autorizado el protocolo} y
+\textbf{tras cerrar las calificaciones relevantes}, se analicen de forma
+\textbf{pseudonimizada} (sin vuestro nombre ni identificadores directos)
+artefactos de proceso ya producidos para la evaluación: commits/PRs,
+declaraciones de uso de IA, notas estructuradas de defensa, y extractos
+técnicos no identificativos.
+
+\textbf{Autorización de imagen y comunicación (opcional y separable, ítem~G):}
+consentir que la universidad / el proyecto puedan usar \textbf{vuestra imagen}
+(fotografías o capturas de momentos del grupo) en comunicaciones
+relacionadas con el proyecto: LinkedIn y otras redes, medios, publicaciones
+académicas o institucionales, revistas internas de UDIT y el sitio web público,
+incluyendo material gestionado por el departamento de comunicación.
+Figurar en el \emph{README} \textbf{no} sustituye el ítem~G.
+
+En la versión mínima de este estudio \textbf{no} se piden:
+\begin{itemize}
+  \item encuestas sobre vuestra vida privada;
+  \item datos de salud u otras categorías especiales;
+  \item grabación de audio/vídeo de defensa o entrevista (salvo consentimiento
+        adicional específico distinto del ítem~G).
+\end{itemize}
+
+\section*{4.\ Datos personales (investigación) vs autoría de producto}
+
+\textbf{Investigación:} el estudio está diseñado para que vuestros datos personales
+\textbf{no estén en juego como objeto del análisis investigador}: en el corpus
+(si se autoriza) no se publicarán nombres, correos ni identificadores; estará
+\textbf{pseudonimizado} y con acceso restringido. Las notas y el expediente
+académico permanecen en los sistemas docentes y \textbf{fuera} del corpus.
+
+\textbf{Producto / equidad:} como desarrolladores del producto real, \textbf{sí}
+se os menciona por nombre (y área) en el \emph{README} y, si procede, en créditos o
+figuras del producto, bajo licencia MIT del código. Son dos planos distintos.
+
+La autorización de \textbf{imagen} (ítem~G) es otra decisión: ahí sí puede aparecer
+vuestra imagen reconocible en canales de comunicación, solo si la marcáis.
+
+Podéis retirar el consentimiento investigador o la autorización de imagen sin
+efecto sobre la calificación. Retirar B \textbf{no} obliga, por sí solo, a borrar
+el crédito de autoría del código ya fusionado.
+\section*{5.\ Beneficios y riesgos}
+
+\begin{itemize}
+  \item \textbf{Beneficio directo:} ninguno académico por consentir.
+  \item \textbf{Beneficio colectivo:} mejorar la pedagogía; visibilidad del
+        proyecto y del grupo en canales institucionales (si aceptáis G).
+  \item \textbf{Riesgos:} reidentificación residual en el corpus (mitigada por
+        seudonimización); incomodidad jerárquica (mitigada porque la nota no
+        depende del consentimiento); exposición pública de imagen si aceptáis~G.
+\end{itemize}
+
+\section*{6.\ Voluntariedad}
+
+La participación investigadora y la autorización de imagen son
+\textbf{voluntarias}. Negaros o retiraros \textbf{no afecta} a la nota
+ni al acceso a la asignatura.
+
+\section*{7.\ Contacto}
+
+\begin{itemize}
+  \item Estudio: Rubén Vega Balbás, PhD ---
+        \href{mailto:ruben.vega@udit.es}{ruben.vega@udit.es}
+  \item Coordinación grados tecnológicos: Sandra Garrido ---
+        \href{mailto:sandra.garrido@udit.es}{sandra.garrido@udit.es}
+  \item Dirección de grados: Fernando Blázquez Piñeiro ---
+        \href{mailto:fernando.blazquez@udit.es}{fernando.blazquez@udit.es}
+  \item IP ECSIT: Rafael Conde Melguizo, PhD ---
+        \href{mailto:rafael.conde@udit.es}{rafael.conde@udit.es}
+  \item Directora OTRI / OTC: Dra.\ Adiela Batista Delgado ---
+        \href{mailto:otc@udit.es}{otc@udit.es}
+  \item CEI:
+        \href{mailto:comite.etica.investigacion@udit.es}{comite.etica.investigacion@udit.es}
+  \item DPD UDIT:
+        \href{mailto:dpd@udit.es}{dpd@udit.es} ·
+        \href{mailto:proteccion.datos@udit.es}{proteccion.datos@udit.es}
+\end{itemize}
+
+\section*{8.\ Comité de ética}
+
+Este protocolo se somete al CEI de UDIT
+(\href{mailto:comite.etica.investigacion@udit.es}{comite.etica.investigacion@udit.es}).
+Hasta su autorización, \textbf{ningún} artefacto vuestro se usa
+como dato de investigación publicable.
+
+\newpage
+\LogoRow
+
+\begin{center}
+  {\Large\sffamily\bfseries Formulario de consentimiento informado}\\[0.35em]
+  {\normalsize\sffamily \TTODfull\ / Front-End~II · versión 2026-09-27}
+\end{center}
+
+\vspace{0.4em}
+\noindent
+He leído la \textbf{Hoja de información a participantes} (versión 2026-09-27)
+que precede a este formulario y he podido hacer preguntas.
+
+\vspace{0.5em}
+\noindent
+Marque con claridad cada casilla que acepte
+(\texttt{$\square$}~=~no marcado; escriba \textbf{Sí} o marque a mano):
+
+\vspace{0.4em}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X c@{}}
+  \toprule
+  \textbf{\#} & \textbf{Declaración} & \textbf{Sí}\\
+  \midrule
+  \textbf{A} &
+  Comprendo la actividad \textbf{docente} del grupo
+  \TTODfull\
+  (participar como desarrollador/a en el proyecto de la asignatura)
+  y acepto participar en ella según la guía docente.
+  & $\square$ \\
+  \textbf{H} &
+  Comprendo y acepto la \textbf{autoría de producto} y la licencia
+  \textbf{MIT} del código: (1)~el código que aporte se licencia bajo
+  \texttt{LICENSE-CODE}; (2)~figuro como autor/a en el \emph{README}
+  (\emph{Development Team}) con mi rol o área; (3)~ello \textbf{no} es el
+  corpus investigador ni sustituye el ítem~G (imagen).
+  & $\square$ \\
+  \textbf{B} &
+  Consiento el \textbf{uso investigador secundario y seudonimizado}
+  de mis artefactos de proceso ya producidos para la evaluación
+  (commits/PRs, declaración de uso de IA, notas estructuradas de defensa),
+  \textbf{solo} tras autorización ética y sin efecto sobre mi calificación
+  si me niego o me retiro.
+  & $\square$ \\
+  \textbf{C} &
+  Comprendo que, en el \textbf{corpus investigador}, \textbf{no} se
+  recogen categorías especiales ni se publicarán mis identificadores
+  directos; y que la mención de autoría en el \emph{README} es un plano
+  \textbf{distinto} (ítem~H).
+  & $\square$ \\
+  \textbf{D} &
+  \emph{(Opcional --- solo si se activa en el futuro)}
+  Consiento encuesta~/ entrevista adicional según información específica
+  que se me entregaría entonces.
+  & N/A \\
+  \textbf{E} &
+  \emph{(Opcional --- solo si se activa)}
+  Consiento grabación de audio/vídeo de defensa o entrevista según
+  información específica.
+  & N/A \\
+  \textbf{F} &
+  \emph{(Opcional)}
+  Consiento la difusión de extractos de código o capturas
+  \textbf{no identificativas} en publicaciones académicas
+  (consentimiento por artefacto si se me pide después).
+  & $\square$ \\
+  \textbf{G} &
+  \emph{(Opcional)}
+  Autorizo el uso de \textbf{mi imagen} (fotografías / capturas del
+  grupo) por UDIT y el proyecto \TTODfull\ en comunicaciones
+  relacionadas: LinkedIn y otras redes, medios, publicaciones,
+  revistas internas universitarias y sitio web público, incluido el
+  material que gestione el departamento de comunicación.
+  & $\square$ \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{1.2em}
+\noindent
+\textbf{Nombre y apellidos:}
+\hrulefill
+
+\vspace{1.1em}
+\noindent\textbf{Firma:} \hrulefill
+
+\vspace{0.9em}
+\noindent\textbf{Fecha:}
+\underline{\hspace{1.2cm}}~/~\underline{\hspace{1.2cm}}~/~\underline{\hspace{2.2cm}}
+
+\vspace{1.4em}
+\noindent{\color{rulegray}\hrule height 0.4pt}
+\vspace{0.5em}
+
+\noindent{\small\color{uditink}
+\textbf{Uso interno} (no completar con datos de terceros en la copia del estudiante):\\
+código de seudónimo \texttt{P\_\_\_\_} · custodio: \underline{\hspace{3.5cm}} ·
+archivo fuera de git (ver protocolo de custodia).\\
+Las copias \textbf{firmadas} no se suben al repositorio del proyecto TTOD.}
+
+\vspace{0.8em}
+\noindent{\footnotesize\color{uditnavy}
+Grupo ECSIT · Web: \EcsitLink.}
+
+\vspace{0.35em}
+\LegalEntities
+
+\end{document}

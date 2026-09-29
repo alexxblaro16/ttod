@@ -6,7 +6,7 @@ alwaysApply: false
 
 # TTOD Editing Discipline
 
-Read [`AGENTS.md`](../AGENTS.md) first. **Do not hand-edit `ttod.yml`.** All writes go through the CLI
+Read [`AGENTS.md`](../../../AGENTS.md) first. **Do not hand-edit `ttod.yml`.** All writes go through the CLI
 and `ttod_core/repository.py` atomic transactions (`proposal accept`, `add`, `deprecate`, `erase`).
 
 ```bash

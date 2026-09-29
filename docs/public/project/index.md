@@ -33,7 +33,15 @@ The application makes those governance choices observable through localized rout
 
 ## Licensing
 
-Code is licensed under MIT. Curated content is licensed under CC BY-NC-SA 4.0 unless a record states otherwise. A research or commercial partner must account for that non-commercial, share-alike content boundary rather than infer unrestricted reuse.
+Code is licensed under MIT ([`LICENSE-CODE`](https://github.com/ruvebal/ttod/blob/main/LICENSE-CODE)):
+copyright the steward and individual contributors listed in the repository README
+(Development Team), except where a file states otherwise. Cohort code contributions use the
+same MIT terms inbound and outbound; naming in the README is product authorship, not a research
+personal-data corpus. Curated Tao knowledge content is licensed under CC BY-NC-SA 4.0
+([`LICENSE-CONTENT`](https://github.com/ruvebal/ttod/blob/main/LICENSE-CONTENT)) unless a
+record states otherwise. **These are not contradictory:** MIT covers software; CC BY-NC-SA
+covers the wisdom corpus. A research or commercial partner must account for that
+non-commercial, share-alike content boundary rather than infer unrestricted reuse of quotes.
 
 ## Stewardship
 

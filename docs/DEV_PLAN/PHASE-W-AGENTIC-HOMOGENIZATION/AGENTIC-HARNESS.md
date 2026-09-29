@@ -62,6 +62,16 @@ yet prescribe:
 probe script and a short runbook are DONE. Cascade-forge already warns against
 self-certified DONE; that is the validator bar we actually have.
 
+### 3.1 Harness test definition (canonical → DevIAC)
+
+Studio-wide harness test (Raymond / Linus’s Law · shared representation ·
+parallel cold review) lives in DevIAC — not in this TTOD annex:
+
+→ **[`~/src/deviac/docs/guides/studio-harness-test.md`](../../../../deviac/docs/guides/studio-harness-test.md)**  
+→ Companion cites: [`cathedral-bazaar-companion.md`](../../../../deviac/docs/guides/cathedral-bazaar-companion.md)
+
+TTOD phases and `agentic/` packs **cite** that guide; they do not fork it.
+
 ## 4. Project level vs studio level
 
 | Asset | Install / commit where | Why |

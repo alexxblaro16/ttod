@@ -1,0 +1,12 @@
+---
+description: No private studio hosts or crea-comm LAN names in public, student, or institutional research remisión packs — services only.
+globs: docs/public/**,docs/research/ethics/**,docs/research/institutional/**
+alwaysApply: false
+---
+
+Canonical: `agentic/report-steward/rules/public-privacy.md`. Read it before editing public docs
+or CEI/department/OTRI remisión packs. This stub exists only because Cursor loads `.cursor/rules/`,
+not `agentic/`; do not duplicate content here.
+
+In institutional packs: name **services** (hosting, compute, storage, TLS), never private hosts
+(Lilith, Tanit, `*.crea-comm.loc`, LAN IPs).

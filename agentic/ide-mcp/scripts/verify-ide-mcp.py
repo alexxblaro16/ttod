@@ -103,7 +103,7 @@ def offline_checks() -> dict | None:
     canonical = load_json(CANONICAL_MCP)
     check("agentic/ide-mcp/mcp.cursor.json exists and parses", canonical is not None)
     if canonical is not None:
-        check(".cursor/mcp.json matches agentic/ide-mcp/mcp.cursor.json byte-for-byte "
+        check(".cursor/mcp.json matches agentic/ide-mcp/mcp.cursor.json (parsed JSON equal) "
               "(landing in sync with edit-home)", cfg == canonical)
 
     if SVELTE_LLMS.exists():

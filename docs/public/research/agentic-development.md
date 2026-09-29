@@ -16,8 +16,9 @@ development practice is teachable, and worth teaching deliberately, to the exten
 gap between *declared* and *verified* visible, checkable, and someone else's job to confirm.
 This page is a reflection on a design pattern this repository actually runs, not a report of a
 completed study — [Method and safeguards]({{ '/research/methodology/' | relative_url }})
-remains the page that governs whether and how a future study of this platform could be
-authorized. Nothing here claims that gate has been passed.
+governs Strand B’s ethics path. Protocol materials live under `docs/research/ethics/` in the
+repository; analysis of student artifacts as research data remains gated on committee clearance
+and consent. Nothing here claims that gate has been passed.
 
 ## The pattern, stated plainly
 

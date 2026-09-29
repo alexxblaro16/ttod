@@ -4,6 +4,6 @@ globs: ttod.yml
 alwaysApply: false
 ---
 
-Canonical: `agentic/rules/ttod-editing.md`. Read it in full now, before any other action — it
+Canonical: `agentic/ttod-editing/rules/ttod-editing.md`. Read it in full now, before any other action — it
 is the complete editing discipline, not this stub. This file exists only because Cursor reads
 `.cursor/rules/`, not `agentic/`; do not duplicate content here, amend the canonical file.

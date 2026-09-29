@@ -1,0 +1,435 @@
+% Paquete de remisión CEI UDIT — anexos del comunicado (blend)
+% Build: make remision  (XeLaTeX — CJK for 道)
+\documentclass[11pt,a4paper]{scrartcl}
+
+\usepackage[spanish]{babel}
+\usepackage{amssymb}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{setspace}
+\IfFileExists{enumitem.sty}{%
+  \usepackage{enumitem}%
+  \setlist[itemize]{leftmargin=1.4em, itemsep=0.12em, topsep=0.15em}%
+  \setlist[enumerate]{leftmargin=1.6em, itemsep=0.12em, topsep=0.15em}%
+}{%
+  \setlength{\leftmargini}{1.4em}%
+}
+
+\input{cei-common.tex}
+
+\geometry{margin=2.2cm, top=2.0cm, bottom=2.2cm}
+\setkomafont{section}{\sffamily\bfseries\large}
+\setkomafont{subsection}{\sffamily\bfseries\normalsize}
+\setkomafont{disposition}{\sffamily}
+\setlength{\parskip}{0.32em}
+\setlength{\parindent}{0pt}
+\setstretch{1.04}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=uditnavy,
+  linkcolor=uditnavy,
+  pdftitle={Paquete de remisión CEI UDIT — 道 The Tao of Development},
+  pdfauthor={Rubén Vega Balbás, PhD · UDIT / ECSIT},
+  pdfsubject={Anexos del comunicado del Comité de Ética}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\scriptsize\color{uditnavy} Remisión CEI · \TTODfull}
+\fancyfoot[C]{\scriptsize\color{uditink}\thepage}
+\fancyfoot[R]{\scriptsize\color{uditink}v.\ 2026-09-26}
+
+\newcommand{\AnnexTitle}[1]{%
+  \clearpage
+  \LogoRow
+  \begin{center}{\Large\sffamily\bfseries #1}\end{center}
+  \vspace{0.4em}
+  \noindent{\color{rulegray}\hrule height 0.4pt}
+  \vspace{0.5em}
+}
+
+\begin{document}
+
+%======================================================================
+% PORTADA
+%======================================================================
+\LogoRow
+
+\begin{center}
+  {\LARGE\sffamily\bfseries Paquete de remisión}\\[0.35em]
+  {\Large\sffamily Comité de Ética en Investigación (CEI) --- UDIT}\\[0.8em]
+  {\large\sffamily Aprendizaje haciendo --- grupo \TTODfull\ / Front-End~II}\\[0.3em]
+  {\normalsize\color{uditnavy} Estudio de caso educativo / investigación basada en diseño}\\[0.6em]
+  {\small Código TTOD-FEII-2026-27 · Fecha de presentación: 26 septiembre 2026}
+\end{center}
+
+\vspace{0.6em}
+\StudyMetaPI
+
+\vspace{0.55em}
+\AuthoritiesBlock
+
+\vspace{0.35em}
+\DocsPrototypeNote
+
+\vspace{0.7em}
+\noindent{\sffamily\bfseries\small Documentos de este PDF (requisitos del comunicado)}\\[0.3em]
+\begin{enumerate}
+  \item Carta / solicitud narrativa al CEI
+  \item Protocolo de investigación completo
+  \item Instrumentos de recolección de datos
+  \item Plan de manejo de datos y minimización
+  \item Autorizaciones institucionales (checklist + pendientes)
+  \item Hoja de información y formulario de consentimiento (plantilla estudiante)
+  \item Declaración de exclusión de la línea filosófica paralela
+  \item Declaración de autoría asistida por IA (transparencia del PI)
+  \item Autoría de producto y licencia MIT (equidad del grupo)
+\end{enumerate}
+
+\vspace{0.4em}
+\noindent{\small\color{uditink}
+\textbf{Remisión completa =} este PDF +
+\textbf{Formulario de Solicitud de Evaluación Ética} (Word institucional relleno:
+\texttt{FORMULARIO-SOLICITUD-CEI-UDIT-RELLENO.docx}) +
+adjuntos firmados fuera de git (autorización departamental; consentimientos firmados
+según vía del CEI).}
+
+%======================================================================
+% 1. CARTA
+%======================================================================
+\AnnexTitle{1.\ Carta de solicitud al CEI}
+
+Se solicita evaluación ética de un \textbf{estudio de caso educativo / investigación
+basada en diseño}, acotado a Front-End~II (curso 2026--27). El alumnado participa
+como desarrolladores en un producto real (plataforma Oráculo de \TTODfull), con asistencia
+de IA agentica y trabajo en grupo. La actividad docente fue autorizada
+pedagógicamente con antelación. La participación en investigación (uso secundario
+seudonimizado de artefactos de proceso) es \textbf{voluntaria} e independiente de
+la calificación. La autorización de imagen/comunicación (ítem~G) es opcional y separable.
+La autoría de producto (\emph{README} / MIT, ítem~H) es plano docente distinto del corpus
+investigador seudonimizado.
+
+\textbf{No se pretende} demostrar causalmente que la IA <<mejora el aprendizaje>>.
+Se pretende describir \textbf{cómo se aprende haciendo} y qué principios de diseño
+pedagógico se desprenden.
+
+\textbf{Pregunta principal:} ¿Puede la participación como desarrollador/a en una
+aplicación real, con asistencia agentica y en grupo, constituir una actividad de
+aprendizaje con resultados pedagógicos observables?
+
+\textbf{Decisión solicitada:}
+\begin{enumerate}
+  \item Evaluar y, en su caso, autorizar el protocolo descrito.
+  \item Confirmar que el enfoque de minimización / datos personales no puestos
+        <<en juego>> como objeto de interés es adecuado, o indicar condiciones.
+  \item Indicar si se requiere dictamen del DPD en paralelo
+        (\href{mailto:dpd@udit.es}{dpd@udit.es}).
+\end{enumerate}
+
+%======================================================================
+% 2. PROTOCOLO
+%======================================================================
+\AnnexTitle{2.\ Protocolo de investigación completo}
+
+\subsection*{Tipo de estudio}
+Estudio de caso educativo / investigación basada en diseño (cualitativo dominante,
+datos ricos de proceso). \textbf{No} es ensayo clínico, \textbf{no} es experimento
+controlado, \textbf{no} pretende tamaños de efecto ni inferencia poblacional.
+
+\subsection*{Antecedentes y justificación}
+La asistencia cotidiana de IA generativa en el desarrollo de software obliga a
+distinguir \emph{código producido} de \emph{aprendizaje demostrado}, en especial
+en cursos post-introductorios. Este estudio observa un grupo real que construye
+un producto auténtico con asistencia agentica, trabajo colaborativo y defensa oral.
+
+Justificación metodológica: caso acotado con evidencia de proceso (Runeson y Höst
+2009; Runeson et al.\ 2012), datos ricos frente a grandes (Brown y Guzdial 2024),
+normas CER (Heckman et al.\ 2022; McGill et al.\ 2023), consentimiento para datos
+de proceso de programación (Fischer et al.\ 2024). Wohlin et al.\ (2012) sitúa el
+diseño como \textbf{estudio de caso}, no como experimento.
+
+\vspace{0.35em}
+\subsection*{Producción y procedencia (vía operativa)}
+\ProductionRationale
+\noindent{\footnotesize\color{uditink}
+El apoyo presupuestario de producción se tramita por canal institucional distinto
+del CEI (paquete institucional / fondos $\geq 24$~meses).}
+
+\subsection*{Objetivos}
+\textbf{General:} comprender si --- y cómo --- la participación como desarrollador/a
+en un producto real, asistido por IA agentica y en grupo, constituye
+\emph{aprender haciendo} con resultados pedagógicos observables.
+
+\textbf{Específicos:}
+\begin{enumerate}
+  \item Identificar trazas de proceso que hacen explicables y revisables las
+        contribuciones asistidas por IA.
+  \item Describir negociación de autoría, agencia y responsabilidad.
+  \item Proponer principios de diseño situados (no marco causal validado).
+  \item Documentar divergencias entre producto entregado y aprendizaje demostrado.
+\end{enumerate}
+
+\subsection*{Diseño y método}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+  \toprule
+  Diseño & Caso único acotado / DBR cualitativo dominante \\
+  Caso & Cohorte Front-End II 2026--27 · producto Oráculo de \TTODfull \\
+  Unidad de análisis & Trayectorias de pareja/solo (PRs) en el sistema del grupo \\
+  Muestreo & Censo del grupo; $n=8$ estudiantes-desarrolladores \\
+  Análisis & Codificación temática; triangulación producto / registro / defensa \\
+  Inicio del análisis & Tras dictamen ético + consentimiento + cierre de notas \\
+  \bottomrule
+\end{tabularx}
+
+\subsection*{Participantes}
+\begin{itemize}
+  \item \textbf{Inclusión:} matriculados en Front-End~II en la entrega TTOD que
+        otorgan consentimiento de uso investigador.
+  \item \textbf{Exclusión del corpus:} no consentidos; menores/vulnerables sin
+        salvaguarda adicional; artefactos de compañeros no consentidos.
+  \item \textbf{n:} 8 (\emph{README} del proyecto; excluido el PI). Corpus: $n_{\mathrm{consent}}\leq 8$.
+  \item \textbf{Reclutamiento:} no externo; la actividad es la asignatura.
+\end{itemize}
+
+\subsection*{Procedimiento}
+\begin{enumerate}
+  \item Actividad docente ordinaria (desarrollo, PRs, declaración de IA, defensa).
+  \item Información y consentimiento (docente + investigador).
+  \item Tras dictamen y consentimientos: corpus \textbf{seudonimizado}.
+  \item Análisis cualitativo / de diseño.
+  \item Difusión agregada o extractos no identificativos (consentimiento de difusión).
+\end{enumerate}
+Instrumentos opcionales (encuesta, entrevista, grabación) \textbf{no} forman parte
+de esta versión.
+
+\subsection*{Aspectos éticos (síntesis)}
+Voluntariedad; nota no condicionada; separación docente/investigador; minimización;
+sin categorías especiales; retirada sin consecuencia académica; línea filosófica
+paralela \textbf{excluida} (Anexo~7).
+
+\subsection*{Cronograma orientativo}
+Docencia curso 2026--27 · dictamen tras remisión · análisis tras notas · difusión
+académica (JENUI~$\rightarrow$~ITiCSE) tras análisis.
+
+% Chicago author–date
+\subsection*{Referencias principales}
+\noindent{\small Columna metodológica --- títulos completos; misma lista canónica que
+\path{docs/public/research/methodology.md}.}
+\ChicagoMethodsRefs
+
+%======================================================================
+% 3. INSTRUMENTOS
+%======================================================================
+\AnnexTitle{3.\ Instrumentos de recolección de datos}
+
+\subsection*{Principio}
+Este estudio \textbf{no introduce} cuestionarios, baterías psicométricas, diarios
+de vida privada ni entrevistas como instrumentos por defecto. La recolección
+investigadora es \textbf{uso secundario seudonimizado} de artefactos ya producidos
+para la evaluación ordinaria, tras consentimiento informado (ítem~B del formulario).
+
+\subsection*{Instrumentos activos (diseño mínimo)}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.2cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Instrumento / origen} & \textbf{Formato} \\
+  \midrule
+  I1 & Historial commits / PRs (remoto del curso) --- narrativas y revisiones seudonimizadas & Texto / metadatos \\
+  I2 & Declaración de uso de IA (rúbrica FE~II) --- sin datos de vida privada & Texto \\
+  I3 & Notas estructuradas de defensa oral --- \textbf{sin} audio/vídeo & Texto \\
+  I4 & Extractos de código no identificativos --- solo con consentimiento de difusión & Texto / imagen \\
+  \bottomrule
+\end{tabularx}
+
+\subsection*{Instrumentos no activados}
+I5 cuestionario · I6 entrevista · I7 grupo focal · I8 grabación · I9 telemetría IDE /
+keystrokes / prompts completos --- \textbf{N/A} en esta versión. Su activación
+exigiría modificación al CEI y consentimiento ampliado.
+
+\subsection*{Procedimiento investigador}
+\begin{enumerate}
+  \item El alumnado produce I1--I3 como parte de la docencia.
+  \item Tras dictamen y consentimiento, se construye corpus seudonimizado (\texttt{P01\ldots Pn}).
+  \item No se exportan calificaciones ni identificadores al corpus.
+\end{enumerate}
+
+%======================================================================
+% 4. PLAN DE DATOS
+%======================================================================
+\AnnexTitle{4.\ Plan de manejo de datos y minimización}
+
+\subsection*{Resumen}
+Datos de investigación = trazas de proceso y textos pedagógicos seudonimizados.
+\textbf{No} cuestionarios ni entrevistas. Notas e identidades académicas:
+sistemas docentes, \textbf{fuera} del corpus.
+
+\subsection*{Conjuntos}
+\begin{itemize}
+  \item Corpus investigador (I1--I4): seudónimos; sin nombre, email, DNI.
+  \item Mapa seudónimo$\leftrightarrow$identidad: offline, cifrado; no en git.
+  \item Consentimientos firmados: custodia privada.
+  \item Categorías especiales (art.~9 RGPD): \textbf{no} se recogen.
+\end{itemize}
+
+\subsection*{Base jurídica (propuesta; confirmar con DPD)}
+Docencia/evaluación: marco académico institucional.
+Uso investigador secundario: \textbf{consentimiento} (art.~6.1.a RGPD / LOPDGDD).
+
+\subsection*{Almacenamiento y seguridad}
+Corpus: almacenamiento institucional / cifrado, acceso mínimo, sin nube pública
+de datos de estudiantes. Mapa seudónimo separado. Prohibido subir consentimientos
+firmados o mapas nominativos al repositorio git del proyecto.
+
+\subsection*{Conservación (propuesta)}
+Consentimientos: fin del estudio + plazo institucional ($\geq 5$~años o norma UDIT).
+Corpus: hasta cierre de publicaciones del ciclo. Mapa seudónimo: destruir cuando
+deje de ser necesario. Confirmación DPD:
+\href{mailto:dpd@udit.es}{dpd@udit.es} ·
+\href{mailto:proteccion.datos@udit.es}{proteccion.datos@udit.es}.
+
+\subsection*{Eliminación}
+Eliminación digital segura; destrucción de documentos físicos si existen en papel.
+
+\subsection*{Postura de minimización (síntesis)}
+El estudio está diseñado para que los datos personales del alumnado \textbf{no
+estén en juego} como objeto de interés investigador: sin encuestas de vida privada,
+sin categorías especiales, sin publicación de identificadores. Se reconoce que, bajo
+RGPD, datos seudonimizados pueden seguir siendo personales; por ello el corpus
+es confidencial y \textbf{no} se trata como dato anónimo abierto.
+
+%======================================================================
+% 5. AUTORIZACIONES
+%======================================================================
+\AnnexTitle{5.\ Autorizaciones institucionales}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.4cm}@{}}
+  \toprule
+  \textbf{ID} & \textbf{Autorización} & \textbf{Estado} \\
+  \midrule
+  A1 & Encuadre pedagógico departamental de la actividad del grupo & Afirmada por el PI; \textbf{adjunto firmado pendiente} \\
+  A2 & Dictamen del CEI (esta remisión) & En curso \\
+  A3 & Consulta / visto bueno DPD & Pendiente / a criterio institucional \\
+  A4 & Autorización adicional de centro/grado si el reglamento lo exige & Confirmar \\
+  A5 & Convenios con terceros / cloud de datos de investigación & N/A \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{0.5em}
+\noindent
+La autorización \textbf{pedagógica} (A1) \textbf{no} equivale a la autorización
+\textbf{ética de investigación} (A2). Ambas deben constar en el expediente.
+
+\noindent\textbf{Adjuntos a aportar fuera de este PDF cuando existan:}
+correo/acta departamental firmada; extracto de guía docente / encargo;
+respuesta DPD si procede; consentimientos firmados según vía del CEI.
+
+%======================================================================
+% 6. CONSENTIMIENTO (plantilla)
+%======================================================================
+\AnnexTitle{6.\ Información y consentimiento informado (plantilla)}
+
+\noindent{\small
+Plantilla para participantes. La versión tipográfica estudiante (mismos logos)
+también se distribuye como PDF separado
+\texttt{HOJA-INFORMACION-Y-CONSENTIMIENTO-ES.pdf}. Firmados: \textbf{fuera de git}.}
+
+\subsection*{Síntesis de la hoja de información}
+\begin{itemize}
+  \item Estudio: aprendizaje haciendo en grupo \TTODfull\ / Front-End~II.
+  \item Docencia sigue igual con o sin consentimiento investigador ni autorización de imagen.
+  \item Autoría de producto + MIT (ítem~H): crédito en \emph{README} por área; código bajo
+        \texttt{LICENSE-CODE} --- distinto del corpus investigador.
+  \item Investigación = uso seudonimizado de artefactos de evaluación (PRs,
+        declaración de IA, notas de defensa), tras dictamen y cierre de notas.
+  \item Ítem~G (opcional): imagen en LinkedIn/medios/publicaciones/revistas internas UDIT/web público.
+  \item Sin encuestas de vida privada, sin categorías especiales; grabación de
+        defensa/entrevista N/A en el diseño mínimo (distinta de G).
+  \item Voluntario; retirada sin efecto en la calificación.
+\end{itemize}
+
+\vspace{0.3em}
+\AuthoritiesBlock
+
+\subsection*{Ítems del formulario}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X c@{}}
+  \toprule
+  \textbf{\#} & \textbf{Declaración} & \textbf{Sí} \\
+  \midrule
+  A & Actividad docente del grupo \TTODfull & $\square$ \\
+  H & Autoría de producto + MIT (\emph{README} / \texttt{LICENSE-CODE}) & $\square$ \\
+  B & Uso investigador secundario seudonimizado de artefactos de proceso & $\square$ \\
+  C & Corpus investigador sin identificadores; \emph{README} = plano distinto (H) & $\square$ \\
+  D & Encuesta/entrevista (solo si se activa en el futuro) & N/A \\
+  E & Grabación audio/vídeo de defensa o entrevista (solo si se activa) & N/A \\
+  F & Difusión de extractos no identificativos (opcional) & $\square$ \\
+  G & Imagen en LinkedIn/medios/publicaciones/revistas internas UDIT/web público (opcional) & $\square$ \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{0.8em}
+\noindent\textbf{Nombre y apellidos:} \hrulefill
+
+\vspace{0.7em}
+\noindent
+\begin{tabularx}{\textwidth}{@{}X X@{}}
+  \textbf{Firma:} \hrulefill &
+  \textbf{Fecha:} \underline{\hspace{1.1cm}}~/~\underline{\hspace{1.1cm}}~/~\underline{\hspace{2cm}}
+\end{tabularx}
+
+\vspace{0.6em}
+\noindent{\scriptsize
+Uso interno: seudónimo \texttt{P\_\_\_\_} · custodio: \underline{\hspace{3cm}} ·
+archivo fuera de git.}
+
+%======================================================================
+% 7. EXCLUSIÓN FILOSÓFICA
+%======================================================================
+\AnnexTitle{7.\ Exclusión de la línea filosófica paralela}
+
+Existe en el proyecto \TTODfull\ una línea de investigación filosófica
+(ontología / epistemología / cibernética). Está
+\textbf{aparada} y \textbf{no forma parte} de esta solicitud. \textbf{No usa}
+datos de estudiantes ni artefactos de la Cohorte Front-End~II.
+
+Esta remisión se limita al estudio pedagógico de caso descrito en los Anexos~1--6.
+
+%======================================================================
+% 8. AUTORÍA ASISTIDA POR IA (PI)
+%======================================================================
+\AnnexTitle{8.\ Declaración de autoría asistida por IA (transparencia del PI)}
+
+\AIAuthorshipDeclaration
+
+%======================================================================
+% 9. AUTORÍA / MIT COHORTE
+%======================================================================
+\AnnexTitle{9.\ Autoría de producto y licencia MIT (equidad del grupo)}
+
+\AuthorshipLicenseBlock
+
+\vspace{0.6em}
+\noindent{\small
+Dos planos: (A)~producto/docencia --- nombres en \emph{README} y código MIT;
+(B)~investigación --- corpus seudonimizado tras consentimiento~B.
+No se contradicen. Ver también \texttt{DATA-MINIMIZATION-STATEMENT.md}.}
+
+\vspace{1.2em}
+\noindent{\color{rulegray}\hrule height 0.4pt}
+\vspace{0.5em}
+\AuthoritiesBlock
+
+\vspace{0.6em}
+\noindent{\footnotesize\color{uditnavy}
+Fin del paquete de anexos. Formulario CEI Word:
+\texttt{FORMULARIO-SOLICITUD-CEI-UDIT-RELLENO.docx}.}
+
+\vspace{0.5em}
+\LegalEntities
+
+\end{document}

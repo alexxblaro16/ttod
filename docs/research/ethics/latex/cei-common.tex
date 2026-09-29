@@ -1,0 +1,216 @@
+% Shared chrome for CEI / student ethics PDFs — UDIT · ECSIT
+% Built with XeLaTeX (CJK for 道). Input from documents in this directory.
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{calc}
+
+% Single CJK glyph (道) via fontspec — no xeCJK dependency
+\IfFontExistsTF{Songti SC}{%
+  \newfontfamily\TTODdao{Songti SC}%
+}{%
+  \IfFontExistsTF{PingFang SC}{%
+    \newfontfamily\TTODdao{PingFang SC}%
+  }{%
+    \IfFontExistsTF{STSong}{%
+      \newfontfamily\TTODdao{STSong}%
+    }{%
+      \newcommand{\TTODdao}{}%
+    }%
+  }%
+}
+
+\definecolor{uditnavy}{HTML}{0B1F33}
+\definecolor{uditink}{HTML}{1A1A1A}
+\definecolor{rulegray}{HTML}{CCCCCC}
+
+\newcommand{\assetspath}{../assets/}
+\newcommand{\EcsitUrl}{https://www.udit.es/lineas-de-investigacion/grupo-de-investigacion-innovacion-y-tecnologia-desde-y-para-la-educacion-la-cultura-y-la-sociedad/}
+\newcommand{\EcsitLink}{\href{\EcsitUrl}{udit.es $\rightarrow$ grupo ECSIT}}
+\newcommand{\TTODfull}{{\TTODdao 道} The Tao of Development (TTOD)}
+
+\newcommand{\LogoRow}{%
+  \noindent
+  \begin{tabularx}{\textwidth}{@{}lXr@{}}
+    \includegraphics[height=0.95cm]{\assetspath udit-logo-print.png}
+    & &
+    \includegraphics[height=1.45cm]{\assetspath ecsit-logo-print.png}
+  \end{tabularx}%
+  \par\vspace{0.55em}
+  \noindent{\color{rulegray}\hrule height 0.35pt}%
+  \par\vspace{0.65em}
+}
+
+\newcommand{\LegalEntities}{%
+  \noindent{\scriptsize\color{uditink}
+  UDIT ESTUDIOS SUPERIORES INTERNACIONALES, S.L.\ · NIF B84014265 ·
+  UDIT Escuela de Formación Profesional, S.L.\ · NIF B09963117.}%
+}
+
+% Role (left) | Name + email only (right) — no role text repeated.
+% Legal entity NIFs: call \LegalEntities only on the last page of each PDF.
+\newcommand{\AuthoritiesBlock}{%
+  \noindent{\sffamily\bfseries\small Autoridades de investigación / Research authorities}\\[0.25em]
+  \noindent
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm}X@{}}
+    \textbf{Coordinación grados tecnológicos} &
+      Sandra Garrido ---
+      \href{mailto:sandra.garrido@udit.es}{sandra.garrido@udit.es}\\[0.2em]
+    \textbf{Dirección de grados} &
+      Fernando Blázquez Piñeiro ---
+      \href{mailto:fernando.blazquez@udit.es}{fernando.blazquez@udit.es}\\[0.2em]
+    \textbf{IP del grupo ECSIT} &
+      Rafael Conde Melguizo, PhD ---
+      \href{mailto:rafael.conde@udit.es}{rafael.conde@udit.es}\\[0.2em]
+    \textbf{Directora OTRI / OTC} &
+      Dra.\ Adiela Batista Delgado ---
+      \href{mailto:otc@udit.es}{otc@udit.es}\\[0.2em]
+    \textbf{CEI UDIT} &
+      \href{mailto:comite.etica.investigacion@udit.es}{comite.etica.investigacion@udit.es}
+  \end{tabularx}%
+}
+
+% Product authorship + MIT (cohort equity) — distinct from research corpus.
+\newcommand{\AuthorshipLicenseBlock}{%
+  \noindent{\sffamily\bfseries\small Autoría de producto y licencias (MIT + CC BY-NC-SA)}\\[0.35em]
+  \noindent{\small
+  El \textbf{código} del producto TTOD se licencia bajo \textbf{MIT}
+  (\texttt{LICENSE-CODE}): copyright del PI y de los \textbf{contribuidores
+  individuales} listados en el \emph{README} (\emph{Development Team}), salvo aviso distinto
+  en un archivo. Quien aporta código licencia esa aportación bajo el mismo MIT
+  (\emph{inbound = outbound}); conserva el crédito de autoría. Figurar en el
+  \emph{README} por rol o área es \textbf{crédito de producto}, no publicación del corpus
+  investigador seudonimizado.}\\[0.35em]
+  \noindent{\small
+  El \textbf{conocimiento Tao} (citas en \texttt{ttod.yml}, docs y \emph{sources}) permanece
+  bajo \textbf{CC BY-NC-SA~4.0} (\texttt{LICENSE-CONTENT}).
+  \textbf{No hay contradicción:} MIT cubre el software; CC BY-NC-SA el corpus de
+  sabiduría. Crédito MIT del grupo \textbf{no} relicencia las citas; aportar código
+  \textbf{no} pone el Tao bajo MIT. La imagen en medios sigue siendo el ítem~G
+  (opcional). Detalle: \texttt{AUTORIA-LICENCIA-COHORTE-ES.md}.}%
+}
+
+% Public documentation prototype (not the production Oráculo app).
+\newcommand{\DocsPrototypeNote}{%
+  \noindent{\footnotesize\color{uditink}
+  Documentación pública del proyecto (prototipo documental; \textbf{no} es el despliegue
+  de la aplicación Oráculo):
+  \url{https://ruvebal.github.io/ttod/}}%
+}
+
+% Why production matters: provenance-governed agentic app + authorized corpus + DevOps track.
+\newcommand{\ProductionRationale}{%
+  \noindent{\small
+  Mantener Oráculo \textbf{en producción} no es solo continuidad docente.
+  TTOD es un \textbf{caso a escala reducida} de \textbf{aplicación agentica con
+  gobernanza de procedencia}: la plataforma consulta un \textbf{corpus autorizado}
+  propio (la colección de aforismos Tao), no un corpus abierto indiferenciado.
+  Eso abre una línea de investigación \textbf{operativa} --- evidencia real sobre
+  la infraestructura y las prácticas \emph{DevOps} que exige un sistema de
+  conocimiento agentico con IA local en producción --- complementaria a la vía
+  filosófica (Strand~A, aparada) y al estudio pedagógico (Strand~B).
+  Sin despliegue estable, esa evidencia de producción se degrada a demos locales
+  efímeras.}%
+}
+
+% PI AI-assisted authorship (not student I2 AI-use declaration).
+\newcommand{\AIAuthorshipDeclaration}{%
+  \noindent{\sffamily\bfseries\small Autoría asistida por IA --- transparencia del PI}\\[0.35em]
+  \noindent{\small
+  Rubén Vega Balbás, PhD
+  (\href{mailto:ruvebal@crea-comm.net}{ruvebal@crea-comm.net} ·
+  \href{mailto:ruben.vega@udit.es}{ruben.vega@udit.es})
+  preparó este paquete de investigación y remisión ética en el entorno de estudio
+  \textbf{crea-comm.net} --- un \emph{harness} agentico local con recuperación
+  asistida por MCP, contexto RAG desde \emph{vaults} de currículo e investigación, y un
+  modelo de voz académica afinado sobre su propia escritura. El forjado consultó
+  fuentes de \emph{vault}; cada cita pública (Autor, Año) fue contrastada contra ese
+  \emph{vault} antes de su aceptación. Prompts, borradores del modelo y enmiendas humanas quedan
+  archivados para evaluación posterior. El \textbf{juicio editorial y la
+  responsabilidad del texto final} corresponden al autor.}\\[0.45em]
+  \noindent{\small\color{uditink}
+  \textbf{No confundir} con la declaración de uso de IA del alumnado (instrumento~I2 /
+  rúbrica Front-End~II): aquella es traza pedagógica del grupo; \textbf{esta}
+  declaración cubre solo la autoría del paquete institucional y ético por el PI.}\\[0.35em]
+  \noindent{\footnotesize
+  Fecha de forjado: 2026-09-27 · Estudio: crea-comm.net · \emph{harness}: paquete ético TTOD\\
+  Fundamentos del instructor:
+  \href{https://ruvebal.github.io/web-atelier-udit/lessons/en/react/ai-assisted-development-foundations/}{AI-Assisted Development Foundations}
+  (Web Atelier UDIT).}%
+}
+
+\newcommand{\StudyMetaPI}{%
+  \noindent
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm}X@{}}
+    \textbf{Investigador principal} &
+      Rubén Vega Balbás, PhD ---
+      \href{mailto:ruben.vega@udit.es}{ruben.vega@udit.es}\\[0.15em]
+    \textbf{Afiliación académica} &
+      Grado Oficial en Desarrollo Full-Stack
+      (\emph{La evolución lógica de la ingeniería informática hacia una
+      titulación enfocada en el mundo real.})\\[0.15em]
+    \textbf{Proyecto / producto} &
+      \TTODfull\ · plataforma Oráculo · Cohorte Front-End~II\\[0.15em]
+    \textbf{Grupo de investigación} &
+      ECSIT · \EcsitLink\\[0.15em]
+    \textbf{Comité} &
+      \href{mailto:comite.etica.investigacion@udit.es}{comite.etica.investigacion@udit.es}\\[0.15em]
+    \textbf{Código de estudio} &
+      TTOD-FEII-2026-27\\[0.15em]
+    \textbf{Versión del paquete} &
+      2026-09-26 · cohorte pedagógica $n=8$
+      (uso investigador: solo con consentimiento, $n\leq 8$)
+  \end{tabularx}%
+}
+
+% Full Chicago (author–date) methods backbone — from docs/public/research/methodology.md
+\newcommand{\ChicagoMethodsRefs}{%
+\begin{itemize}
+  \item Brown, Neil C.~C., and Mark Guzdial. 2024.
+        ``Confidence vs Insight: Big and Rich Data in Computing Education Research.''
+        In \emph{Proceedings of the 55th ACM Technical Symposium on Computer Science Education V.~1},
+        158--64. \url{https://doi.org/10.1145/3626252.3630813}.
+  \item Fischer, Björn, Berit Barthelmes, Sven Eric Panitz, Eva-Maria Iwer, and Ralf Dörner. 2024.
+        ``Seeking Consent for Programming Process Data Collection with Trustee-Based Encryption.''
+        In \emph{Proceedings of the 2024 ACM Conference on International Computing Education Research V.1},
+        131--42. \url{https://doi.org/10.1145/3632620.3671125}.
+  \item Heckman, Sarah, Jeffrey C.~Carver, Mark Sherriff, and Ahmed Al-Zubidy. 2022.
+        ``A Systematic Literature Review of Empiricism and Norms of Reporting in Computing Education Research Literature.''
+        \emph{ACM Transactions on Computing Education} 22 (1): Article~3.
+        \url{https://doi.org/10.1145/3470652}.
+  \item McGill, Monica M., Sarah Heckman, Christos Chytas, et~al. 2023.
+        ``Conducting Sound, Equity-Enabling Computing Education Research.''
+        In \emph{Proceedings of the 2023 Working Group Reports on Innovation and Technology in Computer Science Education},
+        30--56. \url{https://doi.org/10.1145/3623762.3633495}.
+  \item Runeson, Per, and Martin Höst. 2009.
+        ``Guidelines for Conducting and Reporting Case Study Research in Software Engineering.''
+        \emph{Empirical Software Engineering} 14 (2): 131--64.
+        \url{https://doi.org/10.1007/s10664-008-9102-8}.
+  \item Runeson, Per, Martin Höst, Austen Rainer, and Björn Regnell. 2012.
+        \emph{Case Study Research in Software Engineering: Guidelines and Examples}.
+        Hoboken, NJ: Wiley. \url{https://doi.org/10.1002/9781118181034}.
+  \item Wohlin, Claes, Per Runeson, Martin Höst, Magnus C.~Ohlsson, Björn Regnell, and Anders Wesslén. 2012.
+        \emph{Experimentation in Software Engineering}. Berlin: Springer.
+        \url{https://doi.org/10.1007/978-3-642-29044-2}.
+\end{itemize}%
+}
+
+% Pedagogical grounding for departmental A1 (dept brief + CER-adjacent evidence)
+\newcommand{\ChicagoPedagogicalRefs}{%
+\begin{itemize}
+  \item Nikolić, Dragan, and Marijana Basta Nikolić. 2026.
+        ``Designing AI-Resilient Assessment in Higher Education: A Four-Pillar Conceptual Framework.''
+        \emph{Frontiers in Artificial Intelligence}.
+        \url{https://doi.org/10.3389/frai.2026.1841682}.
+  \item Shihab, Md Istiak Hossain, Christopher Hundhausen, Ahsun Tariq, Summit Haque,
+        Yunhan Qiao, and Brian Wise Mulanda. 2025.
+        ``The Effects of GitHub Copilot on Computing Students' Programming Effectiveness,
+        Efficiency, and Processes in Brownfield Coding Tasks.''
+        In \emph{Proceedings of the 2025 ACM Conference on International Computing Education
+        Research V.~1}.
+        \url{https://doi.org/10.1145/3702652.3744219}.
+\end{itemize}%
+}
