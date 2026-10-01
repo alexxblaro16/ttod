@@ -4,6 +4,7 @@ from fastapi import Cookie, Depends, FastAPI, Header, HTTPException
 from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field
 
+from .auth import resolve_session_user
 from .config import Settings
 from .models import OracleProposeRequest, OracleQueryPayload
 from .oracle import OracleService
@@ -19,14 +20,8 @@ def require_session_user(
     authorization: str | None = Header(default=None),
     ttod_session: str | None = Cookie(default=None),
 ) -> str:
-    """Resolve the authenticated user from the session boundary."""
-    if ttod_session and ttod_session.strip():
-        return ttod_session.strip()
-    if authorization and authorization.startswith("Bearer "):
-        user_id = authorization.removeprefix("Bearer ").strip()
-        if user_id:
-            return user_id
-    raise HTTPException(status_code=401, detail="Authentication required")
+    """Return a known user id, or raise 401/403 at the authentication boundary."""
+    return resolve_session_user(ttod_session, authorization)
 
 
 def create_app(settings: Settings | None = None, oracle: OracleService | None = None) -> FastAPI:

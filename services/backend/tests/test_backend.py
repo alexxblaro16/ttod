@@ -68,12 +68,22 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.get("/api/v1/favorites").status_code, 401)
         self.assertEqual(self.client.post("/api/v1/favorites", json={"quoteId": "wis-001"}).status_code, 401)
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001").status_code, 401)
+        self.assertEqual(
+            self.client.get("/api/v1/favorites", headers={"Authorization": "Bearer forged-user"}).status_code,
+            403,
+        )
 
     def test_favorite_api_isolates_users(self):
-        user_a = {"Authorization": "Bearer user-a"}
-        user_b = {"Authorization": "Bearer user-b"}
+        user_a = {"Authorization": "Bearer usr-001"}
+        user_b = {"Authorization": "Bearer usr-002"}
         created = self.client.post("/api/v1/favorites", headers=user_a, json={"quoteId": "wis-001"})
         self.assertEqual(created.status_code, 201)
+        self.assertEqual(created.json()["userId"], "usr-001")
+        self.assertEqual(created.json()["quoteId"], "wis-001")
+        self.assertTrue(created.json()["savedAt"])
+        listed = self.client.get("/api/v1/favorites", headers=user_a)
+        self.assertEqual(listed.status_code, 200)
+        self.assertEqual(listed.json(), [created.json()])
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_b).json(), [])
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_b).status_code, 404)
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_a).json(), [created.json()])

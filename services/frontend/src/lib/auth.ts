@@ -7,7 +7,7 @@ export interface AuthUser {
   role: 'admin' | 'user';
 }
 
-const SESSION_COOKIE_NAME = 'session';
+const SESSION_COOKIE_NAME = 'ttod_session';
 const SEEDED_SESSION_TOKEN = 'seeded-user-token';
 
 /**

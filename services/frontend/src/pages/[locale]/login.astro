@@ -15,7 +15,7 @@ if (Astro.request.method === 'POST') {
   const password = formData.get('password');
 
   if (email === 'admin@ttod.local' && password === 'seeded-user-token') {
-    Astro.cookies.set('session', 'seeded-user-token', {
+    Astro.cookies.set('ttod_session', 'seeded-user-token', {
       httpOnly: true,
       sameSite: 'lax',
       secure: import.meta.env.PROD,
