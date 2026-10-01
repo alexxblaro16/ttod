@@ -68,6 +68,15 @@ class BackendTests(unittest.TestCase):
     def test_graph_is_byte_deterministic(self):
         self.assertEqual(self.client.get("/api/v1/graph").content, self.client.get("/api/v1/graph").content)
 
+    def test_reviewer_queue_requires_reviewer_or_instructor_role(self):
+        student = {"Authorization": "Bearer " + json.dumps({"userId": "student-1", "roles": ["student"]})}
+        reviewer = {"Authorization": "Bearer " + json.dumps({"userId": "reviewer-1", "roles": ["reviewer"]})}
+        instructor = {"Authorization": "Bearer " + json.dumps({"userId": "instructor-1", "roles": ["instructor"]})}
+
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=student).status_code, 403)
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=reviewer).status_code, 200)
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=instructor).status_code, 200)
+
     def test_creative_stream_discloses_mode_without_citations(self):
         response = self.client.post(
             "/api/v1/oracle/stream",
@@ -105,7 +114,7 @@ class BackendTests(unittest.TestCase):
         response = self.client.post("/api/v1/oracle/propose", json={
             "query": "What should this teach?", "creativeAnswer": "A new candidate answer.",
             "locale": "en",
-        })
+        }, headers={"Authorization": "Bearer test-user"})
         self.assertEqual(response.status_code, 201)
         proposal = response.json()
         self.assertEqual(proposal["status"], "proposed")
