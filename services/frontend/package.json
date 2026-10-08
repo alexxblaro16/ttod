@@ -6,7 +6,8 @@
     "dev": "astro dev --host 0.0.0.0",
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "vitest run"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
