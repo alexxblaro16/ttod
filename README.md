@@ -36,6 +36,7 @@ planned teaching surfaces:
 
 - [Project](docs/public/project/index.md) — mission, governance, provenance, and licensing
 - [Product areas](docs/public/platform/index.md) — content, quotes, graph, Oracle, operations, and tests
+- [Personal favorites architecture](docs/architecture/favorites-library.md) — user-state boundary, contracts, authentication, and defense notes
 - [Teaching model](docs/public/teaching/index.md) — FE II Units 1–7, Entrega 1, mid-term defence
 - [Research (public)](docs/public/research/index.md) — questions, maturity, method, and safeguards
 - [Research design map (internal)](docs/research/INDEX.md) — Strand A (parked) / Strand B (pedagogical) + [ethics package](docs/research/ethics/)
