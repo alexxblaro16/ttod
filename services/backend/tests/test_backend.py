@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from fastapi.testclient import TestClient
+from passlib.context import CryptContext
 
 from services.backend.app.config import REPOSITORY_ROOT, Settings
 from services.backend.app.main import create_app
@@ -46,6 +47,7 @@ class BackendTests(unittest.TestCase):
         self.settings = Settings(
             ttod_path=REPOSITORY_ROOT / "ttod.yml", schema_dir=REPOSITORY_ROOT / "schema",
             proposal_dir=Path(self.temp.name), ollama_model="test-model",
+            admin_password_hash=CryptContext(schemes=["bcrypt"]).hash("seeded-user-token"),
         )
         self.snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
         self.ollama = FakeOllama()
@@ -54,6 +56,53 @@ class BackendTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_login_validates_seeded_credentials_and_issues_a_verified_session(self):
+        denied = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "wrong-password",
+        })
+        self.assertEqual(denied.status_code, 401)
+        self.assertEqual(denied.json(), {"detail": "Invalid email or password"})
+
+        login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "seeded-user-token",
+        })
+        self.assertEqual(login.status_code, 200)
+        self.assertEqual(login.json()["user"], {
+            "id": "usr-001", "email": "admin@ttod.local", "role": "admin",
+        })
+
+        token = login.json()["access_token"]
+        session = self.client.get("/api/v1/auth/session", headers={"Authorization": f"Bearer {token}"})
+        self.assertEqual(session.status_code, 200)
+        self.assertEqual(session.json(), login.json()["user"])
+        anonymous = self.client.get("/api/v1/auth/session")
+        self.assertEqual(anonymous.status_code, 401)
+        self.assertEqual(anonymous.json(), {"detail": "Bearer access token required"})
+
+    def test_login_is_disabled_when_no_password_hash_is_configured(self):
+        settings = Settings(
+            ttod_path=REPOSITORY_ROOT / "ttod.yml",
+            schema_dir=REPOSITORY_ROOT / "schema",
+            proposal_dir=Path(self.temp.name),
+            admin_password_hash="",
+        )
+        client = TestClient(create_app(settings, self.oracle))
+        response = client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "any-password",
+        })
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"detail": "Invalid email or password"})
+
+    def test_session_endpoint_rejects_invalid_signed_tokens(self):
+        response = self.client.get(
+            "/api/v1/auth/session",
+            headers={"Authorization": "Bearer not-a-signed-token"},
+        )
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"detail": "Invalid or expired access token"})
 
     def test_health_schema_and_public_projections(self):
         self.assertEqual(self.client.get("/health").status_code, 200)

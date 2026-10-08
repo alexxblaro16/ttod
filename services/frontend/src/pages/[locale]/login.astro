@@ -1,31 +1,64 @@
 ---
 import Page from '../../layouts/Page.astro';
 import { isLocale } from '../../content/wisdom';
+import { AUTH_COOKIE_NAME } from '../../lib/auth';
+import type { AuthLoginResponse } from '../../types/domain';
 
 export const prerender = false;
 
 const locale = Astro.params.locale;
 if (!isLocale(locale)) return new Response(null, { status: 404 });
 
-let loginError = false;
+let loginError: 'credentials' | 'service' | null = null;
 
 if (Astro.request.method === 'POST') {
   const formData = await Astro.request.formData();
   const email = formData.get('email');
   const password = formData.get('password');
 
-  if (email === 'admin@ttod.local' && password === 'seeded-user-token') {
-    Astro.cookies.set('session', 'seeded-user-token', {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: import.meta.env.PROD,
-      path: '/'
-    });
+  if (typeof email === 'string' && typeof password === 'string') {
+    try {
+      const backend = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';
+      const response = await fetch(`${backend}/api/v1/auth/login`, {
+        method: 'POST',
+        headers: { accept: 'application/json', 'content-type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
 
-    return Astro.redirect(`/${locale}/account`);
+      if (response.ok) {
+        const result = await response.json() as AuthLoginResponse;
+        if (
+          typeof result.access_token === 'string' && result.access_token.length > 0 &&
+          result.token_type === 'Bearer' &&
+          typeof result.expires_in === 'number' && result.expires_in > 0 &&
+          typeof result.user?.id === 'string' &&
+          typeof result.user.email === 'string' &&
+          (result.user.role === 'admin' || result.user.role === 'user')
+        ) {
+          Astro.cookies.set(AUTH_COOKIE_NAME, result.access_token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: import.meta.env.PROD,
+            path: '/',
+            maxAge: result.expires_in
+          });
+          return Astro.redirect(`/${locale}/account`);
+        }
+        loginError = 'service';
+      } else if (response.status === 401) {
+        loginError = 'credentials';
+      } else {
+        loginError = 'service';
+      }
+    } catch {
+      console.error('The authentication service could not complete the login request.');
+      loginError = 'service';
+    }
+  } else {
+    loginError = 'credentials';
   }
 
-  loginError = true;
+  loginError ??= 'credentials';
 }
 
 const copy = locale === 'es'
@@ -35,7 +68,8 @@ const copy = locale === 'es'
       email: 'Correo electrónico',
       password: 'Contraseña',
       submit: 'Entrar',
-      error: 'Las credenciales no son válidas.'
+      credentialsError: 'Las credenciales no son válidas.',
+      serviceError: 'El servicio de autenticación no está disponible. Inténtalo de nuevo.'
     }
   : {
       title: 'Log in · TTOD',
@@ -43,7 +77,8 @@ const copy = locale === 'es'
       email: 'Email',
       password: 'Password',
       submit: 'Log in',
-      error: 'Invalid credentials.'
+      credentialsError: 'Invalid credentials.',
+      serviceError: 'The authentication service is unavailable. Please try again.'
     };
 ---
 
@@ -51,7 +86,7 @@ const copy = locale === 'es'
   <main>
     <h1>{copy.heading}</h1>
 
-    {loginError && <p role="alert">{copy.error}</p>}
+    {loginError && <p role="alert">{loginError === 'credentials' ? copy.credentialsError : copy.serviceError}</p>}
 
     <form method="post">
       <p>
