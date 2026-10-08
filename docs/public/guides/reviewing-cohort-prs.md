@@ -40,15 +40,17 @@ then `gh secret set ANTHROPIC_API_KEY`.
 
 ## Set up once, before the first PR lands
 
-1. **Pull a code-capable model into your local Ollama.** This repo's own `docker-compose.yml`
-   already runs an Ollama service — reachable from the host at the port `.env.example` maps
-   (`OLLAMA_CONTAINER_PORT`, default `11435`). Pull whatever you'll actually run review with, e.g.:
+1. **Use host Metal Ollama for review (Tanit default).** `make review-pr` talks to
+   `http://localhost:11434` and model `qwen2.5-coder:32b` unless you override. Confirm the
+   model is pulled on the **host** server:
    ```bash
-   OLLAMA_HOST=http://localhost:11435 ollama pull qwen2.5-coder:32b
+   curl -s http://localhost:11434/api/tags | python3 -c 'import sys,json; print([m["name"] for m in json.load(sys.stdin)["models"]])'
+   # if missing:
+   ollama pull qwen2.5-coder:32b
    ```
-   A smaller coder-tuned model (7B–14B) trades review depth for speed; a model specifically
-   fine-tuned on diffs/code review, if you have one pulled, is a reasonable third option — the
-   script only needs an Ollama-chat-shaped endpoint, it doesn't care which model answers.
+   The Compose Ollama on `:11435` is a small teaching runtime (`llama3.2:1b` + embed) — not
+   where the 32B coder lives. To force compose anyway:
+   `OLLAMA_BASE_URL=http://localhost:11435 OLLAMA_MODEL=llama3.2:1b make review-pr PR=<n>`.
 2. **The review worktree**, covered next.
 
 ## One worktree, not a habit of switching branches
@@ -93,7 +95,9 @@ Run every command below from the `ttod-review` worktree, not your main checkout.
    [Contributing → Automated review]({{ '/guides/contributing/#automated-review' | relative_url }}))
    using your local Ollama, and posts it as a PR comment. Drop `POST=1` to just print it to your
    terminal first if you want to read it before it goes public. Treat it as a first pass: it tells
-   you where to look, not what to conclude.
+   you where to look, not what to conclude. The bot must label each bullet `MUST FIX:` or `NIT:`;
+   when you `--request-changes`, elevate **MUST FIX** items only — NITs stay comments or stay off
+   the request.
 3. **Check it out to actually run it.**
    ```bash
    gh pr checkout <N>
@@ -116,11 +120,12 @@ It's a manual step, not one that fires on every push — you decide when to re-r
 local model won't always catch what a larger one would. Two situations call for you to run a
 review yourself, deliberately, on top of it:
 
-- **A PR the local review under-covered** — its branch name didn't match the `<seam>-task<N>`
-  convention, so it only got the generic rubric, not the task-specific one. Run
-  `/code-review <N> --comment` in your own Claude Code session for a fresh pass with real task
-  context attached, rather than reading the local comment's generic-only version as if it were the
-  full picture.
+- **A PR the local review under-covered** — its branch name didn't match `<seam>-task<N>` *and*
+  didn't match a known short alias (e.g. Equipo 5's `task/2-personal-library` → `accounts-task2`
+  inside `build-prompt.sh`), so it only got the generic rubric. Check the stderr line
+  `pr-review: brief=…` from `make review-pr`. If `brief=none`, rename the branch or run
+  `/code-review <N> --comment` with the right task sheet attached — don't treat a generic-only
+  bot comment as the full picture.
 - **A PR you're about to request changes on** — post your own comment referencing the specific
   acceptance line from that task's own [detail sheet]({{ '/teaching/tasks/' | relative_url }})
   (there is no in-app `ASSIGNMENT.md` — the detail sheet on this site is the canonical source, and
@@ -144,7 +149,8 @@ clone never needs to know review is happening. Concretely:
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| `review-pr` fails to connect | Ollama isn't running, or `OLLAMA_BASE_URL`/port doesn't match your setup | Confirm the container/host Ollama is up and reachable at the port in `.env.example`; override `OLLAMA_BASE_URL` if you run Ollama differently |
+| `review-pr` fails to connect | Ollama isn't running, or `OLLAMA_BASE_URL`/port doesn't match | Host default is `:11434`; confirm `curl -s http://localhost:11434/api/tags` |
+| `HTTP Error 404` / `model '…' not found` | Model missing on the endpoint you hit (classic: 32B coder on host, script pointed at compose `:11435`) | Use host `:11434`, or set `OLLAMA_MODEL` to a name listed on that port's `/api/tags` |
 | Review is shallow or misses obvious things | Model is too small for the diff's complexity | Pull and set a stronger `OLLAMA_MODEL`, or fall back to `/code-review <N> --comment` for that one PR |
 | Review comment only shows the generic rubric | Branch name didn't match `<seam>-task<N>` | Ask the student to rename the branch, or just run `/code-review <N> --comment` yourself for that one |
 | `gh pr checkout <N>` fails or leaves stray files | You ran it from your main clone instead of the review worktree | `cd` into the `ttod-review` worktree first — this is the one command in this whole guide that must run from the right directory |

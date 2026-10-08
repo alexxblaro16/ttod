@@ -14,9 +14,16 @@ la procesa quien revisa— antes de los principios de gobernanza sobre los que d
 
 ## Abrir una PR (trabajo de módulo)
 
-1. Crea una rama desde la base docente actual: `git checkout -b <nombre-corto-del-tema>`.
-2. Haz el cambio dentro de los archivos de tu propio módulo — consulta el `ASSIGNMENT.md` de tu
-   módulo para saber exactamente qué rutas son tuyas.
+1. Crea una rama desde la base docente actual:
+   `git checkout -b <seam>-task<N>-<tema-corto>` — p. ej. `content-task2-browse-routes` o
+   `accounts-task2-personal-library`. La parte `<seam>-task<N>` (`content`, `graph`, `oracle`,
+   `pwa` o `accounts`, más el número de tarea) es la que usa el bot de revisión para cargar los
+   criterios de esa ficha. Prefiere esa forma; algunos alias cortos (p. ej.
+   `task/2-personal-library`) se rescatan en el constructor del prompt, pero fuera del patrón
+   documentado la revisión puede ser solo genérica.
+2. Haz el cambio dentro de los archivos de tu propio módulo — los criterios de aceptación viven en
+   `/es/teaching/tasks/<seam>-task<N>/` en este sitio (no hay un `ASSIGNMENT.md` dentro del código
+   de la app); esa página enlaza a su fuente en GitHub.
 3. Antes de subir la rama, ejecuta las mismas comprobaciones que correrá la CI:
    `npm run check && npm run build` en `services/frontend` (o el equivalente para un cambio de
    backend).
@@ -54,8 +61,9 @@ aprobaciones separadas, no una — la primera aprueba la idea, la segunda aprueb
 
 - `make review-queue` lista las PR abiertas que esperan tu revisión, las PR de propuestas en
   particular, y todo lo demás abierto — de solo lectura, nunca aprueba ni fusiona en tu nombre.
-- Revisa contra los criterios de aceptación del propio `ASSIGNMENT.md` del módulo y la lista de la
-  plantilla de PR, no contra una impresión genérica de calidad de código.
+- Revisa contra los criterios de aceptación de la [ficha de la tarea]({{ '/es/teaching/tasks/' | relative_url }})
+  y la lista de la plantilla de PR, no contra una impresión genérica de calidad de código. El bot
+  etiqueta hallazgos como `MUST FIX:` o `NIT:` — pide cambios solo sobre MUST FIX.
 - Una PR sin su entrada del Registro de Revisión de IA está incompleta, no simplemente
   poco documentada.
 - Para una PR de propuesta de cita en particular: tu aprobación sobre la propuesta *original* no

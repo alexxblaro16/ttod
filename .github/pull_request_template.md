@@ -13,8 +13,8 @@ at the end.
 
 ## Contract adherence
 
-- [ ] Uses the published `src/types/domain.ts` shapes exactly — no parallel/ad-hoc type invented
-      for something a shared type already covers
+- [ ] Uses the published `services/frontend/src/types/domain.ts` shapes exactly — no parallel/ad-hoc
+      type invented for something a shared type already covers
 
 ## Correctness & acceptance criteria
 

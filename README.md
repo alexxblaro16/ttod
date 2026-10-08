@@ -95,7 +95,7 @@ Module titles match the [team task board](https://ruvebal.github.io/ttod/teachin
 
 **Rodrigo García Sánchez (@nbfrodri) <rodrigo.garcia.sanchez@alumnos.udit.es>**: Team 3 — Oracle Terminal
 
-**Andrea Ávila Rodríguez <andrea.avila@alumnos.udit.es>**: Team 3 — Oracle Terminal
+**Andrea Ávila Rodríguez (@andreavilaro0) <andrea.avila@alumnos.udit.es>**: Team 3 — Oracle Terminal
 
 **Pablo Novoa Rodríguez (@PRNovoa) <pablo.novoa@alumnos.udit.es>**: Team 4 — PWA & Local Operations
 

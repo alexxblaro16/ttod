@@ -34,9 +34,12 @@ const links: Array<{ href: string; label: string }> = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#fbf8f1" />
+
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="icon" href="/visual-system/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/visual-system/tokens.css" />
     <link rel="stylesheet" href="/visual-system/backgrounds.css" />
+
     <title>{title}</title>
     <style>
       :root { color-scheme: light; font-family: var(--ttod-font-body); }
@@ -65,6 +68,11 @@ const links: Array<{ href: string; label: string }> = [
         font-size: 0.85rem; opacity: 0.8; border-top: 1px solid var(--ttod-color-line, #8f8068);
         max-width: 48rem; margin-inline: auto;
       }
+
+      #ttod-network-boundary {
+        padding: 0.5rem 1.5rem;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
     </style>
   </head>
   <body class="ttod-bg-river">
@@ -78,11 +86,47 @@ const links: Array<{ href: string; label: string }> = [
       </nav>
       <a class="ttod-lang-switch" href={switchPath} hreflang={otherLocale}>{nav.switchTo}</a>
     </header>
+    <p
+      id="ttod-network-boundary"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      data-state="unknown"
+      data-online-label={lang === 'es' ? 'En línea' : 'Online'}
+      data-offline-label={lang === 'es' ? 'Sin conexión' : 'Offline'}
+    >
+      {lang === 'es' ? 'Comprobando conexión…' : 'Checking connection…'}
+    </p>
     <div id="ttod-main">
       <slot />
     </div>
     <footer class="ttod-site-footer">
       <p>{nav.footer} © Rubén Vega Balbás · CC BY-NC-SA 4.0 (content) · MIT (code)</p>
     </footer>
+    <script>
+      const boundary = document.getElementById('ttod-network-boundary');
+
+      if (boundary) {
+        const updateNetworkState = () => {
+          const online = navigator.onLine;
+
+          boundary.dataset.state = online ? 'online' : 'offline';
+          boundary.textContent = online
+            ? boundary.dataset.onlineLabel ?? 'Online'
+            : boundary.dataset.offlineLabel ?? 'Offline';
+        };
+
+        updateNetworkState();
+
+        window.addEventListener('online', updateNetworkState);
+        window.addEventListener('offline', updateNetworkState);
+      }
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch((error) => {
+          console.error('Service worker registration failed:', error);
+        });
+      }
+    </script>
   </body>
 </html>
