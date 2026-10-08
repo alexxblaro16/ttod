@@ -323,7 +323,8 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(result["proposer_id"], "student-1")
         self.assertEqual(result["candidate_content"]["text"], payload["text"])
         self.assertEqual(result["candidate_content"]["source"], payload["source"])
-        self.assertTrue(Path(result["stored_at"]).exists())
+        self.assertNotIn("stored_at", result)
+        self.assertEqual(len(list(Path(self.temp.name).glob("*.json"))), 1)
 
     def test_proposal_api_returns_server_error_when_storage_fails(self):
         client = TestClient(create_app(self.settings, self.oracle), raise_server_exceptions=False)

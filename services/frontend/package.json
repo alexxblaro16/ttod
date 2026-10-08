@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
+    "test": "vitest run",
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
     "check": "astro check"

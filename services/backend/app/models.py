@@ -33,7 +33,6 @@ class ProposalRequest(BaseModel):
     tags: list[str] = Field(default_factory=list, max_length=20)
     teaches: str | None = Field(default=None, min_length=1, max_length=2000)
     lang: Literal["en", "es"] = "en"
-    origin: Literal["human", "studio", "blackbox"] = "human"
 
 
 class TokenResponse(BaseModel):

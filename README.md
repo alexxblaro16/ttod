@@ -70,6 +70,10 @@ Programme tables, engineering reports, and runbooks remain only in
 python cli.py validate --strict --json   # must exit 0
 python cli.py stats --check              # meta must match recomputed
 python -m unittest discover -s tests -p 'test_*.py'   # full suite must pass
+python -m unittest discover -s services/backend/tests -p 'test_*.py'  # backend auth, API, library, and Oracle
+npm --prefix services/frontend run test   # frontend unit and component tests
+npm --prefix services/frontend run check
+npm --prefix services/frontend run build
 ```
 
 When `docs/public` changes, also run the publication privacy watcher over that tree (and over
