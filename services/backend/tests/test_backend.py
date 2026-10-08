@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+from passlib.context import CryptContext
 
 from services.backend.app.config import REPOSITORY_ROOT, Settings
 from services.backend.app.favorites import add_favorite, get_favorites, remove_favorite
@@ -45,11 +46,14 @@ class FakeRetrieval:
 
 
 class BackendTests(unittest.TestCase):
+    TEST_ADMIN_PASSWORD = "test-only-password"
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.settings = Settings(
             ttod_path=REPOSITORY_ROOT / "ttod.yml", schema_dir=REPOSITORY_ROOT / "schema",
             proposal_dir=Path(self.temp.name), ollama_model="test-model",
+            admin_password_hash=CryptContext(schemes=["bcrypt"]).hash(self.TEST_ADMIN_PASSWORD),
         )
         self.snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
         self.ollama = FakeOllama()
@@ -58,6 +62,45 @@ class BackendTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_login_verifies_bcrypt_and_returns_a_server_verified_session(self):
+        denied = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "wrong-password",
+        })
+        self.assertEqual(denied.status_code, 401)
+
+        login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": self.TEST_ADMIN_PASSWORD,
+        })
+        self.assertEqual(login.status_code, 200)
+        user = {"id": "usr-001", "email": "admin@ttod.local", "role": "admin"}
+        self.assertEqual(login.json()["user"], user)
+
+        session = self.client.get(
+            "/api/v1/auth/session",
+            headers={"Authorization": f"Bearer {login.json()['access_token']}"},
+        )
+        self.assertEqual(session.status_code, 200)
+        self.assertEqual(session.json(), user)
+        self.assertEqual(self.client.get("/api/v1/auth/session").status_code, 401)
+
+    def test_login_is_disabled_without_a_configured_bcrypt_hash(self):
+        settings = replace(self.settings, admin_password_hash="")
+        client = TestClient(create_app(settings, self.oracle))
+
+        response = client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": self.TEST_ADMIN_PASSWORD,
+        })
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_session_endpoint_rejects_invalid_access_tokens(self):
+        response = self.client.get(
+            "/api/v1/auth/session",
+            headers={"Authorization": "Bearer not-a-signed-token"},
+        )
+
+        self.assertEqual(response.status_code, 401)
 
     def test_favorite_storage_is_isolated_by_user(self):
         add_favorite("storage-user-a", "wis-001")

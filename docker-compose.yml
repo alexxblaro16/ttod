@@ -36,6 +36,10 @@ services:
       TTOD_PATH: ${TTOD_PATH:-/workspace/ttod.yml}
       TTOD_SCHEMA_DIR: ${TTOD_SCHEMA_DIR:-/workspace/schema}
       TTOD_PROPOSAL_DIR: ${TTOD_PROPOSAL_DIR:-/workspace/services/backend/data/proposals}
+      TTOD_PAT_SECRET: ${TTOD_PAT_SECRET:-}
+      TTOD_PAT_TTL_SECONDS: ${TTOD_PAT_TTL_SECONDS:-3600}
+      TTOD_ADMIN_EMAIL: ${TTOD_ADMIN_EMAIL:-admin@ttod.local}
+      TTOD_ADMIN_PASSWORD_HASH: ${TTOD_ADMIN_PASSWORD_HASH:-}
       ORACLE_RETRIEVAL_THRESHOLD: ${ORACLE_RETRIEVAL_THRESHOLD:-0.575}
       ORACLE_RETRIEVAL_TOP_K: ${ORACLE_RETRIEVAL_TOP_K:-5}
       MCP_SERVER_URL: http://mcp-server:3001
