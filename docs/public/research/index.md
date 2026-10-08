@@ -5,11 +5,15 @@ description: TTOD's research questions, current maturity, safeguards, and eviden
 permalink: /research/
 ---
 
-# A research programme in preparation
+# A research programme with two strands
 
 TTOD currently supports a technical and pedagogical design enquiry: how can a complete but deliberately shallow front-end system make architectural boundaries, process evidence, and student design responsibility easier to examine in an AI-assisted learning environment?
 
-This is a proposal, not an approved empirical protocol. No claim is made that TTOD improves learning, no participant recruitment is authorized, and no student work becomes research data merely because it was produced in a course.
+**Strand B (pedagogical)** asks whether participation as a developer in that real, agentic-assisted product — inside a cohort — can be a learning activity with pedagogical outcomes (*learning by doing*). Department pedagogical framing and participant information/consent templates are in place; **ethics-committee review is in progress**. Student work becomes research data only under that protocol, with pseudonymization and clear separation from grading.
+
+**Strand A (philosophical)** — relating classical ontological, gnoseological, epistemological, and transcendental traditions to cybernetics and technical practice — is **parked** and does not use student participants or coursework as evidence.
+
+No claim is made that TTOD improves learning. Coursework alone does not authorize research use.
 
 ## Four artifacts that must not be confused
 
@@ -18,8 +22,9 @@ This is a proposal, not an approved empirical protocol. No claim is made that TT
 3. **Student products:** independently expanded, assessed work demonstrating learner decisions.
 4. **Research records:** only material collected under a separately approved and communicated protocol.
 
-## Candidate questions
+## Candidate questions (Strand B)
 
+- Can developer participation in a real agentic-assisted cohort product function as learning by doing with observable pedagogical outcomes?
 - Which traces help a learner correctly locate rendering, state, trust, data, and test ownership?
 - How much starter implementation supports system understanding without collapsing authentic design work?
 - Which process artifacts make AI-assisted contributions explainable and reviewable?
@@ -48,9 +53,12 @@ Read the [method and safeguards]({{ '/research/methodology/' | relative_url }}) 
 | Layer | Status | Next gate |
 | --- | --- | --- |
 | Engineering feasibility | locally observed; independent verification open | close the evidence report |
-| Teaching skeleton | planned | freeze subtraction and assignment contracts |
-| Curriculum alignment | scheduled later | bilingual semantic-parity review |
-| Empirical research | pre-protocol, pre-collection | ethics, data, consent or legal-basis review |
+| Teaching skeleton | in cohort use / Phase U–V | keep subtraction and assignment contracts frozen |
+| Curriculum alignment | ongoing | bilingual semantic-parity review |
+| Strand A (philosophical) | parked | reopen only with its own design doc |
+| Strand B (pedagogical case) | protocol drafted; consent templates in repo; **ethics review in progress** | committee decision; then consented pseudonymized analysis after grades |
+
+Internal design and ethics package (not all published on this site): `docs/research/INDEX.md` and `docs/research/ethics/` in the project repository.
 
 <figure class="diagram-teaser">
   <a class="diagram-teaser-link" href="{{ '/assets/diagrams/ttod-research-maturity.html' | relative_url }}">

@@ -19,6 +19,8 @@ en:
     children:
       - title: Method & safeguards
         url: /research/methodology/
+      - title: Agentic development as a governed practice
+        url: /research/agentic-development/
   - title: Docs
     url: /guides/
     children:
@@ -26,6 +28,8 @@ en:
         url: /guides/contributing/
       - title: Reviewing the cohort's PRs
         url: /guides/reviewing-cohort-prs/
+      - title: Connect your IDE to MCP
+        url: /guides/connect-ide-mcp/
       - title: Run it locally
         url: /guides/local-setup/
       - title: Use the product

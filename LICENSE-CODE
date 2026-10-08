@@ -1,6 +1,9 @@
 MIT License
 
-© 2025–2026 Rubén Vega Balbás, PhD — ruvebal@crea-comm.net
+Copyright (c) 2025–2026 Rubén Vega Balbás, PhD — ruvebal@crea-comm.net
+and individual contributors listed in README.md (“Development Team”) and any
+NOTICE or AUTHORS file in this repository, except where a file, subdirectory,
+or accompanying notice states otherwise.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +25,27 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 ---
 
-Scope: this license covers TTOD's code surface only — `cli.py`, `ttod_core/` (once created),
-`schema/*.json`, `pyproject.toml`, test suites, and CI/tooling scripts. It does not cover the
-content of `ttod.yml` (the quotes themselves), `docs/`, or `sources/`; see `LICENSE-CONTENT`.
+Scope: this license covers TTOD's **code** surface only — application and tooling
+under this repository (for example `cli.py`, `ttod_core/`, `schema/*.json`,
+`services/`, `pyproject.toml`, test suites, and CI/tooling scripts), and student
+or instructor **code contributions** merged into that surface for the teaching
+product. It does **not** cover the content of `ttod.yml` (the quotes themselves),
+pedagogical prose under `docs/` (except where a file states MIT), or `sources/`;
+see `LICENSE-CONTENT` (CC BY-NC-SA 4.0 default).
+
+Cohort / equity practice (inbound = outbound):
+
+1. By contributing code to this project, each author licenses that contribution
+   under this same MIT License (standard open-source inbound contribution).
+2. Copyright in each contribution remains with its author(s); the MIT grant is a
+   permission to use, not a silent waiver of authorship credit.
+3. Living attribution for the Front-End II cohort is the README “Development Team”
+   (and role/area notes there): who built which part of the product. That naming
+   is **product authorship**, not research publication of a personal-data corpus.
+4. Where a third-party or file-level notice differs, that notice prevails for the
+   affected files only.
+
+Not contradictory with CC BY-NC-SA content (`LICENSE-CONTENT`): MIT covers the
+**software** surface; the Tao knowledge (quotes, curated narrative content, sources)
+remains CC BY-NC-SA 4.0 unless a record states otherwise. Cohort MIT contributions and
+README authorship credit do not relicense that wisdom corpus.

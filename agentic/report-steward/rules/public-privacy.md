@@ -1,15 +1,31 @@
 # Public-output privacy rule
 
-Public, partner, and student-facing artifacts must not contain:
+Public, partner, student-facing, and **institutional research remisión** artifacts must not contain:
 
 - local absolute, tilde-expanded, mounted-volume, or temporary paths;
 - private-network addresses;
 - internal-only hostname suffixes (`*.loc`, `*.local`, `*.lan`, `*.internal`, `*.home`) —
   including Docker host gateways written as `host.docker.internal`;
-- names of private machines or infrastructure supplied through a local denylist; or
-- personal email addresses outside `@crea-comm.net`;
+- names of private machines or studio hosts supplied through a local denylist
+  (never name private hosts in CEI / department / OTRI packs); or
+- personal email addresses outside `@crea-comm.net` (except institutional `@udit.es`
+  contacts required by the ethics/departmental forms);
 - internal development phase names, numbers, or shorthand in public documentation
   (`R6`, `Q4`, `Phase Q`, `RC0`, `TS1`, …).
+
+## Institutional / ethics packs (`docs/research/ethics/`, `docs/research/institutional/`)
+
+Name **services and roles**, not studio infrastructure:
+
+| Write | Do not write |
+| --- | --- |
+| hosting / compute, storage, TLS, Compose services (frontend, backend, MCP, Postgres) | Lilith, Tanit, Behemoth, Belphegor, `*.crea-comm.loc`, LAN IPs |
+| infraestructura institucional UDIT / imputación institucional | “infra local/LAN del estudio”, machine hostnames |
+| Ollama / local-first (policy) | which private host runs Ollama |
+
+Budget and production requests describe service classes and institutional options only.
+Run `scripts/check_public_privacy.py` with `TTOD_PRIVATE_TERMS_FILE=.privacy-denylist` over
+the markdown/LaTeX sources before regenerating remisión PDFs.
 
 Use repository-relative paths and role labels such as “instructor workstation,” “local container,”
 “Docker host gateway,” or “future staging environment.” Run `scripts/check_public_privacy.py`

@@ -1,0 +1,1035 @@
+[
+  {
+    "knowledge_id": "22ecd455-7c0c-5982-ba17-c05643f4d838",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=38",
+    "content": "Jl,. J4 Wei wu wei. This paradoxical expression is  the  key  to Chinese  mysticism.  It  cannot  be  translated literally  and still  render  its meaning. W  ei is  a  verb  corre­ sponding to the English do or act but sometimes meaning other  things,  depending on the expression. Wu is  a  nega­ tive.  Thus,  clumsily, wei  wu  wei is to  do  without  doing, to act without action. Put positively,  it  means to get along as nature does: the  world gets  created,  living things grow and pass away without any sign of effort.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.7857359732292548,
+    "metadata": {
+      "node_id": "22ecd455-7c0c-5982-ba17-c05643f4d838",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 38,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "c0b6b22c-660b-57e2-8914-15547ac7ca5b",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=154",
+    "content": "The phrase “without using knowledge” at the end of line 6 where a number of otherLao-tzutexts have “without taking action”(wu-wei)is a known, in fact common, variant.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.7508264532030456,
+    "metadata": {
+      "node_id": "c0b6b22c-660b-57e2-8914-15547ac7ca5b",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 154,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "fd0004dd-0cfc-5ed5-bebd-8b799aca0293",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=38",
+    "content": "More  exactly, Wu wei is  man's  part;  he  is  to  be  still, quiet  and  passive  so  that  the Way, ultimate  Reality,  the universe of being, may act through him without let or hin­ drance. The first wei is then the part of the Way.  To use more familiar vocabulary, the idea is to !et God be God in you. Toe result, we are assured, is incalculable accomplish­ ment, but it might not be any civilization man has achieved to date.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.7460769738838603,
+    "metadata": {
+      "node_id": "fd0004dd-0cfc-5ed5-bebd-8b799aca0293",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 38,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "f7c7983d-3948-573f-99b2-8a58341ee0d6",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=182",
+    "content": "27.It is worth noting that wei, “action,” means, in Chinese philosophical parlance, the action one takes after consciously deliberating the alternatives, and contrasts, therefore, with action as natural, un-thought-out response. The philosopher Hsün-tzu (born c. 312B.c.) contrasts “nature” or “natural response” (hsing) with “conscious activity” (wei) in this way: “That which is harmonious from birth, which is capable of perceiving through the senses and of responding to stimulus spontaneously and without effort, is … called the nature.… When the emotions are aroused and the mind makes a choice from among them, this is called thought. When the mind conceives a thought andthe body puts it into action, this is called conscious activity” (tr. by Burton Watson [Watson, 1963, pp. 139-40]).",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.7431003764998192,
+    "metadata": {
+      "node_id": "f7c7983d-3948-573f-99b2-8a58341ee0d6",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 182,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "b8fc7966-c785-5b91-aa9a-dde162e59350",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=133",
+    "content": "I read the hsing wu-hsing(“going forward without going forward”) of line 4 as parallel towei wu-wei(“act without acting”) andshih wu-shih(“serve without concern for affairs”) since the point is that in this way you progress towards victory even though you do not physically advance. If the line is strictly parallel with the lines that follow, then the secondhsingshould be a noun to match with “arms” and “weapons” and “opponent,” which would give us something like D. C. Lau’s “Marching forward when there is no road,”or Wing-tsit Chan’s “To march without formation.”",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6931609621198644,
+    "metadata": {
+      "node_id": "b8fc7966-c785-5b91-aa9a-dde162e59350",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 133,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "b8d3f5fe-4ade-5ac7-b69b-26a34bf87ffc",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=126",
+    "content": "Finally, the meaning of the last line is clarified with the negative fu (“not——-it”) in place ofpu(“not——”); it seems clear that the point is that hecoulddo this but he knows he dare not because such “action” would have adverse effects. The standard reading is rather “Thus he supports all things in their natural state but does not take any action.”",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6929949408745328,
+    "metadata": {
+      "node_id": "b8d3f5fe-4ade-5ac7-b69b-26a34bf87ffc",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 126,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "7271f539-f6ad-50a3-b158-dc4a222789c3",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=39",
+    "content": ":f... 1 f½ Pu shih. To be independent,  not  involved  with things  or  a:ffairs,  aloof.  This  expression  carries  out  the meaning of wu wei. The Wise Man <loes what he has to do for everything and everybody but remains independent of them all. He is, therefore, the absolute autocrat.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6911787703841792,
+    "metadata": {
+      "node_id": "7271f539-f6ad-50a3-b158-dc4a222789c3",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 39,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "826449c0-5ef1-54e3-925d-7418b0bce6e8",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=181",
+    "content": "Line 1 in the standard text is “Tao invariably takes no action, and yet there is nothing left undone.”This is one of two places in the standard text—the other one beingchapter 48—where the phrasewu-wei erh wu pu-wei, “does nothing and yet there is nothing left undone,” occurs (in some editions of the text the phrase is also found inchapters 3and38). Line 1 is quite different in the Ma-wang-tui texts; in fact lines 1, 2, and 3 here are virtually identical to lines 1, 3, and 4 inchapter 32.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6830767966173061,
+    "metadata": {
+      "node_id": "826449c0-5ef1-54e3-925d-7418b0bce6e8",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 181,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "43d82afa-01dc-5299-8c83-0706c78065de",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=182",
+    "content": "I disagree with Herrlee Creel’s understanding of wu-wei in the Lao-tzu, which equates it with the Legalist notion in which the ruler “does not act” because he leaves all matters of administrative detail to his officials. Nonetheless, his article can still be read with benefit. See his “On the Origins of Wu-wei,” in Creel, 1970, pp. 48-78.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6789692414541926,
+    "metadata": {
+      "node_id": "43d82afa-01dc-5299-8c83-0706c78065de",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 182,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "82f2143f-feeb-53c3-9dbb-458d4e9e211e",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=145",
+    "content": "The possibility of punctuating the text in such a way that “nonbeing”(wu)and “being”(yu)would be the focus of lines 5 and 6 instead of “withoutdesires”(wu-yü)and “having desires” (yu-yü)—Wing-tsit Chan, for example, has “Therefore let there always be nonbeing, so we may see their subtlety, And let there always be being, so we may see their outcome”—seems precluded in the Ma-wang-tui texts by the fact thatwu-yüandyu-yüare grammatically set off for emphasis.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6763919633096596,
+    "metadata": {
+      "node_id": "82f2143f-feeb-53c3-9dbb-458d4e9e211e",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 145,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  }
+]

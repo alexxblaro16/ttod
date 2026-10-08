@@ -11,9 +11,9 @@ everything else this document originally gated on has since executed and is veri
 Also depends on Phase R's frozen R6 boundary (`DECISIONS/R6-DEFERRED-STUDENT-OWNED.md`, refined by
 `DECISIONS/U0-2026-09-07-TEACHING-SKELETON-BOUNDARY.md`) — unaffected, still holds.
 
-**Does not authorize:** treating this course activity as an approved empirical research study
-(see `docs/public/research/methodology.md` — pre-protocol; §9 below is aspirational framing
-only), any Scaleway deployment or production-secret exposure to students, canonical `ttod.yml`
+**Does not authorize:** treating this course activity as an *already cleared* empirical study
+ready for publishable analysis (see `docs/research/ethics/` — protocol under ethics review;
+Strand B analysis still gated), any Scaleway deployment or production-secret exposure to students, canonical `ttod.yml`
 mutation by students, or course-repository edits (that remains Phase U's TS8 gate).
 
 ---
@@ -533,25 +533,24 @@ in this document are the actual defense — this section just names why and poin
 
 ---
 
-## 9. Optional research framing — clearly gated, not yet authorized
+## 9. Research framing — Strand B under ethics review
 
-The draft proposed framing this as a case study ("Evaluating Component Isolation and
-Multi-Framework Architecture in Collaborative Front-End Pedagogy"). That remains a legitimate
-future direction, but **"students approved participating in the project" is coursework consent,
-not research consent** — the two must stay distinct per `docs/public/research/methodology.md`'s
-own safeguards (course grading never depends on research participation; consented research
-records require a separate, authorized protocol). The `ttod-research-maturity` diagram already
-published on the public site depicts exactly this gate: design enquiry is active, but empirical
-research sits **pre-protocol, parked before the ethics/data review gate** — nothing in this
-document moves that needle.
+The course activity is ordinary Front-End II pedagogy. **Strand B**
+([`docs/research/STRAND-B-PEDAGOGICAL-DESIGN.md`](../research/STRAND-B-PEDAGOGICAL-DESIGN.md))
+asks whether developer participation in this real, agentic-assisted cohort product can be a
+learning activity with pedagogical outcomes (*learning by doing*). Philosophical Strand A is
+parked and separate.
 
-What can happen now, safely, as ordinary engineering telemetry (not research data): PR iteration
-counts, CI failure counts, and per-PR performance deltas are already visible in GitHub's own PR
-history — collecting them for *your own teaching-design purposes* is not research collection. The
-line that must not be crossed without a protocol: using them, or any student survey, as
-*evidence for a publishable claim about learning*. If you want to pursue that later, the
-`research-safeguards` diagram's own "distinct-access datasets" requirement applies — a future
-research dataset must never be the same store as the graded coursework record.
+**"Students approved participating in the project"** covers pedagogical/project participation
+(consent form item A). **Research consent** for secondary pseudonymized use of process artifacts
+(item B) is separate — see [`docs/research/ethics/`](../research/ethics/). Templates live in the
+repo; signed forms do not. Analysis of student work as research data remains gated on ethics
+clearance, valid consent, and filing of relevant grades. Course grading never depends on
+research participation.
+
+What can happen now as ordinary engineering / teaching-design observation (not publishable
+learning claims without protocol): PR iteration counts, CI failure counts, and per-PR performance
+deltas already visible in GitHub history.
 
 ---
 
@@ -578,9 +577,9 @@ finishes early):
 
 1. **Rubric point totals.** §7 proposes an internal split within the existing 25%/15% lines —
    confirm or adjust the exact numbers before it becomes the official grading document.
-2. **Research framing.** Confirm whether §9 stays aspirational-only for this cohort, or whether
-   you want to start drafting an actual ethics/consent protocol in parallel — that is a separate,
-   larger undertaking this document does not start on its own.
+2. **Research framing.** Strand B ethics dossier and consent templates are in
+   `docs/research/ethics/`; confirm committee submission and independent custody of signed
+   forms. Analysis remains gated — this document does not clear that gate alone.
 3. **§8.6's early-finisher policy.** Confirm the "reward depth used, not hours spent" framing is
    how you want to grade a pair that visibly one-shots their baseline — an alternative is a hard
    floor (no credit for work landed before a named week), which is simpler to enforce but does not

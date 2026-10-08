@@ -1,0 +1,948 @@
+[
+  {
+    "knowledge_id": "3d7a8632-c02e-56d8-a812-15e88677e826",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=59",
+    "content": "Toe  highest  goodness,  like  water,  is  characterized  by humility.  A good man or a good king is self-effacing like the  Way.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.7294404159025042,
+    "metadata": {
+      "node_id": "3d7a8632-c02e-56d8-a812-15e88677e826",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 59,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "3f65f46f-59aa-59db-b7b9-d62a5cbfa6ec",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=59",
+    "content": "The highest goodness, water-like, Does  good  to  everything  and  goes Umnurmuring to places men despise; But so, is close in nature to the Way.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6543801793842722,
+    "metadata": {
+      "node_id": "3f65f46f-59aa-59db-b7b9-d62a5cbfa6ec",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 59,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "5b0cb3d0-8fd1-5beb-921e-c8383beeb424",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=142",
+    "content": "| 1 | In the whole world, nothing is softer and weaker than water. |\n| --- | --- |\n| 2 | And yet for attackingthe hard and strong, nothing canbeatit, |\n| 3 | Because there is nothing you can use to replace it. |\n| 4 | That water can defeat the unyielding— |\n| 5 | That the weak can defeat the strong— |\n| 6 | There is no one in the whole world who doesn’t know it, |\n| 7 | And yetthere is no one who canputitinto practice. |\n| 8 | For this reason, the words of the Sage say: |\n| 9 | To take on yourself the disgrace of the state—this is called being the lord of [the altars of] earth and grain; |\n| 10 | To assume responsibility for all ill-omened events in the state—this is called being the king of the world. |\n| 11 | Correct words seem to say the reverse [of what you expect them to say]. |",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6466509911602416,
+    "metadata": {
+      "node_id": "5b0cb3d0-8fd1-5beb-921e-c8383beeb424",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 142,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "c91e9409-2091-53a9-86eb-8d3d1bebb86f",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=57",
+    "content": "In the whole world, nothing is softer and weaker than water.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6436209977761365,
+    "metadata": {
+      "node_id": "c91e9409-2091-53a9-86eb-8d3d1bebb86f",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 57,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "ee7a60d0-715f-5fba-b50a-1fbf9fa1545f",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=152",
+    "content": "| 1 | The highest good is like water; |\n| --- | --- |\n| 2 | Water is good at benefiting the ten thousand things and yet it [does not] compete [with them]. |\n| 3 | It dwells in places the masses of people detest, |\n| 4 | Therefore it is close to the Way. |\n| 5 | In dwelling, the good thing is the land; |\n| 6 | In the mind, the good thing is depth; |\n| 7 | In giving, the good thing is [being like] Heaven; |\n| 8 | In speaking, the good thing is sincerity; |\n| 9 | In governing, the good thing is order; |\n| 10 | In affairs, the good thing is ability; |\n| 11 | In activity, the good thing is timeliness. |\n| 12 | It is only because it does not compete, that therefore it is without fault. |",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6321763760309901,
+    "metadata": {
+      "node_id": "ee7a60d0-715f-5fba-b50a-1fbf9fa1545f",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 152,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "936cdf20-c80c-5065-a95b-a7456aa21442",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89#page=105",
+    "content": "| 1 | The softest, most pliable thing in the world runs roughshod over the firmest thing in the world. |\n| --- | --- |\n| 2 | That which has no substance gets into that which has no spaces or cracks. |\n| 3 | I therefore knowthat there isbenefit in taking no action. |\n| 4 | Thewordlessteaching, the benefit of taking no action— |\n| 5 | Few in the world can realize these! |",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.620867111627611,
+    "metadata": {
+      "node_id": "936cdf20-c80c-5065-a95b-a7456aa21442",
+      "document_id": "b9ed361e-8b68-54b8-82d0-f3ec9ad30b89",
+      "document_title": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "file_name": "Lao Tzu Te-Tao Ching - A New Translation Based on the Recently Discovered Ma-wang-tui Texts (Classics of Ancient China) by Lao Tzu, Robert G. Henricks.epub",
+      "source_hash": "21c03ac94af85efcaa696ef0cab317774e7271952fafeaf8a050a800a6adbdf8",
+      "library": "scholar",
+      "page_index": 105,
+      "document_metadata": {
+        "date": {
+          "value": 1964,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn": {
+          "value": 9780307775344,
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "title": {
+          "value": "ALSO IN THIS SERIES",
+          "confidence": 0.6,
+          "provenance": "front_matter"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "John K. Fairbank",
+              "role": "author",
+              "given": "John K.",
+              "family": "Fairbank"
+            },
+            {
+              "kind": "person",
+              "name": "Francis Lee",
+              "role": "author",
+              "given": "Francis",
+              "family": "Lee"
+            },
+            {
+              "kind": "organization",
+              "name": "Emeritus, Harvard University",
+              "role": "author",
+              "given": "Professor of History",
+              "family": "Higginson"
+            },
+            {
+              "kind": "person",
+              "name": "Wing-tsit Chan",
+              "role": "author",
+              "given": "Wing-tsit",
+              "family": "Chan"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "isbn_all": {
+          "value": [
+            "9780307775344"
+          ],
+          "confidence": 1.0,
+          "provenance": "regex"
+        },
+        "keywords": {
+          "value": [
+            "Chinese philosophy",
+            "Lao-tzu",
+            "philosophy",
+            "religion",
+            "art",
+            "social ethics",
+            "Te-Tao Ching",
+            "Lao-tzu",
+            "SUN-TZU",
+            "Art of War",
+            "Yin-CHUEH text",
+            "Roger T. Ames",
+            "translation",
+            "commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "10f7c440-a1b9-56a2-8a26-a9adeee9c482",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=55",
+    "content": "A deep pool it is, Never to  run  dry! Whose  offspring  it may  be I  do not  know: It  is  like  a  preface  to  God.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6198238667759974,
+    "metadata": {
+      "node_id": "10f7c440-a1b9-56a2-8a26-a9adeee9c482",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 55,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "da594e3a-b189-52c4-8de1-63fda9f01968",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=39",
+    "content": "� Ai. This word usually means \"lave\" but has retained a more primitive meaning: to want for one's self and hence, to  begrudge, to be stingy, to covet. In this sense, it occurs in Poem 44, where it is translated as \"mean.\"",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6194985491290711,
+    "metadata": {
+      "node_id": "da594e3a-b189-52c4-8de1-63fda9f01968",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 39,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "0aa4ad0a-4d59-5e1e-b131-143564d237ab",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=95",
+    "content": "On the  analogy  of  water,  the  softest  stuff,  penetrating rocks,  úe  insubstantial  Way  gets  into  everything,  even when it seems that there is no place far it.",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6184190359859884,
+    "metadata": {
+      "node_id": "0aa4ad0a-4d59-5e1e-b131-143564d237ab",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 95,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  },
+  {
+    "knowledge_id": "79d8eeff-acb6-5cc3-b9c8-524f8971b94e",
+    "collection_name": "project_51dbbdf5a7834c17bfd46509ec382184",
+    "source_locator": "200fdfed-26c1-5c25-a310-fc7e92e61b34#page=119",
+    "content": "Bravery today knows no compassion; Abundance is,  without frugality, And eminence without humility:",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "project_slug": "scholar-lao-tzu",
+    "knowledge_scope": "field_prospection",
+    "user_slug": null,
+    "source_type": "fission_node",
+    "authority_level": "canonical",
+    "origin_system": "ahmes",
+    "similarity": 0.6157121200348485,
+    "metadata": {
+      "node_id": "79d8eeff-acb6-5cc3-b9c8-524f8971b94e",
+      "document_id": "200fdfed-26c1-5c25-a310-fc7e92e61b34",
+      "document_title": "Recommended Reading from  MENTOR and SIGNET",
+      "file_name": "[Lao_Tzu__,_R._B._Blakney]_The_Way_of_Life,_Lao_Tz.pdf",
+      "source_hash": "0319e0444d604df9ec80167139cf1e2bd994279828f2397e0f966aa54120648e",
+      "library": "scholar",
+      "page_index": 119,
+      "document_metadata": {
+        "isbn": {
+          "value": 141067,
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "title": {
+          "value": "Recommended Reading from  MENTOR and SIGNET",
+          "confidence": 0.85,
+          "provenance": "heading"
+        },
+        "authors": {
+          "value": [
+            {
+              "kind": "person",
+              "name": "R. B. Blakney",
+              "role": "author",
+              "given": null,
+              "family": "Blakney"
+            },
+            {
+              "kind": "person",
+              "name": "William Hung",
+              "role": "author",
+              "given": null,
+              "family": "Hung"
+            }
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "keywords": {
+          "value": [
+            "Mentor",
+            "Signet",
+            "Chinese mysticism",
+            "Lao Tzu",
+            "Confucianism",
+            "Tao Te Ching",
+            "Oriental religions",
+            "New American Library",
+            "Blakney",
+            "Blakney translation",
+            "Blakney commentary"
+          ],
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "language": {
+          "value": "en",
+          "confidence": 0.7,
+          "provenance": "llm"
+        },
+        "document_type": {
+          "value": "book",
+          "confidence": 0.7,
+          "provenance": "llm"
+        }
+      }
+    }
+  }
+]

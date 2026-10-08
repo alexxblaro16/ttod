@@ -6,11 +6,15 @@ permalink: /es/research/
 lang: es
 ---
 
-# Un programa de investigación en preparación
+# Un programa de investigación con dos hebras
 
 TTOD sostiene hoy una indagación de diseño técnico y pedagógico: ¿cómo puede un sistema front-end completo, pero deliberadamente sencillo, hacer más visibles los límites arquitectónicos, la evidencia de proceso y la responsabilidad de diseño del alumnado en un entorno de aprendizaje asistido por IA?
 
-Esto es una propuesta, no un protocolo empírico aprobado. No se afirma que TTOD mejore el aprendizaje, no se autoriza el reclutamiento de participantes y el trabajo estudiantil no se convierte en dato de investigación solo porque se haya producido en un curso.
+**La hebra B (pedagógica)** pregunta si la participación como desarrollador/a en ese producto real, asistido por IA agentica y en cohorte, puede ser una actividad de aprendizaje con resultados pedagógicos (*aprender haciendo*). El encuadre pedagógico departamental y las plantillas de información/consentimiento están preparados; la **revisión del comité de ética está en curso**. El trabajo estudiantil solo se convierte en dato de investigación bajo ese protocolo, con seudonimización y separación clara de la calificación.
+
+**La hebra A (filosófica)** — relacionar tradiciones ontológicas, gnoseológicas, epistemológicas y trascendentales con la cibernética y la práctica técnica — está **aparada** y no usa participantes ni trabajos de clase como evidencia.
+
+No se afirma que TTOD mejore el aprendizaje. El trabajo de curso por sí solo no autoriza el uso investigador.
 
 ## Cuatro artefactos que no deben confundirse
 
@@ -19,8 +23,9 @@ Esto es una propuesta, no un protocolo empírico aprobado. No se afirma que TTOD
 3. **Productos estudiantiles:** trabajo evaluado, ampliado de forma independiente, que demuestra las decisiones del alumnado.
 4. **Registros de investigación:** solo el material recogido bajo un protocolo aprobado y comunicado por separado.
 
-## Preguntas candidatas
+## Preguntas candidatas (hebra B)
 
+- ¿Puede la participación como desarrollador/a en un producto real asistido por IA agentica, en cohorte, funcionar como aprender haciendo con resultados pedagógicos observables?
 - ¿Qué trazas ayudan a localizar correctamente el renderizado, el estado, la confianza, los datos y la responsabilidad sobre las pruebas?
 - ¿Cuánta implementación de partida sostiene la comprensión del sistema sin colapsar el trabajo auténtico de diseño?
 - ¿Qué artefactos de proceso hacen explicables y revisables las contribuciones asistidas por IA?
@@ -49,9 +54,12 @@ Leer el [método y las salvaguardas]({{ '/es/research/methodology/' | relative_u
 | Capa | Estado | Siguiente umbral |
 | --- | --- | --- |
 | Viabilidad de ingeniería | observada en local; verificación independiente abierta | cerrar el informe de evidencia |
-| Esqueleto docente | previsto | congelar los contratos de reducción y de tarea |
-| Alineación curricular | programada más adelante | revisión bilingüe de paridad semántica |
-| Investigación empírica | pre-protocolo, pre-recogida | ética, datos, consentimiento o revisión de base jurídica |
+| Esqueleto docente | en uso de cohorte / Fases U–V | mantener congelados los contratos de reducción y de tarea |
+| Alineación curricular | en curso | revisión bilingüe de paridad semántica |
+| Hebra A (filosófica) | aparada | reabrir solo con su propio diseño |
+| Hebra B (caso pedagógico) | protocolo redactado; plantillas de consentimiento en el repo; **revisión ética en curso** | decisión del comité; luego análisis seudonimizado consentido tras las notas |
+
+Diseño interno y paquete ético (no todo publicado en este sitio): `docs/research/INDEX.md` y `docs/research/ethics/` en el repositorio del proyecto.
 
 <figure class="diagram-teaser">
   <a class="diagram-teaser-link" href="{{ '/assets/diagrams/ttod-research-maturity.html' | relative_url }}">
