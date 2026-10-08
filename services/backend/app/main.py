@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import logging
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import Response, StreamingResponse
+
+from ttod_core.proposals import create_proposal
+from ttod_core.repository import ProposalStore
 
 from .auth import AuthService, RequireSession, SessionClaims
 from .config import Settings
@@ -13,9 +18,14 @@ from .models import (
     FavoriteRequest,
     OracleProposeRequest,
     OracleQueryPayload,
+    ProposalCreated,
+    ProposalRequest,
 )
 from .oracle import OracleService
 from .storage import SnapshotService
+
+
+logger = logging.getLogger(__name__)
 
 
 def create_app(settings: Settings | None = None, oracle: OracleService | None = None) -> FastAPI:
@@ -87,6 +97,42 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         if not remove_favorite(claims.user_id, quote_id):
             raise HTTPException(status_code=404, detail="Favorite not found")
         return Response(status_code=204)
+
+    @app.post("/api/v1/proposals", status_code=201, response_model=ProposalCreated)
+    def create_user_proposal(
+        payload: ProposalRequest,
+        claims: SessionClaims = Depends(require_session),
+    ):
+        # `origin` y el autor los fija el servidor: el cliente no puede declarar otra procedencia.
+        candidate = {
+            "text": payload.text,
+            "section": payload.section,
+            "level": payload.level,
+            "origin": "human",
+            "lang": payload.lang,
+        }
+        if payload.source is not None:
+            candidate["source"] = payload.source
+        if payload.tags:
+            candidate["tags"] = payload.tags
+        if payload.teaches is not None:
+            candidate["teaches"] = payload.teaches
+
+        try:
+            proposal = create_proposal(
+                candidate_content=candidate,
+                proposer_kind="human",
+                proposer_id=claims.user_id,
+                generation_method="api-proposal-create",
+            )
+            ProposalStore(settings.proposal_dir).save(proposal)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        except OSError as exc:
+            logger.exception("Unable to persist proposal")
+            raise HTTPException(status_code=500, detail="Unable to save proposal") from exc
+
+        return ProposalCreated(proposal_id=proposal.proposal_id, status=proposal.status.value)
 
     return app
 
