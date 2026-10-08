@@ -370,7 +370,7 @@ students.md, es/ mirrors) only. No docs/DEV_PLAN, no instructor tooling, no
 absolute local paths, no machine names — verified by the public-privacy
 watcher before this commit was trusted (see PHASE-U-TS5-REPORT.md).
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+
 EOF
 )"
 

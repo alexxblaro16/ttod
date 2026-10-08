@@ -1,0 +1,21 @@
+group,pr,task,branch,author,url,score_contract_25,score_acceptance_25,score_tests_20,score_a11y_10,score_ci_10,score_process_10,score_total_100,ci_status,mergeable,review_decision,ai_log_present,triage_notes,merge_wave
+E5,31,accounts-task1,task/1-ssr-auth,alexxblaro16,https://github.com/ruvebal/ttod/pull/31,,,,,,, ,SUCCESS,MERGEABLE,CHANGES_REQUESTED,no,AI log missing; SSR guard focus,3-accounts
+E5,32,accounts-task2,task/2-personal-library,alexxblaro16,https://github.com/ruvebal/ttod/pull/32,,,,,,, ,SUCCESS,UNKNOWN,CHANGES_REQUESTED,no,AI log missing; mergeable UNKNOWN,3-accounts
+E5,33,accounts-task3,task/3-proposal-endpoint,alexxblaro16,https://github.com/ruvebal/ttod/pull/33,,,,,,, ,SUCCESS,MERGEABLE,CHANGES_REQUESTED,no,Verify 201+proposal id; dismiss TS-in-Python bot claim,3-accounts
+E5,34,accounts-task4,task/4-review-pipeline,alexxblaro16,https://github.com/ruvebal/ttod/pull/34,,,,,,, ,SUCCESS,MERGEABLE,CHANGES_REQUESTED,no,Verify requireRole reviewer; dismiss favorites scope-creep,3-accounts
+E5,35,accounts-task5,task/5-public-pat,alexxblaro16,https://github.com/ruvebal/ttod/pull/35,,,,,,, ,SUCCESS,MERGEABLE,CHANGES_REQUESTED,no,Cookie must 401 on wisdom/random,3-accounts
+E4,37,pwa-task1,main,PRNovoa,https://github.com/ruvebal/ttod/pull/37,,,,,,, ,SUCCESS,CLOSED,none,no,CLOSED superseded by #51,4-pwa
+E4,51,pwa-task1,pwa-task1-service-worker,PRNovoa,https://github.com/ruvebal/ttod/pull/51,24,24,20,10,10,9,97,SUCCESS,MERGEABLE,REVIEW_REQUIRED,yes,Replaces #37; tip v2 OK with E2E; AI log filled,4-pwa
+E4,46,pwa-task2,pwa-task2-offline-oracle,PRNovoa,https://github.com/ruvebal/ttod/pull/46,,,,,,, ,SUCCESS,MERGEABLE,REVIEW_REQUIRED,no,Verify oracle shells cached offline; drop .aws,4-pwa
+E4,47,pwa-task3,pwa-task3-cache-policies,PRNovoa,https://github.com/ruvebal/ttod/pull/47,,,,,,, ,SUCCESS,MERGEABLE,REVIEW_REQUIRED,no,Verify cache-first static / network-first API; drop .aws,4-pwa
+E4,49,pwa-task4,pwa-task4-offline-queue,PRNovoa,https://github.com/ruvebal/ttod/pull/49,,,,,,, ,SUCCESS,MERGEABLE,REVIEW_REQUIRED,no,Verify flush-on-online; rebase after Oracle; drop .aws,4-pwa
+E4,50,pwa-task5,pwa-task5-install-quality,PRNovoa,https://github.com/ruvebal/ttod/pull/50,,,,,,, ,SUCCESS,MERGEABLE,REVIEW_REQUIRED,no,Canonical manifest; install evidence,4-pwa
+E3,44,oracle-task1,oracle-task1-streamed-response-rendering,Andreavilaro0,https://github.com/ruvebal/ttod/pull/44,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Strengthen chunk assertions; first in Oracle stack,2-oracle
+E3,45,oracle-task2,oracle-task2-live-region-announcement,Andreavilaro0,https://github.com/ruvebal/ttod/pull/45,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Describe-name NIT only,2-oracle
+E3,38,oracle-task3,oracle-task3-grounded-creative-disclosure,Andreavilaro0,https://github.com/ruvebal/ttod/pull/38,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Dismiss prior-task test removal,2-oracle
+E3,39,oracle-task4,oracle-task4-session-history,Andreavilaro0,https://github.com/ruvebal/ttod/pull/39,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Verify sessionHistory wire format,2-oracle
+E3,40,oracle-task5,oracle-task5-preparing-state,Andreavilaro0,https://github.com/ruvebal/ttod/pull/40,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Preparing vs immediate error,2-oracle
+E3,41,oracle-task6,oracle-task6-recovery-error-state,Andreavilaro0,https://github.com/ruvebal/ttod/pull/41,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Assert unavailable user-facing copy,2-oracle
+E3,42,oracle-task7,oracle-task7-unit-component-tests,Andreavilaro0,https://github.com/ruvebal/ttod/pull/42,,,,,,, ,UNREPORTED,MERGEABLE,REVIEW_REQUIRED,no,Suite retention in-brief for Task 7,2-oracle
+E2,48,graph-task1,graph-task1-fetch-from-api,gpfc-git,https://github.com/ruvebal/ttod/pull/48,25,24,20,10,10,9,98,SUCCESS,MERGEABLE,APPROVED,yes,APPROVED 2026-10-08; activeTag removal in-brief; update branch if behind,1-independent
+E1,43,docs-plan-bugbot-amend,docs/group-1-plan-amendments,gontugithub,https://github.com/ruvebal/ttod/pull/43,22,24,20,10,10,3,89,SUCCESS,MERGED,none,no,MERGED 2026-10-08; closes #28 Bugbot findings; empty AI log,1-independent

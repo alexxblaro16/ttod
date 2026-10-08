@@ -149,7 +149,7 @@ Re-run the generation script against a future main if the reference build
 changes and this branch needs regenerating — do not hand-edit this branch
 to diverge from what the script produces.
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+
 EOF
 )"
 

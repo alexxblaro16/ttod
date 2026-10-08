@@ -52,6 +52,7 @@ jobs:
           set -euo pipefail
           git diff "origin/${BASE_REF}...HEAD" -- services/frontend services/backend > /tmp/pr.diff
           scripts/pr-review/build-prompt.sh "$BRANCH" /tmp/pr.diff > /tmp/review-prompt.md
+          sed -n 's/^PROMPT_BUILDER_VERSION="\([^"]*\)".*/\1/p' scripts/pr-review/build-prompt.sh | head -1 > /tmp/prompt-builder-version.txt
 
       - name: Run review
         id: review
@@ -70,6 +71,11 @@ jobs:
 
           with open("/tmp/review-prompt.md") as f:
               prompt = f.read()
+          try:
+              with open("/tmp/prompt-builder-version.txt") as f:
+                  builder_version = f.read().strip() or "unknown"
+          except FileNotFoundError:
+              builder_version = "unknown"
 
           body = json.dumps({
               "model": "claude-sonnet-5",
@@ -91,9 +97,17 @@ jobs:
 
           text = "".join(block.get("text", "") for block in result.get("content", []))
           with open("/tmp/review-body.md", "w") as f:
-              f.write("### 🤖 Automated review (hybrid rubric — cloud claude-sonnet-5, comment only)\n\n")
+              f.write(
+                  "### 🤖 Automated review (hybrid rubric — cloud claude-sonnet-5, "
+                  f"prompt-builder {builder_version}, comment only)\n\n"
+              )
               f.write(text)
-              f.write("\n\n---\n*Posted automatically. Does not approve or block merge — a human review is still required.*\n")
+              f.write(
+                  "\n\n---\n"
+                  f"*Posted automatically with `scripts/pr-review/build-prompt.sh` "
+                  f"**v{builder_version}**. Does not approve or block merge — a human "
+                  f"review is still required.*\n"
+              )
           PYEOF
 
       - name: Post comment

@@ -14,10 +14,12 @@ reviewer processes it — before the governance principles they both rest on.
 ## Opening a PR (module work)
 
 1. Branch from the current teaching baseline: `git checkout -b <seam>-task<N>-<short-topic-name>`
-   — e.g. `content-task2-browse-routes`. The `<seam>-task<N>` part (`content`, `graph`, `oracle`,
-   `pwa`, or `accounts`, plus the task number) is not just a naming nicety: the automated review
-   bot (below) parses it to find your task's own acceptance criteria. A branch name without that
-   pattern still works, it just only gets the generic rubric, not your task's specific one.
+   — e.g. `content-task2-browse-routes` or `accounts-task2-personal-library`. The
+   `<seam>-task<N>` part (`content`, `graph`, `oracle`, `pwa`, or `accounts`, plus the task
+   number) is not just a naming nicety: the automated review bot (below) parses it to find your
+   task's own acceptance criteria. Prefer that form. A few short aliases (e.g.
+   `task/2-personal-library`) are rescued by the prompt builder for early cohort branches, but
+   anything outside the documented pattern still risks a generic-only review.
 2. Make the change inside your module's own files. **There is no `ASSIGNMENT.md` file inside the
    app's own code** — your task's acceptance criteria live at
    `/teaching/tasks/<seam>-task<N>/` on this site (linked from the [team task
@@ -73,11 +75,12 @@ two possible backends behind it:
   for the full comparison and how to turn it back on later.
 
 Either way, this follows the same rule as everything else on this page: **it comments, it never
-approves, requests changes, or merges.** The required `typecheck-and-build` check and one human
-approval remain the only things that actually gate merge. Treat its comment as a first pass worth
-reading before a human reviewer looks — not a substitute for the reviewer, and not evidence you
-can skip writing your own AI Review Log entry (a bot reviewing your PR is a different event from
-you disclosing what you used while writing it).
+approves, requests changes, or merges.** Findings are labeled `MUST FIX:` or `NIT:` — humans
+request changes on MUST FIX items, not on NITs alone. The required `typecheck-and-build` check
+and one human approval remain the only things that actually gate merge. Treat its comment as a
+first pass worth reading before a human reviewer looks — not a substitute for the reviewer, and
+not evidence you can skip writing your own AI Review Log entry (a bot reviewing your PR is a
+different event from you disclosing what you used while writing it).
 
 ## For reviewers
 

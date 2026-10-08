@@ -89,7 +89,7 @@ La lógica del reparto:
 
 `index.astro` y `[slug].astro` los tocan T2, T3 y T5.
 
-- Una rama por tarea: `feat/t1-facet-routes`, `feat/t2-breadcrumbs`, `feat/t3-empty-error-states`, `feat/t4-propose-form`, `feat/t5-provenance`, `test/t6-content-tests`.
+- Una rama por tarea, con el nombre OBLIGATORIO `content-task<N>-<tema>` (ver `claude-code-rules.md`, lo parsea el bot de revisión): `content-task1-facet-routes`, `content-task2-breadcrumbs`, `content-task3-empty-error-states`, `content-task4-propose-form`, `content-task5-provenance`, `content-task6-content-tests`.
 - Ramas pequeñas y mergeadas pronto.
 - La lógica va en componentes (`Breadcrumbs`, `EmptyState`, `ProvenanceBlock`). En las páginas solo se importan y se colocan.
 - Avisad al otro antes de tocar un archivo compartido.
@@ -136,7 +136,7 @@ Según la Unidad 6, la IA puede comentar pero nunca aprobar ni mergear.
 | Qué necesitamos | De quién | Cuándo | ¿Bloquea? |
 |---|---|---|---|
 | Endpoint `POST /api/v1/proposals` (tarea 3 del Equipo 5) | Equipo 5 | Semana 1, marcado como prioridad | **Sí**, a la T4 |
-| Login/sesión (`requireUser`) | Equipo 5 | Ya existe | No |
+| Login/sesión (`requireUser`, `auth.server.ts`) | Equipo 5 | No existe aún en `main` | **Sí**, a la T4 |
 | Código de otros módulos para la T7 | Cualquiera | Ya hay código base | No |
 | Un PR abierto de otro equipo para la T8 | Cualquiera | Semana 3 | Sí, a la T8 |
 
@@ -151,6 +151,7 @@ Según la Unidad 6, la IA puede comentar pero nunca aprobar ni mergear.
 5. **Reordenamos la semana 2** si hace falta: primero T3 y T5, y T4 al final.
 6. **Si al final de la semana 1 no hay contrato, se avisa al profesor.**
 7. **Para la T8:** pactad pronto con otro equipo una revisión cruzada ("revisáis uno nuestro y revisamos uno vuestro").
+8. **Si `requireUser`/`auth.server.ts` de Equipo 5 tampoco está listo:** construimos el control de sesión de la T4 contra una comprobación local de sesión, claramente marcada como stub (TODO), con la misma forma que tendrá `requireUser` (recibe la request del frontmatter, devuelve un `Response` de redirección si no hay sesión, o el usuario si la hay). Cuando `auth.server.ts` exista de verdad, se sustituye solo esa función.
 
 ### Contrato acordado con el Equipo 5 (rellenar)
 
@@ -207,20 +208,21 @@ Deben funcionar en `en` y en `es`.
 ### Punto de partida
 
 - `index.astro` y `[slug].astro` ya muestran datos reales. Esta tarea **extiende su patrón**, no empieza de cero.
-- `frequencies(entries, field)` con `field: 'section' | 'level' | 'tags'` ya está escrita en `wisdom.ts`, pero ninguna ruta la llama.
-- Las tres rutas no existen porque el profesor las quitó a propósito.
+- `frequencies(entries, field)` con `field: 'section' | 'level' | 'tags'` ya está escrita en `wisdom.ts`. `index.astro` ya la llama tres veces para sus propias pills de sección/nivel/etiqueta.
+- **Las tres rutas ya existen en `main`** (`sections/[section].astro`, `tags/[tag].astro`, `levels/[level].astro`): ya filtran `fetchWisdom(locale)` por el parámetro correcto, ya usan `labels` y ya muestran un estado vacío genérico. Esta tarea **no crea las rutas**: las extiende. Verificadlo leyendo los tres archivos antes de tocar nada — pueden haber cambiado desde que se escribió esta ficha.
+- Lo que falta de verdad: ninguna de las tres rutas llama a `frequencies()` por sí misma, así que no ofrecen navegación entre facetas hermanas (pills a otras secciones/etiquetas/niveles con sus conteos) como sí hace el índice.
 
 ### Qué hay que hacer
 
-1. Crear las tres rutas dinámicas.
-2. En cada una, llamar a `frequencies()` para obtener la lista de valores de la faceta y sus conteos.
-3. Filtrar el `WisdomEntry[]` ya descargado:
+1. Confirmar que las tres rutas dinámicas siguen existiendo y con qué contenido exacto (pueden haber cambiado).
+2. En cada una, llamar a `frequencies()` para obtener la lista de valores de la faceta y sus conteos, y añadir la navegación entre facetas hermanas que hoy falta.
+3. Confirmar que el filtrado del `WisdomEntry[]` ya descargado sigue siendo correcto:
    - `section` igual al parámetro;
    - `tags` que incluya el parámetro;
    - `level` igual al parámetro.
 4. Mostrar la lista de facetas (pills, lista o lo que queráis) con enlaces a las otras facetas.
-5. Poner un enlace simple de vuelta al índice. El componente completo de breadcrumbs es la T2.
-6. Mostrar un estado vacío (no una página en blanco) cuando una faceta no tiene coincidencias en ese idioma.
+5. Confirmar que el enlace simple de vuelta al índice sigue ahí. El componente completo de breadcrumbs es la T2.
+6. Confirmar que el estado vacío (no una página en blanco) sigue funcionando cuando una faceta no tiene coincidencias en ese idioma.
 
 ### Criterios de aceptación
 
@@ -247,41 +249,48 @@ Deben funcionar en `en` y en `es`.
 
 ```text
 Contexto: trabajo en el proyecto TTOD (Astro), en el módulo de contenido del
-Equipo 1. Tarea: crear tres rutas de navegación por faceta para las citas
-("wisdom"):
+Equipo 1. Tarea: EXTENDER tres rutas de navegación por faceta para las citas
+("wisdom") que YA EXISTEN en el repo:
   /{locale}/wisdom/sections/{section}/
   /{locale}/wisdom/tags/{tag}/
   /{locale}/wisdom/levels/{level}/
-Deben funcionar en los idiomas en y es.
+No las crees desde cero: ya filtran correctamente y ya muestran un estado
+vacío. Les falta llamar a frequencies() para ofrecer navegación entre facetas
+hermanas (pills a otras secciones/etiquetas/niveles con sus conteos), como ya
+hace index.astro para sus propias pills. Deben seguir funcionando en en y es.
 
 Antes de escribir código, explora y resume:
-1. services/frontend/src/pages/[locale]/wisdom/index.astro y [slug].astro:
-   cómo obtienen el locale (Astro.params.locale, isLocale()), cómo llaman a
-   fetchWisdom(locale), cómo manejan las traducciones de la interfaz y si el
-   proyecto usa getStaticPaths (salida estática) o SSR.
-2. services/frontend/src/content/wisdom.ts: firma y comportamiento exactos de
+1. services/frontend/src/pages/[locale]/wisdom/sections/[section].astro,
+   tags/[tag].astro y levels/[level].astro: qué hacen ahora mismo exactamente
+   (cómo obtienen el locale, cómo filtran, qué muestran en el estado vacío) y
+   qué les falta respecto al objetivo de esta tarea.
+2. services/frontend/src/pages/[locale]/wisdom/index.astro: cómo llama a
+   frequencies() para sus propias pills — es el patrón a reutilizar.
+3. services/frontend/src/content/wisdom.ts: firma y comportamiento exactos de
    frequencies(entries, field) (debería estar cerca de la línea 31) y qué
    exporta labels.
-3. services/frontend/src/types/domain.ts: el tipo WisdomEntry (section, tags,
+4. services/frontend/src/types/domain.ts: el tipo WisdomEntry (section, tags,
    level).
-4. Dónde están las cadenas traducidas de la interfaz y cómo se añaden nuevas.
-5. Qué framework de tests se usa y dónde viven los tests.
-Después, preséntame un plan (archivos a crear, cómo se generan las rutas, dónde
-se llama a frequencies()) y ESPERA a que lo apruebe.
+5. Dónde están las cadenas traducidas de la interfaz y cómo se añaden nuevas.
+6. Qué framework de tests se usa y dónde viven los tests.
+Después, preséntame un plan (qué archivos modificas, dónde añades cada llamada
+a frequencies(), cómo se ve la navegación entre facetas) y ESPERA a que lo
+apruebe.
 
 Requisitos de implementación:
-- Crea las tres rutas dinámicas siguiendo el mismo patrón que index.astro.
+- NO crees las tres rutas: ya existen. Edítalas para añadir lo que falta.
 - En cada ruta llama a frequencies() para obtener los valores de la faceta y
   sus conteos. NO escribas un contador propio ni dupliques esa lógica.
-- Filtra el WisdomEntry[] que ya devuelve fetchWisdom(locale): section === param,
-  tags.includes(param), level === param. No crees endpoints nuevos.
-- Muestra una lista de facetas (con conteos) que enlace a las demás facetas del
-  mismo tipo, respetando el prefijo /{locale}/.
-- Añade un enlace simple de vuelta a /{locale}/wisdom/ (NO un componente de
-  breadcrumbs: eso es otra tarea).
-- Si una faceta no tiene coincidencias en ese idioma, muestra un estado vacío
-  con texto traducido, nunca una página en blanco. Si existe un componente
-  EmptyState en el proyecto, úsalo; si no, crea uno mínimo en
+- Confirma que el filtrado del WisdomEntry[] que ya devuelve fetchWisdom(locale)
+  sigue siendo correcto: section === param, tags.includes(param), level ===
+  param. No crees endpoints nuevos.
+- Añade la lista de facetas hermanas (con conteos) que enlace a las demás
+  facetas del mismo tipo, respetando el prefijo /{locale}/.
+- Confirma que el enlace simple de vuelta a /{locale}/wisdom/ sigue ahí (NO un
+  componente de breadcrumbs: eso es otra tarea).
+- Confirma que el estado vacío por faceta sin coincidencias sigue mostrando
+  texto traducido, nunca una página en blanco. Si existe un componente
+  EmptyState en el proyecto, reutilízalo; si no, créalo mínimo en
   src/components/EmptyState.astro con props title, message y action opcional
   ({ label, href }).
 - Si el parámetro de idioma no es válido, compórtate igual que las rutas
@@ -329,7 +338,7 @@ Que el índice, las facetas y el detalle muestren un camino claro de vuelta, del
 ### Punto de partida
 
 - `index.astro` y `[slug].astro` muestran contenido pero no tienen rastro de navegación.
-- `labels` en `wisdom.ts` sirve para convertir slugs en nombres legibles y traducidos.
+- `labels` en `wisdom.ts` es solo texto fijo de interfaz (encabezados como "Sections"/"Secciones", "Back"/"Volver"...); **no** convierte un valor concreto de faceta (una sección o etiqueta real, por ejemplo) en un nombre legible — no existe ese diccionario slug → nombre en el proyecto. Las tres páginas de faceta ya muestran el parámetro en crudo (`${copy.sections}: ${Astro.params.section}`); el breadcrumb debe seguir esa misma convención, no inventar una traducción que no existe.
 - `section`, `tags` y `level` de `WisdomEntry` definen los niveles de la jerarquía.
 
 ### Qué hay que hacer
@@ -371,8 +380,9 @@ Antes de escribir código, explora y resume:
 1. services/frontend/src/pages/[locale]/wisdom/: qué rutas existen (index,
    [slug] y, si ya están, las de facetas sections/tags/levels) y qué datos
    tiene cada una disponible.
-2. services/frontend/src/content/wisdom.ts: qué exporta labels y cómo
-   convierte slugs de section/level/tag en nombres legibles por idioma.
+2. services/frontend/src/content/wisdom.ts: qué exporta labels exactamente
+   (es texto fijo de interfaz, no un diccionario de slugs de faceta —
+   confírmalo leyendo el archivo; si falta ese mapeo, no lo inventes).
 3. services/frontend/src/types/domain.ts: WisdomEntry (section, tags, level).
 4. Cómo se traducen las cadenas de la interfaz.
 5. Si existe algún layout común donde tenga sentido colocar el componente.
@@ -386,10 +396,13 @@ Requisitos:
     items: { label: string; href?: string }[]   // el último sin href
 - Jerarquía:
     índice:  Wisdom
-    faceta:  Wisdom › {nombre legible de la faceta}
+    faceta:  Wisdom › {valor de la faceta en crudo, igual que en el título de esa página}
     detalle: Wisdom › {sección de la cita, enlazada a su faceta} › {cita}
-- Los nombres legibles salen de labels; no pongas traducciones a mano en las
-  páginas.
+- labels NO tiene nombres legibles por valor de faceta: usa el slug en crudo
+  para el segmento de faceta del breadcrumb (igual que ya hacen los títulos de
+  esas páginas). Si más adelante se quiere un nombre más bonito por faceta, es
+  una decisión y un diccionario nuevos — no los inventes aquí sin que te lo
+  pida.
 - Todos los href llevan el prefijo /{locale}/ correcto.
 - HTML semántico: <nav aria-label="..."> (etiqueta traducida) con <ol> y <li>.
   El último elemento lleva aria-current="page" y no es enlace. Los separadores
@@ -442,14 +455,14 @@ Que nunca aparezca una página en blanco ni un stack trace:
 
 ### Punto de partida
 
-Ahora mismo `index.astro` recorre las entradas directamente, sin comprobar nada. Si el array viene vacío o `fetchWisdom` falla, la página se queda en blanco o lanza una excepción. El "ejemplo" de esta tarea es precisamente la **ausencia** de esa protección.
+`index.astro` ya ramifica sobre `entries.length === 0` y muestra un estado vacío con `copy.empty`: ese guardado concreto ya no falta, comprobadlo antes de "añadirlo" de nuevo. Lo que sí falta, confirmado leyendo el código: `[slug].astro` ya pone el `<title>` en `copy.notFound` cuando el slug no existe, pero el **cuerpo visible** sigue cayendo en `copy.empty` (el mensaje genérico de corpus vacío, no el de "no encontrado"); y no hay **ningún** `try/catch` en `wisdom.ts` ni en las rutas, así que un fallo real de `fetchWisdom` (red, 5xx) sigue reventando con un stack trace.
 
 ### Qué hay que hacer
 
-1. Diseñar **un** patrón de estado vacío acorde con el sistema de diseño (colores, tipografía, espaciado). Partid del `EmptyState` de la T1.
-2. Aplicarlo al índice cuando `entries.length === 0`.
-3. Aplicarlo al detalle cuando el `slug` no existe en el payload de ese idioma.
-4. Envolver `fetchWisdom` en un `try/catch` (o usar el manejo de errores de Astro).
+1. Diseñar **un** patrón de estado vacío acorde con el sistema de diseño (colores, tipografía, espaciado), sustituyendo el `<p class="ttod-empty">` suelto que ya usan índice/detalle/facetas por el `EmptyState` de la T1.
+2. Confirmar que el índice sigue mostrando ese estado cuando `entries.length === 0` (ya lo hace; el cambio aquí es de componente, no de lógica).
+3. Cambiar el detalle para que, cuando el `slug` no existe en el payload de ese idioma, el cuerpo use `copy.notFound` (ya existe en `wisdom.ts` pero hoy solo se usa en el `<title>`) en vez de `copy.empty`.
+4. Envolver `fetchWisdom` en un `try/catch` (o usar el manejo de errores de Astro): hoy no hay ninguno.
 5. Mostrar el error traducido en `en` y `es`.
 6. Que los estados vacío y de error sean accesibles.
 
@@ -501,13 +514,18 @@ Requisitos:
 - Un único patrón reutilizable de estado vacío (reutiliza o amplía EmptyState;
   no crees un segundo componente parecido) y un estado de error reutilizable
   (puede ser una variante del mismo componente).
-- Índice: si entries.length === 0, muestra el estado vacío.
-- Detalle: si el slug no está en el payload del idioma actual, muestra un
-  estado "no encontrado" con enlace de vuelta al índice del mismo idioma.
-- Facetas: usa el mismo patrón para cero resultados.
+- Índice: ya ramifica sobre entries.length === 0 con un `<p>` suelto; sustituye
+  ese párrafo por el componente de estado vacío, sin cambiar la condición.
+- Detalle: ya distingue el caso de slug inexistente en el `<title>`
+  (copy.notFound), pero el cuerpo muestra copy.empty; usa copy.notFound también
+  en el cuerpo, con el componente de estado "no encontrado" y un enlace de
+  vuelta al índice del mismo idioma.
+- Facetas: ya muestran un `<p>` de estado vacío para cero resultados;
+  sustitúyelo por el mismo componente.
 - Envuelve las llamadas a fetchWisdom para que un fallo de red o una respuesta
-  no-OK muestre un mensaje legible y traducido, nunca un stack trace. No
-  dupliques el try/catch en cada página si puedes centralizarlo con claridad.
+  no-OK muestre un mensaje legible y traducido, nunca un stack trace — hoy no
+  hay ningún try/catch. No dupliques el try/catch en cada página si puedes
+  centralizarlo con claridad.
 - Todos los textos en en y es, según Astro.params.locale.
 - Accesibilidad: el mensaje es texto real con un encabezado adecuado, el enlace
   de acción es operable por teclado, nada se comunica solo por color, respeta
@@ -555,7 +573,7 @@ Al terminar:
 
 ### Punto de partida
 
-- `requireUser` en `lib/auth.server.ts` (≈ línea 62) es el patrón de control de acceso. Se ejecuta en el frontmatter y **devuelve** un `Response`, no lo lanza (lanzarlo da un 500 en Astro 5).
+- `requireUser` en `lib/auth.server.ts` (≈ línea 62) **será** el patrón de control de acceso cuando Equipo 5 lo entregue — hoy no existe en `main`, ni tampoco ninguna página `account/`. Es una dependencia bloqueante igual que el endpoint: comprobad primero si ya existe antes de asumirlo. Cuando exista, se ejecuta en el frontmatter y **devuelve** un `Response`, no lo lanza (lanzarlo da un 500 en Astro 5).
 - Los campos del formulario siguen la estructura de `WisdomEntry`.
 - El backend reutilizará `create_proposal` de `ttod_core/proposals.py`. Nunca escribe directamente en `ttod.yml`: la cita solo se publica tras revisión humana.
 
@@ -608,9 +626,12 @@ CONTRATO acordado con el Equipo 5:
   Errores: <RELLENAR, p. ej. 401 sin sesión, 400/422 validación>
 
 Antes de escribir código, explora y resume:
-1. services/frontend/src/lib/auth.server.ts: cómo funciona requireUser (cerca
-   de la línea 62), qué devuelve y cómo se usa en
-   services/frontend/src/pages/[locale]/account/index.astro. Ojo: en Astro el
+1. Comprueba primero si services/frontend/src/lib/auth.server.ts y alguna
+   página en services/frontend/src/pages/[locale]/account/ ya existen (a fecha
+   de esta ficha, no existían: es una entrega pendiente de Equipo 5). Si
+   existen, documenta cómo funciona requireUser y cómo se usa. Si no existen,
+   dímelo y trabaja con un stub local de control de sesión, claramente
+   marcado (TODO), con la misma forma que tendrá requireUser. Ojo: en Astro el
    Response se DEVUELVE desde el frontmatter, no se lanza.
 2. services/frontend/src/types/domain.ts: WisdomEntry, para alinear los campos.
 3. Si ya existe algún endpoint de propuestas en el frontend (p. ej. en
@@ -895,7 +916,7 @@ Salir de `src/content` y `src/pages/[locale]/wisdom` para enviar **un arreglo o 
    - accesibilidad de un componente del grafo;
    - un texto sin traducir en `es` en otro módulo;
    - un estado de error que falta.
-2. Leed el `ASSIGNMENT.md` de ese equipo para no pisar una tarea que ya tienen asignada.
+2. Leed la ficha `docs/DEV_PLAN/ASSIGNMENTS/ASSIGNMENT-{seam}-task{N}.md` del equipo dueño (no existe un `ASSIGNMENT.md` suelto por módulo) y el tablero público `docs/public/teaching/assignments.md`, para no pisar una tarea que ya tienen asignada.
 3. Hablad con el equipo dueño antes de abrir el PR: qué queréis cambiar y por qué.
 4. PR pequeño y enfocado, con una descripción clara (problema, cambio, cómo probarlo) y la sección de uso de IA.
 5. Responded a la revisión que os hagan e iterad.
@@ -915,7 +936,7 @@ Consultad la explicación común en `docs/public/teaching/tasks.md#the-three-rec
 
 ### Qué es
 
-Elegir un PR de otro equipo y evaluarlo **estrictamente contra el `ASSIGNMENT.md` de ese equipo**, no contra vuestro gusto ni con criterios generales de estilo.
+Elegir un PR de otro equipo y evaluarlo **estrictamente contra su ficha `ASSIGNMENT-{seam}-task{N}.md`** (en `docs/DEV_PLAN/ASSIGNMENTS/`; no existe un `ASSIGNMENT.md` suelto por módulo) y el tablero público, no contra vuestro gusto ni con criterios generales de estilo.
 
 ### Qué exige
 
