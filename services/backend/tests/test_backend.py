@@ -139,6 +139,33 @@ class BackendTests(unittest.TestCase):
             401,
         )
 
+    def test_random_wisdom_rejects_request_without_authorization_header(self):
+        response = self.client.get("/api/v1/wisdom/random")
+        self.assertEqual(response.status_code, 401)
+
+    def test_random_wisdom_rejects_invalid_bearer_token(self):
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": "Bearer invalid-token"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_random_wisdom_rejects_session_cookie_used_as_bearer_token(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": f"Bearer {session_cookie}"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_random_wisdom_rejects_session_cookie_without_bearer_header(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            cookies={"ttod_session": session_cookie},
+        )
+        self.assertEqual(response.status_code, 401)
+
     def test_random_wisdom_rejects_expired_access_token(self):
         expiring_settings = replace(self.settings, pat_ttl_seconds=-1)
         expiring_client = TestClient(create_app(expiring_settings, self.oracle))
