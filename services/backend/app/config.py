@@ -14,8 +14,8 @@ class Settings:
     ttod_path: Path = REPOSITORY_ROOT / "ttod.yml"
     schema_dir: Path = REPOSITORY_ROOT / "schema"
     proposal_dir: Path = REPOSITORY_ROOT / "services/backend/data/proposals"
-    pat_secret: str = field(default_factory=lambda: secrets.token_urlsafe(32))
-    pat_ttl_seconds: int = 3600
+    session_secret: str = field(default_factory=lambda: secrets.token_urlsafe(32))
+    session_ttl_seconds: int = 3600
     admin_email: str = "admin@ttod.local"
     admin_password_hash: str = ""
     ollama_mode: str = "host"
@@ -35,8 +35,8 @@ class Settings:
             ttod_path=Path(os.getenv("TTOD_PATH", str(REPOSITORY_ROOT / "ttod.yml"))),
             schema_dir=Path(os.getenv("TTOD_SCHEMA_DIR", str(REPOSITORY_ROOT / "schema"))),
             proposal_dir=Path(os.getenv("TTOD_PROPOSAL_DIR", str(REPOSITORY_ROOT / "services/backend/data/proposals"))),
-            pat_secret=os.getenv("TTOD_PAT_SECRET") or secrets.token_urlsafe(32),
-            pat_ttl_seconds=int(os.getenv("TTOD_PAT_TTL_SECONDS", "3600")),
+            session_secret=os.getenv("TTOD_SESSION_SECRET") or secrets.token_urlsafe(32),
+            session_ttl_seconds=int(os.getenv("TTOD_SESSION_TTL_SECONDS", "3600")),
             admin_email=os.getenv("TTOD_ADMIN_EMAIL", "admin@ttod.local"),
             admin_password_hash=os.getenv("TTOD_ADMIN_PASSWORD_HASH", ""),
             ollama_mode=mode,

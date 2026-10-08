@@ -5,10 +5,13 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
+SessionRole = Literal["student", "reviewer", "instructor"]
+
+
 class AuthUser(BaseModel):
     id: str
     email: str
-    role: Literal["admin", "user"]
+    roles: list[SessionRole]
 
 
 class AuthLoginRequest(BaseModel):
@@ -17,8 +20,8 @@ class AuthLoginRequest(BaseModel):
 
 
 class AuthLoginResponse(BaseModel):
-    access_token: str
-    token_type: Literal["Bearer"] = "Bearer"
+    session_token: str
+    token_type: Literal["Session"] = "Session"
     expires_in: int
     user: AuthUser
 

@@ -68,17 +68,37 @@ class BackendTests(unittest.TestCase):
             "email": "admin@ttod.local", "password": "seeded-user-token",
         })
         self.assertEqual(login.status_code, 200)
+        self.assertEqual(login.json()["token_type"], "Session")
         self.assertEqual(login.json()["user"], {
-            "id": "usr-001", "email": "admin@ttod.local", "role": "admin",
+            "id": "usr-001", "email": "admin@ttod.local", "roles": ["reviewer", "instructor"],
         })
 
-        token = login.json()["access_token"]
-        session = self.client.get("/api/v1/auth/session", headers={"Authorization": f"Bearer {token}"})
+        session_token = login.json()["session_token"]
+        session = self.client.get("/api/v1/auth/session", cookies={"ttod_session": session_token})
         self.assertEqual(session.status_code, 200)
         self.assertEqual(session.json(), login.json()["user"])
+
+    def test_session_endpoint_rejects_requests_without_a_valid_session_cookie(self):
         anonymous = self.client.get("/api/v1/auth/session")
         self.assertEqual(anonymous.status_code, 401)
-        self.assertEqual(anonymous.json(), {"detail": "Bearer access token required"})
+        self.assertEqual(anonymous.json(), {"detail": "Authentication required"})
+        self.assertNotIn("admin@ttod.local", anonymous.text)
+
+        forged = self.client.get("/api/v1/auth/session", cookies={"ttod_session": "not-a-signed-token"})
+        self.assertEqual(forged.status_code, 401)
+
+    def test_session_token_is_not_accepted_as_a_bearer_credential(self):
+        login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "seeded-user-token",
+        })
+        session_token = login.json()["session_token"]
+
+        response = self.client.get(
+            "/api/v1/auth/session",
+            headers={"Authorization": f"Bearer {session_token}"},
+        )
+
+        self.assertEqual(response.status_code, 401)
 
     def test_login_is_disabled_when_no_password_hash_is_configured(self):
         settings = Settings(
@@ -94,15 +114,6 @@ class BackendTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json(), {"detail": "Invalid email or password"})
-
-    def test_session_endpoint_rejects_invalid_signed_tokens(self):
-        response = self.client.get(
-            "/api/v1/auth/session",
-            headers={"Authorization": "Bearer not-a-signed-token"},
-        )
-
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(response.json(), {"detail": "Invalid or expired access token"})
 
     def test_health_schema_and_public_projections(self):
         self.assertEqual(self.client.get("/health").status_code, 200)

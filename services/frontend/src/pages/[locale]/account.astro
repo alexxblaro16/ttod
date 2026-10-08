@@ -1,36 +1,27 @@
 ---
 import Page from '../../layouts/Page.astro';
-import { requireUser } from '../../lib/auth';
+import { requireUser } from '../../lib/auth.server';
 import { isLocale } from '../../content/wisdom';
+import type { SessionRole } from '../../types/domain';
 
 export const prerender = false;
 
 const locale = Astro.params.locale;
 if (!isLocale(locale)) return new Response(null, { status: 404 });
 
-// La guarda se ejecuta en SSR antes de generar cualquier HTML protegido.
-const authenticatedUser = await requireUser(Astro);
+// La guarda corre en el frontmatter: si no hay sesión se devuelve la redirección
+// antes de que exista una sola línea de HTML con datos de la cuenta.
+const authenticatedUser = await requireUser(Astro.request);
 if (authenticatedUser instanceof Response) return authenticatedUser;
 
+const roleNames: Record<'en' | 'es', Record<SessionRole, string>> = {
+  es: { student: 'Estudiante', reviewer: 'Revisor', instructor: 'Profesor' },
+  en: { student: 'Student', reviewer: 'Reviewer', instructor: 'Instructor' }
+};
+
 const copy = locale === 'es'
-  ? {
-      title: 'Mi cuenta · TTOD',
-      home: 'Inicio',
-      heading: 'Mi cuenta',
-      email: 'Correo electrónico',
-      role: 'Rol',
-      admin: 'Administrador',
-      user: 'Usuario'
-    }
-  : {
-      title: 'My account · TTOD',
-      home: 'Home',
-      heading: 'My account',
-      email: 'Email',
-      role: 'Role',
-      admin: 'Administrator',
-      user: 'User'
-    };
+  ? { title: 'Mi cuenta · TTOD', home: 'Inicio', heading: 'Mi cuenta', email: 'Correo electrónico', roles: 'Roles' }
+  : { title: 'My account · TTOD', home: 'Home', heading: 'My account', email: 'Email', roles: 'Roles' };
 ---
 
 <Page lang={locale} title={copy.title}>
@@ -42,8 +33,8 @@ const copy = locale === 'es'
     <dl>
       <dt>{copy.email}</dt>
       <dd>{authenticatedUser.email}</dd>
-      <dt>{copy.role}</dt>
-      <dd>{authenticatedUser.role === 'admin' ? copy.admin : copy.user}</dd>
+      <dt>{copy.roles}</dt>
+      <dd>{authenticatedUser.roles.map((role) => roleNames[locale][role]).join(', ')}</dd>
     </dl>
   </main>
 </Page>

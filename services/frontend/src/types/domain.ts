@@ -1,14 +1,14 @@
-export type AuthRole = 'admin' | 'user';
+export type SessionRole = 'student' | 'reviewer' | 'instructor';
 
 export interface AuthUser {
   id: string;
   email: string;
-  role: AuthRole;
+  roles: SessionRole[];
 }
 
 export interface AuthLoginResponse {
-  access_token: string;
-  token_type: 'Bearer';
+  session_token: string;
+  token_type: 'Session';
   expires_in: number;
   user: AuthUser;
 }
