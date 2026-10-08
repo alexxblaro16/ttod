@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import random
 
 from fastapi import Cookie, Depends, FastAPI, Header, HTTPException
@@ -16,6 +17,9 @@ from .models import OracleProposeRequest, OracleQueryPayload, ProposalRequest, T
 from .oracle import OracleService
 from .favorites import add_favorite, get_favorites, remove_favorite
 from .storage import SnapshotService
+
+
+logger = logging.getLogger(__name__)
 
 
 class FavoriteRequest(BaseModel):
@@ -118,7 +122,7 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
             "text": payload.text,
             "section": payload.section,
             "level": payload.level,
-            "origin": payload.origin,
+            "origin": "human",
             "lang": payload.lang,
         }
         if payload.source is not None:
@@ -135,15 +139,14 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
                 proposer_id=user_id,
                 generation_method="api-proposal-create",
             )
-            path = ProposalStore(settings.proposal_dir).save(proposal)
+            ProposalStore(settings.proposal_dir).save(proposal)
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
-        except Exception as exc:
+        except OSError as exc:
+            logger.exception("Unable to persist proposal")
             raise HTTPException(status_code=500, detail="Unable to save proposal") from exc
 
-        result = proposal.to_dict()
-        result["stored_at"] = str(path)
-        return result
+        return proposal.to_dict()
 
     @app.get("/api/v1/proposals")
     def list_proposals(_user_id: str = Depends(require_reviewer_session)):
@@ -167,4 +170,3 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
 
 
 app = create_app()
-
