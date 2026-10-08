@@ -5,7 +5,7 @@ export type Locale = 'en' | 'es';
 export const isLocale = (value: string | undefined): value is Locale => value === 'en' || value === 'es';
 
 export async function fetchWisdom(locale: Locale): Promise<WisdomEntry[]> {
-  const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
+  const backend = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';
   const response = await fetch(`${backend}/api/v1/wisdom/sample`, { headers: { accept: 'application/json' } });
   if (!response.ok) throw new Error(`Backend wisdom request failed (${response.status})`);
   const payload: unknown = await response.json();

@@ -1,3 +1,18 @@
+export type AuthRole = 'admin' | 'user';
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  role: AuthRole;
+}
+
+export interface AuthLoginResponse {
+  access_token: string;
+  token_type: 'Bearer';
+  expires_in: number;
+  user: AuthUser;
+}
+
 export interface WisdomEntry {
   id: string;
   section: string;

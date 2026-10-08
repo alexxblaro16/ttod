@@ -1,71 +1,55 @@
 import type { AstroGlobal } from 'astro';
+import type { AuthRole, AuthUser } from '../types/domain';
 
-// Interfaz para definir la estructura del usuario autenticado
-export interface AuthUser {
-  id: string;
-  email: string;
-  role: 'admin' | 'user';
-}
+export const AUTH_COOKIE_NAME = 'ttod_access_token';
+const BACKEND_URL = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';
 
-const SESSION_COOKIE_NAME = 'ttod_session';
-const SEEDED_SESSION_TOKEN = 'seeded-user-token';
-
-/**
- * Obtiene y valida el usuario actual desde la cookie de sesión httpOnly en el servidor.
- * NUNCA debe leerse desde localStorage para proteger rutas SSR.
- */
 export async function getSessionUser(cookies: AstroGlobal['cookies']): Promise<AuthUser | null> {
-  const token = cookies.get(SESSION_COOKIE_NAME)?.value;
+  return getSessionUserFromToken(cookies.get(AUTH_COOKIE_NAME)?.value);
+}
 
-  if (!token) {
-    return null;
-  }
-
+export async function getSessionUserFromToken(token?: string): Promise<AuthUser | null> {
+  if (!token) return null;
   try {
-    // No se acepta un prefijo como prueba de autenticación: cualquier cadena podría falsificarlo.
-    if (token !== SEEDED_SESSION_TOKEN) {
-      return null;
-    }
+    const response = await fetch(`${BACKEND_URL}/api/v1/auth/session`, {
+      headers: { accept: 'application/json', authorization: `Bearer ${token}` }
+    });
+    if (!response.ok) return null;
 
-    return {
-      id: 'usr-001',
-      email: 'admin@ttod.local',
-      role: 'admin'
-    };
+    const user: unknown = await response.json();
+    if (typeof user !== 'object' || user === null) return null;
+    const candidate = user as Partial<AuthUser>;
+    if (
+      typeof candidate.id !== 'string' ||
+      typeof candidate.email !== 'string' ||
+      (candidate.role !== 'admin' && candidate.role !== 'user')
+    ) return null;
+
+    return candidate as AuthUser;
   } catch (error) {
-    console.error('Error validando la sesión SSR:', error);
+    console.error('Unable to verify the server-side session.', error);
     return null;
   }
 }
 
-/**
- * Guarda SSR (Server-Side Rendering) obligatoria para rutas protegidas.
- * Si no hay usuario autenticado, redirige inmediatamente al login y corta la renderización.
- */
 export async function requireUser(astro: AstroGlobal): Promise<AuthUser | Response> {
   const user = await getSessionUser(astro.cookies);
 
   if (!user) {
-    // Redirección SSR estricta: un curl o cliente sin sesión recibe la redirección y cero HTML protegido
-    return astro.redirect('/es/login');
+    const locale = astro.params.locale === 'es' ? 'es' : 'en';
+    return astro.redirect(`/${locale}/login`);
   }
 
   return user;
 }
 
-/**
- * Guarda basada en roles (ej. asegurar que el usuario es admin).
- */
-export async function requireRole(astro: AstroGlobal, requiredRole: 'admin' | 'user'): Promise<AuthUser | Response> {
+export async function requireRole(astro: AstroGlobal, requiredRole: AuthRole): Promise<AuthUser | Response> {
   const user = await requireUser(astro);
-
-  // Si requireUser devolvió una Response (redirección), la propagamos
-  if (user instanceof Response) {
-    return user;
-  }
+  if (user instanceof Response) return user;
 
   if (user.role !== requiredRole) {
-    return astro.redirect('/es/unauthorized');
+    const locale = astro.params.locale === 'es' ? 'es' : 'en';
+    return astro.redirect(`/${locale}/unauthorized`);
   }
 
   return user;

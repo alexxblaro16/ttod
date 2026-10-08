@@ -9,7 +9,7 @@ if (locale !== 'en' && locale !== 'es') return new Response(null, { status: 404 
 const userId = requireUser(Astro.request);
 if (!userId) return Astro.redirect(`/${locale}/?auth=required`);
 
-const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
+const backend = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';
 const forwardedHeaders: Record<string, string> = { accept: 'application/json' };
 const cookie = Astro.request.headers.get('cookie');
 const authorization = Astro.request.headers.get('authorization');

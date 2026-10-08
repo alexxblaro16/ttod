@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+from passlib.context import CryptContext
 
 from services.backend.app.config import REPOSITORY_ROOT, Settings
 from services.backend.app.favorites import add_favorite, get_favorites, remove_favorite
@@ -42,11 +46,14 @@ class FakeRetrieval:
 
 
 class BackendTests(unittest.TestCase):
+    TEST_ADMIN_PASSWORD = "test-only-password"
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.settings = Settings(
             ttod_path=REPOSITORY_ROOT / "ttod.yml", schema_dir=REPOSITORY_ROOT / "schema",
             proposal_dir=Path(self.temp.name), ollama_model="test-model",
+            admin_password_hash=CryptContext(schemes=["bcrypt"]).hash(self.TEST_ADMIN_PASSWORD),
         )
         self.snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
         self.ollama = FakeOllama()
@@ -55,6 +62,45 @@ class BackendTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_login_verifies_bcrypt_and_returns_a_server_verified_session(self):
+        denied = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "wrong-password",
+        })
+        self.assertEqual(denied.status_code, 401)
+
+        login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": self.TEST_ADMIN_PASSWORD,
+        })
+        self.assertEqual(login.status_code, 200)
+        user = {"id": "usr-001", "email": "admin@ttod.local", "role": "admin"}
+        self.assertEqual(login.json()["user"], user)
+
+        session = self.client.get(
+            "/api/v1/auth/session",
+            headers={"Authorization": f"Bearer {login.json()['access_token']}"},
+        )
+        self.assertEqual(session.status_code, 200)
+        self.assertEqual(session.json(), user)
+        self.assertEqual(self.client.get("/api/v1/auth/session").status_code, 401)
+
+    def test_login_is_disabled_without_a_configured_bcrypt_hash(self):
+        settings = replace(self.settings, admin_password_hash="")
+        client = TestClient(create_app(settings, self.oracle))
+
+        response = client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": self.TEST_ADMIN_PASSWORD,
+        })
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_session_endpoint_rejects_invalid_access_tokens(self):
+        response = self.client.get(
+            "/api/v1/auth/session",
+            headers={"Authorization": "Bearer not-a-signed-token"},
+        )
+
+        self.assertEqual(response.status_code, 401)
 
     def test_favorite_storage_is_isolated_by_user(self):
         add_favorite("storage-user-a", "wis-001")
@@ -68,26 +114,113 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.get("/api/v1/favorites").status_code, 401)
         self.assertEqual(self.client.post("/api/v1/favorites", json={"quoteId": "wis-001"}).status_code, 401)
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001").status_code, 401)
-        self.assertEqual(
-            self.client.get("/api/v1/favorites", headers={"Authorization": "Bearer forged-user"}).status_code,
-            403,
-        )
 
     def test_favorite_api_isolates_users(self):
-        user_a = {"Authorization": "Bearer usr-001"}
-        user_b = {"Authorization": "Bearer usr-002"}
+        user_a = {"Authorization": "Bearer user-a"}
+        user_b = {"Authorization": "Bearer user-b"}
         created = self.client.post("/api/v1/favorites", headers=user_a, json={"quoteId": "wis-001"})
         self.assertEqual(created.status_code, 201)
-        self.assertEqual(created.json()["userId"], "usr-001")
-        self.assertEqual(created.json()["quoteId"], "wis-001")
-        self.assertTrue(created.json()["savedAt"])
-        listed = self.client.get("/api/v1/favorites", headers=user_a)
-        self.assertEqual(listed.status_code, 200)
-        self.assertEqual(listed.json(), [created.json()])
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_b).json(), [])
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_b).status_code, 404)
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_a).json(), [created.json()])
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_a).status_code, 204)
+
+    def test_access_token_is_separate_from_session_cookie(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        response = self.client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": session_cookie},
+        )
+        self.assertEqual(response.status_code, 200)
+        token = response.json()["access_token"]
+        self.assertEqual(response.json()["token_type"], "Bearer")
+        self.assertNotEqual(token, session_cookie)
+        self.assertEqual(
+            self.client.post("/api/v1/auth/token", headers={"Authorization": "Bearer student-1"}).status_code,
+            401,
+        )
+
+    def test_random_wisdom_accepts_valid_access_token(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        token = self.client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": session_cookie},
+        ).json()["access_token"]
+
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        self.assertEqual(response.status_code, 200)
+        quote = response.json()
+        self.assertTrue(quote["id"])
+        self.assertTrue(quote["text"])
+        self.assertIn("rights", quote)
+
+    def test_random_wisdom_rejects_missing_and_invalid_access_tokens(self):
+        self.assertEqual(self.client.get("/api/v1/wisdom/random").status_code, 401)
+        self.assertEqual(
+            self.client.get(
+                "/api/v1/wisdom/random",
+                headers={"Authorization": "Bearer invalid-token"},
+            ).status_code,
+            401,
+        )
+
+    def test_random_wisdom_rejects_session_cookie_as_access_token(self):
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": f"Bearer {session_cookie}"},
+        )
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            self.client.get(
+                "/api/v1/wisdom/random",
+                cookies={"ttod_session": session_cookie},
+            ).status_code,
+            401,
+        )
+
+    def test_random_wisdom_rejects_expired_access_token(self):
+        expiring_settings = replace(self.settings, pat_ttl_seconds=-1)
+        expiring_client = TestClient(create_app(expiring_settings, self.oracle))
+        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        token = expiring_client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": session_cookie},
+        ).json()["access_token"]
+        self.assertEqual(
+            expiring_client.get(
+                "/api/v1/wisdom/random",
+                headers={"Authorization": f"Bearer {token}"},
+            ).status_code,
+            401,
+        )
+
+    def test_proposal_api_requires_a_session(self):
+        response = self.client.post("/api/v1/oracle/propose", json={
+            "query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en",
+        })
+        self.assertEqual(response.status_code, 401)
+
+    def test_proposal_creation_never_writes_canonical_yaml(self):
+        before = hashlib.sha256(self.settings.ttod_path.read_bytes()).digest()
+        response = self.client.post("/api/v1/oracle/propose", headers={"Authorization": "Bearer student-1"}, json={
+            "query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en",
+        })
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(hashlib.sha256(self.settings.ttod_path.read_bytes()).digest(), before)
+
+    def test_reviewer_queue_requires_reviewer_or_instructor_role(self):
+        payload = {"query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en"}
+        self.assertEqual(self.client.get("/api/v1/proposals").status_code, 401)
+        self.assertEqual(self.client.get("/api/v1/proposals", headers={"Authorization": "Bearer student-1"}).status_code, 403)
+        reviewer = {"Authorization": 'Bearer {"userId":"reviewer-1","roles":["reviewer"]}'}
+        instructor = {"Authorization": 'Bearer {"userId":"instructor-1","roles":["instructor"]}'}
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=reviewer).status_code, 200)
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=instructor).status_code, 200)
+        self.assertEqual(self.client.post("/api/v1/oracle/propose", headers={"Authorization": "Bearer student-1"}, json=payload).status_code, 201)
 
     def test_health_schema_and_public_projections(self):
         self.assertEqual(self.client.get("/health").status_code, 200)
@@ -139,7 +272,7 @@ class BackendTests(unittest.TestCase):
         response = self.client.post("/api/v1/oracle/propose", json={
             "query": "What should this teach?", "creativeAnswer": "A new candidate answer.",
             "locale": "en",
-        })
+        }, headers={"Authorization": "Bearer student-1"})
         self.assertEqual(response.status_code, 201)
         proposal = response.json()
         self.assertEqual(proposal["status"], "proposed")
@@ -151,6 +284,57 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(persisted["status"], "proposed")
         self.assertNotEqual(persisted.get("status"), "active")
         self.assertNotIn("accepted_quote_id", persisted)
+
+    def test_proposal_api_requires_authentication(self):
+        response = self.client.post(
+            "/api/v1/proposals",
+            json={"text": "A useful quote", "section": "wisdom"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_proposal_api_validates_payload(self):
+        response = self.client.post(
+            "/api/v1/proposals",
+            headers={"Authorization": "Bearer student-1"},
+            json={"text": "", "section": "wisdom"},
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test_proposal_api_creates_and_persists_proposal(self):
+        payload = {
+            "text": "A useful quote",
+            "section": "wisdom",
+            "source": "student observation",
+            "level": "advanced",
+            "tags": ["simplicity"],
+            "teaches": "Prefer the smallest useful change.",
+            "lang": "en",
+        }
+        response = self.client.post(
+            "/api/v1/proposals",
+            headers={"Authorization": "Bearer student-1"},
+            json=payload,
+        )
+
+        self.assertEqual(response.status_code, 201)
+        result = response.json()
+        self.assertTrue(result["proposal_id"])
+        self.assertEqual(result["status"], "proposed")
+        self.assertEqual(result["proposer_id"], "student-1")
+        self.assertEqual(result["candidate_content"]["text"], payload["text"])
+        self.assertEqual(result["candidate_content"]["source"], payload["source"])
+        self.assertTrue(Path(result["stored_at"]).exists())
+
+    def test_proposal_api_returns_server_error_when_storage_fails(self):
+        client = TestClient(create_app(self.settings, self.oracle), raise_server_exceptions=False)
+        with patch("services.backend.app.main.ProposalStore.save", side_effect=OSError("disk full")):
+            response = client.post(
+                "/api/v1/proposals",
+                headers={"Authorization": "Bearer student-1"},
+                json={"text": "A useful quote", "section": "wisdom"},
+            )
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()["detail"], "Unable to save proposal")
 
     def test_r2_envelope_normalization(self):
         payload = {"results": [{

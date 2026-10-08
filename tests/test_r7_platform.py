@@ -63,7 +63,11 @@ class R7PlatformContracts(unittest.TestCase):
 
     def test_oracle_proposal_fixture_can_never_activate(self):
         fixture = json.loads((FIXTURES / "r_negative_oracle_propose_no_active.json").read_text())
-        response = self.client.post("/api/v1/oracle/propose", json=fixture["request"])
+        response = self.client.post(
+            "/api/v1/oracle/propose",
+            headers={"Authorization": "Bearer student-fixture"},
+            json=fixture["request"],
+        )
         self.assertEqual(response.status_code, 201)
         proposal = response.json(); expected = fixture["required"]
         self.assertEqual(proposal["status"], expected["status"])
