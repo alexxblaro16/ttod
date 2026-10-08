@@ -28,14 +28,18 @@ if (Astro.request.method === 'POST') {
       if (response.ok) {
         const result = await response.json() as AuthLoginResponse;
         if (
-          typeof result.access_token === 'string' && result.access_token.length > 0 &&
-          result.token_type === 'Bearer' &&
+          typeof result.session_token === 'string' && result.session_token.length > 0 &&
+          result.token_type === 'Session' &&
           typeof result.expires_in === 'number' && result.expires_in > 0 &&
           typeof result.user?.id === 'string' &&
           typeof result.user.email === 'string' &&
-          (result.user.role === 'admin' || result.user.role === 'user')
+          (result.user.role === 'admin' || result.user.role === 'user') &&
+          Array.isArray(result.user.roles) &&
+          result.user.roles.every((role) => (
+            role === 'student' || role === 'reviewer' || role === 'instructor'
+          ))
         ) {
-          Astro.cookies.set(AUTH_COOKIE_NAME, result.access_token, {
+          Astro.cookies.set(AUTH_COOKIE_NAME, result.session_token, {
             httpOnly: true,
             sameSite: 'lax',
             secure: import.meta.env.PROD,

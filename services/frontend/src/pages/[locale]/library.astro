@@ -6,7 +6,7 @@ import type { FavoriteEntry, WisdomEntry } from '../../types/domain';
 
 const locale = Astro.params.locale;
 if (locale !== 'en' && locale !== 'es') return new Response(null, { status: 404 });
-const userId = requireUser(Astro.request);
+const userId = await requireUser(Astro.request);
 if (!userId) return Astro.redirect(`/${locale}/?auth=required`);
 
 const backend = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';

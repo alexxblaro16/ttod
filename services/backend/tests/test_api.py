@@ -8,12 +8,15 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from services.backend.app.main import create_app
-from services.backend.tests.support import BackendTestCase
+from services.backend.tests.support import BackendTestCase, session_headers
 from ttod_core.repository import ProposalStore
 
 
 class ProposalApiIntegrationTests(BackendTestCase):
-    student_headers = {"Authorization": 'Bearer {"userId":"student-1","roles":["student"]}'}
+    def setUp(self):
+        super().setUp()
+        self.student_headers = session_headers(self.settings)
+
     proposal_payload = {
         "text": "A useful quote",
         "section": "wisdom",
@@ -64,8 +67,20 @@ class ProposalApiIntegrationTests(BackendTestCase):
             self.client.get("/api/v1/proposals", headers=self.student_headers).status_code,
             403,
         )
-        reviewer_headers = {"Authorization": 'Bearer {"userId":"reviewer-1","roles":["reviewer"]}'}
-        instructor_headers = {"Authorization": 'Bearer {"userId":"instructor-1","roles":["instructor"]}'}
+        reviewer_headers = session_headers(
+            self.settings,
+            user_id="reviewer-1",
+            role="user",
+            email="reviewer@ttod.local",
+            roles=("reviewer",),
+        )
+        instructor_headers = session_headers(
+            self.settings,
+            user_id="instructor-1",
+            role="user",
+            email="instructor@ttod.local",
+            roles=("instructor",),
+        )
         self.assertEqual(self.client.get("/api/v1/proposals", headers=reviewer_headers).status_code, 200)
         self.assertEqual(self.client.get("/api/v1/proposals", headers=instructor_headers).status_code, 200)
 

@@ -16,7 +16,12 @@ describe('SSR authentication guard', () => {
   });
 
   it('accepts only a valid user returned by the backend session endpoint', async () => {
-    const user = { id: 'usr-001', email: 'admin@ttod.local', role: 'admin' };
+    const user = {
+      id: 'usr-001',
+      email: 'admin@ttod.local',
+      role: 'admin',
+      roles: ['reviewer', 'instructor'],
+    };
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(user));
 
     await expect(getSessionUserFromToken('signed-token')).resolves.toEqual(user);
@@ -49,7 +54,7 @@ describe('SSR authentication guard', () => {
   });
 
   it('allows the required role and redirects users with a different role', async () => {
-    const user = { id: 'usr-002', email: 'user@ttod.local', role: 'user' };
+    const user = { id: 'usr-002', email: 'user@ttod.local', role: 'user', roles: ['student'] };
     vi.spyOn(globalThis, 'fetch').mockImplementation(async () => Response.json(user));
     const redirect = vi.fn((path: string) => new Response(null, {
       status: 302,

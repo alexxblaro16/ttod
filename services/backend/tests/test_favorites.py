@@ -11,6 +11,7 @@ from services.backend.app.favorites import add_favorite, get_favorites, remove_f
 from services.backend.app.main import create_app
 from services.backend.app.oracle import OracleService
 from services.backend.app.storage import SnapshotService
+from services.backend.tests.support import session_headers
 
 
 class FakeOllama:
@@ -68,6 +69,7 @@ class FavoriteApiTests(unittest.TestCase):
             proposal_dir=Path(self.temp.name),
             ollama_model="test-model",
         )
+        self.settings = settings
         snapshots = SnapshotService(settings.ttod_path, settings.schema_dir)
         oracle = OracleService(settings, snapshots, FakeOllama(), FakeRetrieval())
         self.client = TestClient(create_app(settings, oracle))
@@ -87,7 +89,7 @@ class FavoriteApiTests(unittest.TestCase):
         )
 
     def test_authenticated_user_can_create_list_and_delete_favorite(self):
-        headers = {"Authorization": "Bearer favorites-api-user"}
+        headers = session_headers(self.settings, user_id="favorites-api-user")
 
         created = self.client.post(
             "/api/v1/favorites",
@@ -113,8 +115,8 @@ class FavoriteApiTests(unittest.TestCase):
         self.assertEqual(self.client.get("/api/v1/favorites", headers=headers).json(), [])
 
     def test_api_isolates_users_when_listing_and_deleting(self):
-        user_a = {"Authorization": "Bearer favorites-api-user-a"}
-        user_b = {"Authorization": "Bearer favorites-api-user-b"}
+        user_a = session_headers(self.settings, user_id="favorites-api-user-a")
+        user_b = session_headers(self.settings, user_id="favorites-api-user-b")
         quote_id = "wis-api-isolation-test"
 
         created = self.client.post(

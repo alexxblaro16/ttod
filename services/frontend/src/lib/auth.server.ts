@@ -1,48 +1,30 @@
-export type SessionRole = 'student' | 'reviewer' | 'instructor';
+import { AUTH_COOKIE_NAME, getSessionUserFromToken } from './auth';
+import type { SessionRole } from '../types/domain';
 
 export interface SessionClaims {
   userId: string;
   roles: SessionRole[];
 }
 
-function sessionValue(request: Request): string | null {
-  const session = request.headers.get('cookie')?.match(/(?:^|;\s*)ttod_session=([^;]+)/)?.[1];
-  if (session?.trim()) return decodeURIComponent(session.trim());
-
-  const authorization = request.headers.get('authorization');
-  if (authorization?.startsWith('Bearer ')) {
-    const userId = authorization.slice('Bearer '.length).trim();
-    if (userId) return userId;
-  }
-
-  return null;
-}
-
-export function getSessionClaims(request: Request): SessionClaims | null {
-  const raw = sessionValue(request);
-  if (!raw) return null;
-
+export async function getSessionClaims(request: Request): Promise<SessionClaims | null> {
+  const encodedToken = request.headers.get('cookie')
+    ?.match(new RegExp(`(?:^|;\\s*)${AUTH_COOKIE_NAME}=([^;]+)`))?.[1];
+  if (!encodedToken) return null;
   try {
-    const parsed = JSON.parse(raw) as { userId?: unknown; role?: unknown; roles?: unknown };
-    const userId = typeof parsed.userId === 'string' ? parsed.userId.trim() : '';
-    const roles = Array.isArray(parsed.roles)
-      ? parsed.roles
-      : typeof parsed.role === 'string' ? [parsed.role] : [];
-    const validRoles = roles.filter((role): role is SessionRole => (
-      role === 'student' || role === 'reviewer' || role === 'instructor'
-    ));
-    return userId ? { userId, roles: validRoles } : null;
-  } catch {
-    return { userId: raw, roles: [] };
+    const user = await getSessionUserFromToken(decodeURIComponent(encodedToken));
+    return user ? { userId: user.id, roles: user.roles } : null;
+  } catch (error) {
+    console.error('Unable to verify the server-side session.', error);
+    return null;
   }
 }
 
-export function requireUser(request: Request): string | null {
-  return getSessionClaims(request)?.userId ?? null;
+export async function requireUser(request: Request): Promise<string | null> {
+  return (await getSessionClaims(request))?.userId ?? null;
 }
 
 export async function requireRole(request: Request, allowedRoles: SessionRole[]): Promise<SessionClaims> {
-  const claims = getSessionClaims(request);
+  const claims = await getSessionClaims(request);
   if (!claims || !claims.roles.some((role) => allowedRoles.includes(role))) {
     throw new Response('Forbidden', { status: 403, headers: { 'content-type': 'text/plain' } });
   }

@@ -24,6 +24,7 @@ from services.backend.app.oracle import (
     thematic_frame,
 )
 from services.backend.app.storage import SnapshotService
+from services.backend.tests.support import session_cookies, session_headers
 
 
 class FakeOllama:
@@ -73,12 +74,13 @@ class BackendTests(unittest.TestCase):
             "email": "admin@ttod.local", "password": self.TEST_ADMIN_PASSWORD,
         })
         self.assertEqual(login.status_code, 200)
-        user = {"id": "usr-001", "email": "admin@ttod.local", "role": "admin"}
+        self.assertEqual(login.json()["token_type"], "Session")
+        user = {"id": "usr-001", "email": "admin@ttod.local", "role": "admin", "roles": ["reviewer", "instructor"]}
         self.assertEqual(login.json()["user"], user)
 
         session = self.client.get(
             "/api/v1/auth/session",
-            headers={"Authorization": f"Bearer {login.json()['access_token']}"},
+            headers={"Authorization": f"Bearer {login.json()['session_token']}"},
         )
         self.assertEqual(session.status_code, 200)
         self.assertEqual(session.json(), user)
@@ -116,8 +118,8 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001").status_code, 401)
 
     def test_favorite_api_isolates_users(self):
-        user_a = {"Authorization": "Bearer user-a"}
-        user_b = {"Authorization": "Bearer user-b"}
+        user_a = session_headers(self.settings, user_id="user-a")
+        user_b = session_headers(self.settings, user_id="user-b")
         created = self.client.post("/api/v1/favorites", headers=user_a, json={"quoteId": "wis-001"})
         self.assertEqual(created.status_code, 201)
         self.assertEqual(self.client.get("/api/v1/favorites", headers=user_b).json(), [])
@@ -126,7 +128,7 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.delete("/api/v1/favorites/wis-001", headers=user_a).status_code, 204)
 
     def test_access_token_is_separate_from_session_cookie(self):
-        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        session_cookie = session_cookies(self.settings)["ttod_session"]
         response = self.client.post(
             "/api/v1/auth/token",
             cookies={"ttod_session": session_cookie},
@@ -136,12 +138,12 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(response.json()["token_type"], "Bearer")
         self.assertNotEqual(token, session_cookie)
         self.assertEqual(
-            self.client.post("/api/v1/auth/token", headers={"Authorization": "Bearer student-1"}).status_code,
+            self.client.post("/api/v1/auth/token", headers=session_headers(self.settings, user_id="student-1")).status_code,
             401,
         )
 
     def test_random_wisdom_accepts_valid_access_token(self):
-        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        session_cookie = session_cookies(self.settings)["ttod_session"]
         token = self.client.post(
             "/api/v1/auth/token",
             cookies={"ttod_session": session_cookie},
@@ -168,7 +170,7 @@ class BackendTests(unittest.TestCase):
         )
 
     def test_random_wisdom_rejects_session_cookie_as_access_token(self):
-        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        session_cookie = session_cookies(self.settings)["ttod_session"]
         response = self.client.get(
             "/api/v1/wisdom/random",
             headers={"Authorization": f"Bearer {session_cookie}"},
@@ -185,7 +187,7 @@ class BackendTests(unittest.TestCase):
     def test_random_wisdom_rejects_expired_access_token(self):
         expiring_settings = replace(self.settings, pat_ttl_seconds=-1)
         expiring_client = TestClient(create_app(expiring_settings, self.oracle))
-        session_cookie = '{"userId":"student-1","roles":["student"]}'
+        session_cookie = session_cookies(self.settings)["ttod_session"]
         token = expiring_client.post(
             "/api/v1/auth/token",
             cookies={"ttod_session": session_cookie},
@@ -206,7 +208,7 @@ class BackendTests(unittest.TestCase):
 
     def test_proposal_creation_never_writes_canonical_yaml(self):
         before = hashlib.sha256(self.settings.ttod_path.read_bytes()).digest()
-        response = self.client.post("/api/v1/oracle/propose", headers={"Authorization": "Bearer student-1"}, json={
+        response = self.client.post("/api/v1/oracle/propose", headers=session_headers(self.settings, user_id="student-1"), json={
             "query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en",
         })
         self.assertEqual(response.status_code, 201)
@@ -215,12 +217,12 @@ class BackendTests(unittest.TestCase):
     def test_reviewer_queue_requires_reviewer_or_instructor_role(self):
         payload = {"query": "What should this teach?", "creativeAnswer": "A candidate answer.", "locale": "en"}
         self.assertEqual(self.client.get("/api/v1/proposals").status_code, 401)
-        self.assertEqual(self.client.get("/api/v1/proposals", headers={"Authorization": "Bearer student-1"}).status_code, 403)
-        reviewer = {"Authorization": 'Bearer {"userId":"reviewer-1","roles":["reviewer"]}'}
-        instructor = {"Authorization": 'Bearer {"userId":"instructor-1","roles":["instructor"]}'}
+        self.assertEqual(self.client.get("/api/v1/proposals", headers=session_headers(self.settings, user_id="student-1")).status_code, 403)
+        reviewer = session_headers(self.settings, user_id="reviewer-1", roles=("reviewer",))
+        instructor = session_headers(self.settings, user_id="instructor-1", roles=("instructor",))
         self.assertEqual(self.client.get("/api/v1/proposals", headers=reviewer).status_code, 200)
         self.assertEqual(self.client.get("/api/v1/proposals", headers=instructor).status_code, 200)
-        self.assertEqual(self.client.post("/api/v1/oracle/propose", headers={"Authorization": "Bearer student-1"}, json=payload).status_code, 201)
+        self.assertEqual(self.client.post("/api/v1/oracle/propose", headers=session_headers(self.settings, user_id="student-1"), json=payload).status_code, 201)
 
     def test_health_schema_and_public_projections(self):
         self.assertEqual(self.client.get("/health").status_code, 200)
@@ -272,7 +274,7 @@ class BackendTests(unittest.TestCase):
         response = self.client.post("/api/v1/oracle/propose", json={
             "query": "What should this teach?", "creativeAnswer": "A new candidate answer.",
             "locale": "en",
-        }, headers={"Authorization": "Bearer student-1"})
+        }, headers=session_headers(self.settings, user_id="student-1"))
         self.assertEqual(response.status_code, 201)
         proposal = response.json()
         self.assertEqual(proposal["status"], "proposed")
@@ -295,7 +297,7 @@ class BackendTests(unittest.TestCase):
     def test_proposal_api_validates_payload(self):
         response = self.client.post(
             "/api/v1/proposals",
-            headers={"Authorization": "Bearer student-1"},
+            headers=session_headers(self.settings, user_id="student-1"),
             json={"text": "", "section": "wisdom"},
         )
         self.assertEqual(response.status_code, 422)
@@ -312,7 +314,7 @@ class BackendTests(unittest.TestCase):
         }
         response = self.client.post(
             "/api/v1/proposals",
-            headers={"Authorization": "Bearer student-1"},
+            headers=session_headers(self.settings, user_id="student-1"),
             json=payload,
         )
 
@@ -331,7 +333,7 @@ class BackendTests(unittest.TestCase):
         with patch("services.backend.app.main.ProposalStore.save", side_effect=OSError("disk full")):
             response = client.post(
                 "/api/v1/proposals",
-                headers={"Authorization": "Bearer student-1"},
+                headers=session_headers(self.settings, user_id="student-1"),
                 json={"text": "A useful quote", "section": "wisdom"},
             )
         self.assertEqual(response.status_code, 500)

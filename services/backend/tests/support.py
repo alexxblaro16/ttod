@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+from itsdangerous import URLSafeTimedSerializer
 
 from services.backend.app.config import REPOSITORY_ROOT, Settings
 from services.backend.app.main import create_app
@@ -32,6 +33,28 @@ class FakeRetrieval:
         }], "indexDigest": "digest", "indexedQuotes": 1}
 
 
+def issue_session_token(settings, user_id="student-1", role="user", email="student@ttod.local", roles=("student",)):
+    serializer = URLSafeTimedSerializer(settings.pat_secret, salt="ttod-web-session-v1")
+    return serializer.dumps({
+        "sub": user_id,
+        "role": role,
+        "email": email,
+        "roles": list(roles),
+        "typ": "session",
+    })
+
+
+def session_headers(settings, user_id="student-1", role="user", email="student@ttod.local", roles=("student",)):
+    token = issue_session_token(settings, user_id, role, email, roles)
+    return {"Authorization": f"Bearer {token}"}
+
+
+def session_cookies(settings, user_id="student-1", role="user", email="student@ttod.local", roles=("student",)):
+    return {
+        "ttod_session": issue_session_token(settings, user_id, role, email, roles),
+    }
+
+
 class BackendTestCase(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -45,6 +68,8 @@ class BackendTestCase(unittest.TestCase):
         self.ollama = FakeOllama()
         self.oracle = OracleService(self.settings, snapshots, self.ollama, FakeRetrieval())
         self.client = TestClient(create_app(self.settings, self.oracle))
+        self.session_cookie = session_cookies(self.settings)["ttod_session"]
+        self.student_headers = session_headers(self.settings)
         self.favorites_patch = patch("services.backend.app.favorites._favorites", {})
         self.favorites_patch.start()
 

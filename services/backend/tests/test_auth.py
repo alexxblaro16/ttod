@@ -9,8 +9,6 @@ from services.backend.tests.support import BackendTestCase
 
 
 class AuthIntegrationTests(BackendTestCase):
-    session_cookie = '{"userId":"student-1","roles":["student"]}'
-
     def issue_token(self, client=None):
         client = client or self.client
         response = client.post(
@@ -33,6 +31,13 @@ class AuthIntegrationTests(BackendTestCase):
         response = self.client.post(
             "/api/v1/auth/token",
             headers={"Authorization": "Bearer student-1"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_token_issuance_rejects_a_forged_json_cookie(self):
+        response = self.client.post(
+            "/api/v1/auth/token",
+            cookies={"ttod_session": '{"userId":"attacker","roles":["instructor"]}'},
         )
         self.assertEqual(response.status_code, 401)
 
@@ -68,6 +73,14 @@ class AuthIntegrationTests(BackendTestCase):
         response = self.client.get(
             "/api/v1/wisdom/random",
             cookies={"ttod_session": self.session_cookie},
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_public_api_token_cannot_be_used_as_a_web_session(self):
+        pat = self.issue_token()
+        response = self.client.get(
+            "/api/v1/favorites",
+            headers={"Authorization": f"Bearer {pat}"},
         )
         self.assertEqual(response.status_code, 401)
 

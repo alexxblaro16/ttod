@@ -9,6 +9,7 @@ class AuthUser(BaseModel):
     id: str
     email: str
     role: Literal["admin", "user"]
+    roles: list[Literal["student", "reviewer", "instructor"]] = Field(default_factory=list)
 
 
 class AuthLoginRequest(BaseModel):
@@ -17,8 +18,8 @@ class AuthLoginRequest(BaseModel):
 
 
 class AuthLoginResponse(BaseModel):
-    access_token: str
-    token_type: Literal["Bearer"] = "Bearer"
+    session_token: str
+    token_type: Literal["Session"] = "Session"
     expires_in: int
     user: AuthUser
 

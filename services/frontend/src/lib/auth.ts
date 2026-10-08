@@ -1,7 +1,7 @@
 import type { AstroGlobal } from 'astro';
 import type { AuthRole, AuthUser } from '../types/domain';
 
-export const AUTH_COOKIE_NAME = 'ttod_access_token';
+export const AUTH_COOKIE_NAME = 'ttod_session';
 const BACKEND_URL = import.meta.env.BACKEND_URL ?? 'http://localhost:8000';
 
 export async function getSessionUser(cookies: AstroGlobal['cookies']): Promise<AuthUser | null> {
@@ -22,7 +22,11 @@ export async function getSessionUserFromToken(token?: string): Promise<AuthUser 
     if (
       typeof candidate.id !== 'string' ||
       typeof candidate.email !== 'string' ||
-      (candidate.role !== 'admin' && candidate.role !== 'user')
+      (candidate.role !== 'admin' && candidate.role !== 'user') ||
+      !Array.isArray(candidate.roles) ||
+      !candidate.roles.every((role) => (
+        role === 'student' || role === 'reviewer' || role === 'instructor'
+      ))
     ) return null;
 
     return candidate as AuthUser;

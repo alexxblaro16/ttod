@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import json
 import logging
 import random
 
-from fastapi import Cookie, Depends, FastAPI, Header, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -12,7 +11,7 @@ from ttod_core.proposals import create_proposal
 from ttod_core.repository import ProposalStore
 
 from .config import Settings
-from .auth import AccessTokenClaims, AuthService, RequireAccessToken
+from .auth import AccessTokenClaims, AuthService, RequireAccessToken, RequireSession
 from .models import (
     AuthLoginRequest,
     AuthLoginResponse,
@@ -34,44 +33,6 @@ class FavoriteRequest(BaseModel):
     quoteId: str = Field(min_length=1)
 
 
-def require_session_user(
-    authorization: str | None = Header(default=None),
-    ttod_session: str | None = Cookie(default=None),
-) -> str:
-    """Resolve the authenticated user from the session boundary."""
-    raw = ttod_session.strip() if ttod_session and ttod_session.strip() else None
-    if raw is None and authorization and authorization.startswith("Bearer "):
-        raw = authorization.removeprefix("Bearer ").strip()
-    if raw:
-        try:
-            claims = json.loads(raw)
-            user_id = claims.get("userId")
-            if isinstance(user_id, str) and user_id.strip():
-                return user_id.strip()
-        except json.JSONDecodeError:
-            return raw
-    raise HTTPException(status_code=401, detail="Authentication required")
-
-
-def require_reviewer_session(
-    authorization: str | None = Header(default=None),
-    ttod_session: str | None = Cookie(default=None),
-) -> str:
-    user_id = require_session_user(authorization, ttod_session)
-    raw = ttod_session.strip() if ttod_session and ttod_session.strip() else authorization.removeprefix("Bearer ").strip() if authorization and authorization.startswith("Bearer ") else ""
-    try:
-        roles = json.loads(raw).get("roles", [])
-    except json.JSONDecodeError:
-        roles = []
-    if not isinstance(roles, list) or not {"reviewer", "instructor"}.intersection(roles):
-        raise HTTPException(status_code=403, detail="Reviewer role required")
-    return user_id
-
-
-def require_session_cookie_user(ttod_session: str | None = Cookie(default=None)) -> str:
-    return require_session_user(authorization=None, ttod_session=ttod_session)
-
-
 def create_app(settings: Settings | None = None, oracle: OracleService | None = None) -> FastAPI:
     settings = settings or Settings.from_env()
     snapshots = SnapshotService(settings.ttod_path, settings.schema_dir)
@@ -81,7 +42,10 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         settings.pat_ttl_seconds,
         settings.admin_email,
         settings.admin_password_hash,
+        settings.session_ttl_seconds,
     )
+    require_session = RequireSession(auth_service)
+    require_session_cookie = RequireSession(auth_service, cookie_only=True)
     require_access_token = RequireAccessToken(auth_service)
     app = FastAPI(title="TTOD Oracle Backend", version="1.0.0")
 
@@ -101,9 +65,9 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         return snapshots.wisdom()
 
     @app.post("/api/v1/auth/token", response_model=TokenResponse)
-    def issue_access_token(user_id: str = Depends(require_session_cookie_user)):
+    def issue_access_token(claims: AccessTokenClaims = Depends(require_session_cookie)):
         return TokenResponse(
-            access_token=auth_service.issue_pat(user_id),
+            access_token=auth_service.issue_pat(claims.user_id, claims.role, claims.email),
             expires_in=auth_service.pat_ttl_seconds,
         )
 
@@ -113,16 +77,31 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         if user is None:
             raise HTTPException(status_code=401, detail="Invalid email or password")
         return AuthLoginResponse(
-            access_token=auth_service.issue_pat(user.user_id, user.role, user.email),
-            expires_in=auth_service.pat_ttl_seconds,
-            user=AuthUser(id=user.user_id, email=user.email, role="admin"),
+            session_token=auth_service.issue_session(
+                user.user_id,
+                user.role,
+                user.email,
+                user.roles,
+            ),
+            expires_in=auth_service.session_ttl_seconds,
+            user=AuthUser(
+                id=user.user_id,
+                email=user.email,
+                role="admin",
+                roles=list(user.roles),
+            ),
         )
 
     @app.get("/api/v1/auth/session", response_model=AuthUser)
-    def auth_session(claims: AccessTokenClaims = Depends(require_access_token)):
+    def auth_session(claims: AccessTokenClaims = Depends(require_session)):
         if claims.role not in {"admin", "user"} or not claims.email.strip():
-            raise HTTPException(status_code=401, detail="Invalid or expired access token")
-        return AuthUser(id=claims.user_id, email=claims.email, role=claims.role)
+            raise HTTPException(status_code=401, detail="Invalid or expired session")
+        return AuthUser(
+            id=claims.user_id,
+            email=claims.email,
+            role=claims.role,
+            roles=list(claims.roles),
+        )
 
     @app.get("/api/v1/wisdom/random")
     def wisdom_random(_claims: AccessTokenClaims = Depends(require_access_token)):
@@ -140,14 +119,18 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         return StreamingResponse(oracle.stream(payload), media_type="text/event-stream")
 
     @app.post("/api/v1/oracle/propose", status_code=201)
-    async def oracle_propose(payload: OracleProposeRequest, _user_id: str = Depends(require_session_user)):
+    async def oracle_propose(
+        payload: OracleProposeRequest,
+        claims: AccessTokenClaims = Depends(require_session),
+    ):
         return await oracle.propose(payload)
 
     @app.post("/api/v1/proposals", status_code=201)
     def create_user_proposal(
         payload: ProposalRequest,
-        user_id: str = Depends(require_session_user),
+        claims: AccessTokenClaims = Depends(require_session),
     ):
+        user_id = claims.user_id
         candidate = {
             "text": payload.text,
             "section": payload.section,
@@ -179,20 +162,28 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
         return proposal.to_dict()
 
     @app.get("/api/v1/proposals")
-    def list_proposals(_user_id: str = Depends(require_reviewer_session)):
+    def list_proposals(claims: AccessTokenClaims = Depends(require_session)):
+        if not {"reviewer", "instructor"}.intersection(claims.roles):
+            raise HTTPException(status_code=403, detail="Reviewer role required")
         return [proposal.to_dict() for proposal in ProposalStore(settings.proposal_dir).list()]
 
     @app.post("/api/v1/favorites", status_code=201)
-    def create_favorite(payload: FavoriteRequest, user_id: str = Depends(require_session_user)):
-        return add_favorite(user_id, payload.quoteId)
+    def create_favorite(
+        payload: FavoriteRequest,
+        claims: AccessTokenClaims = Depends(require_session),
+    ):
+        return add_favorite(claims.user_id, payload.quoteId)
 
     @app.get("/api/v1/favorites")
-    def list_favorites(user_id: str = Depends(require_session_user)):
-        return get_favorites(user_id)
+    def list_favorites(claims: AccessTokenClaims = Depends(require_session)):
+        return get_favorites(claims.user_id)
 
     @app.delete("/api/v1/favorites/{quote_id}")
-    def delete_favorite(quote_id: str, user_id: str = Depends(require_session_user)):
-        if not remove_favorite(user_id, quote_id):
+    def delete_favorite(
+        quote_id: str,
+        claims: AccessTokenClaims = Depends(require_session),
+    ):
+        if not remove_favorite(claims.user_id, quote_id):
             raise HTTPException(status_code=404, detail="Favorite not found")
         return Response(status_code=204)
 
