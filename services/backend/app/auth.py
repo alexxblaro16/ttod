@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from fastapi import Cookie, HTTPException
+from fastapi import Cookie, Header, HTTPException
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from passlib.context import CryptContext
 from passlib.exc import UnknownHashError
@@ -20,6 +20,11 @@ class SessionClaims:
     roles: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class AccessTokenClaims:
+    user_id: str
+
+
 class AuthService:
     def __init__(
         self,
@@ -27,12 +32,24 @@ class AuthService:
         session_ttl_seconds: int,
         admin_email: str,
         admin_password_hash: str,
+        pat_secret: str,
+        pat_ttl_seconds: int,
     ):
         if len(session_secret.encode("utf-8")) < 32:
             raise ValueError("Session secret must contain at least 32 bytes")
         if session_ttl_seconds <= 0:
             raise ValueError("Session TTL must be greater than zero")
+        if len(pat_secret.encode("utf-8")) < 32:
+            raise ValueError("PAT secret must contain at least 32 bytes")
+        if pat_secret == session_secret:
+            raise ValueError("PAT secret must differ from the session secret")
+        if pat_ttl_seconds <= 0:
+            raise ValueError("PAT TTL must be greater than zero")
         self.session_ttl_seconds = session_ttl_seconds
+        self.pat_ttl_seconds = pat_ttl_seconds
+        # Secreto y sal propios: una cookie de sesión robada no se puede presentar como PAT,
+        # ni un PAT filtrado abre una sesión de navegador.
+        self._pat_serializer = URLSafeTimedSerializer(pat_secret, salt="ttod-api-pat-v1")
         self.admin_email = admin_email.strip()
         self.admin_password_hash = admin_password_hash.strip()
         self._password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -90,6 +107,23 @@ class AuthService:
             return None
         return SessionClaims(user_id=user_id, email=email, roles=tuple(roles))
 
+    def issue_pat(self, user_id: str) -> str:
+        if not user_id.strip():
+            raise ValueError("user_id must not be empty")
+        return self._pat_serializer.dumps({"sub": user_id, "typ": "pat"})
+
+    def read_pat(self, token: str) -> AccessTokenClaims | None:
+        try:
+            payload: Any = self._pat_serializer.loads(token, max_age=self.pat_ttl_seconds)
+        except (BadSignature, SignatureExpired):
+            return None
+        if not isinstance(payload, dict) or payload.get("typ") != "pat":
+            return None
+        user_id = payload.get("sub")
+        if not isinstance(user_id, str) or not user_id.strip():
+            return None
+        return AccessTokenClaims(user_id=user_id)
+
 
 class RequireSession:
     """Dependencia FastAPI: la sesión web solo se acepta desde la cookie, nunca como Bearer."""
@@ -104,4 +138,28 @@ class RequireSession:
         claims = self.auth_service.read_session(session_token) if session_token else None
         if claims is None:
             raise HTTPException(status_code=401, detail="Authentication required")
+        return claims
+
+
+class RequireAccessToken:
+    """Dependencia FastAPI para la API pública: solo acepta un PAT en `Authorization: Bearer`."""
+
+    def __init__(self, auth_service: AuthService):
+        self.auth_service = auth_service
+
+    def __call__(self, authorization: str | None = Header(default=None)) -> AccessTokenClaims:
+        scheme, _, token = (authorization or "").partition(" ")
+        if scheme.lower() != "bearer" or not token.strip():
+            raise HTTPException(
+                status_code=401,
+                detail="Bearer access token required",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        claims = self.auth_service.read_pat(token.strip())
+        if claims is None:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid or expired access token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         return claims

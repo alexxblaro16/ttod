@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -65,6 +66,17 @@ class BackendTests(unittest.TestCase):
             "email": "admin@ttod.local", "password": "seeded-user-token",
         })
         self.client.cookies.set("ttod_session", login.json()["session_token"])
+
+    def issue_pat(self) -> tuple[str, str]:
+        """Devuelve (sesión, PAT) y deja el cliente sin cookies, como un cliente externo."""
+        login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@ttod.local", "password": "seeded-user-token",
+        })
+        session_token = login.json()["session_token"]
+        issued = self.client.post("/api/v1/auth/token", cookies={"ttod_session": session_token})
+        self.assertEqual(issued.status_code, 200)
+        self.client.cookies.clear()
+        return session_token, issued.json()["access_token"]
 
     def test_login_validates_seeded_credentials_and_issues_a_verified_session(self):
         denied = self.client.post("/api/v1/auth/login", json={
@@ -186,6 +198,69 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(persisted["status"], "proposed")
         self.assertNotEqual(persisted.get("status"), "active")
         self.assertNotIn("accepted_quote_id", persisted)
+
+    def test_token_endpoint_issues_a_pat_that_is_not_the_session_value(self):
+        anonymous = self.client.post("/api/v1/auth/token")
+        self.assertEqual(anonymous.status_code, 401)
+
+        session_token, pat = self.issue_pat()
+
+        self.assertNotEqual(pat, session_token)
+        as_session = self.client.get("/api/v1/auth/session", cookies={"ttod_session": pat})
+        self.assertEqual(as_session.status_code, 401)
+
+    def test_random_wisdom_returns_a_quote_for_a_valid_bearer_token(self):
+        _session_token, pat = self.issue_pat()
+
+        response = self.client.get("/api/v1/wisdom/random", headers={"Authorization": f"Bearer {pat}"})
+
+        self.assertEqual(response.status_code, 200)
+        quote = response.json()
+        for field in ("id", "section", "level", "text", "tags", "origin"):
+            self.assertIn(field, quote)
+        self.assertIn(quote["id"], {entry["id"] for entry in self.snapshots.wisdom()})
+
+    def test_random_wisdom_rejects_a_missing_token(self):
+        response = self.client.get("/api/v1/wisdom/random")
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.headers["www-authenticate"], "Bearer")
+        self.assertEqual(response.json(), {"detail": "Bearer access token required"})
+
+    def test_random_wisdom_rejects_an_invalid_token(self):
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": "Bearer not-a-signed-token"},
+        )
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"detail": "Invalid or expired access token"})
+
+    def test_random_wisdom_rejects_a_session_cookie_on_its_own(self):
+        session_token, _pat = self.issue_pat()
+
+        response = self.client.get("/api/v1/wisdom/random", cookies={"ttod_session": session_token})
+
+        self.assertEqual(response.status_code, 401)
+        self.assertNotIn("text", response.json())
+
+    def test_random_wisdom_rejects_a_session_value_presented_as_bearer(self):
+        session_token, _pat = self.issue_pat()
+
+        response = self.client.get(
+            "/api/v1/wisdom/random",
+            headers={"Authorization": f"Bearer {session_token}"},
+        )
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_random_wisdom_rejects_an_expired_token(self):
+        _session_token, pat = self.issue_pat()
+
+        with patch("itsdangerous.timed.time.time", return_value=time.time() + self.settings.pat_ttl_seconds + 60):
+            response = self.client.get("/api/v1/wisdom/random", headers={"Authorization": f"Bearer {pat}"})
+
+        self.assertEqual(response.status_code, 401)
 
     def test_proposal_api_rejects_anonymous_requests_without_storing_anything(self):
         response = self.client.post(

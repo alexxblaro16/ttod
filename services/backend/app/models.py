@@ -26,6 +26,12 @@ class AuthLoginResponse(BaseModel):
     user: AuthUser
 
 
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: Literal["Bearer"] = "Bearer"
+    expires_in: int
+
+
 class FavoriteRequest(BaseModel):
     quoteId: str = Field(min_length=1, max_length=200)
 
