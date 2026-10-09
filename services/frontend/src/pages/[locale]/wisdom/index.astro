@@ -1,5 +1,6 @@
 ---
 import Page from '../../../layouts/Page.astro';
+import FavoriteButton from '../../../components/favorites/FavoriteButton';
 import { fetchWisdom, frequencies, isLocale, labels, quoteSlug } from '../../../content/wisdom';
 import '../../../styles/tokens.css';
 const locale = Astro.params.locale;
@@ -15,7 +16,7 @@ const copy = labels[locale];
       <section><h2>{copy.sections}</h2><div class="ttod-clusters">{frequencies(entries, 'section').map(([value, count]) => <a class="ttod-pill" href={`/${locale}/wisdom/sections/${value}/`}>{value} ({count})</a>)}</div></section>
       <section><h2>{copy.levels}</h2><div class="ttod-clusters">{frequencies(entries, 'level').map(([value, count]) => <a class="ttod-pill" href={`/${locale}/wisdom/levels/${value}/`}>{value} ({count})</a>)}</div></section>
       <section><h2>{copy.tags}</h2><div class="ttod-clusters">{frequencies(entries, 'tags').map(([value, count]) => <a class="ttod-pill" href={`/${locale}/wisdom/tags/${value}/`}>{value} ({count})</a>)}</div></section>
-      <section><h2>{copy.all}</h2><div class="ttod-grid">{entries.map((entry) => <article class="ttod-card"><blockquote>{entry.text}</blockquote><a href={`/${locale}/wisdom/${quoteSlug(entry)}/`}>{entry.id}</a><p class="ttod-meta">{entry.section} · {entry.level}</p><footer class="ttod-meta">{entry.rights.holder ?? 'Rubén Vega Balbás'} · {entry.rights.license}</footer></article>)}</div></section>
+      <section><h2>{copy.all}</h2><div class="ttod-grid">{entries.map((entry) => <article class="ttod-card"><blockquote>{entry.text}</blockquote><a href={`/${locale}/wisdom/${quoteSlug(entry)}/`}>{entry.id}</a><p class="ttod-meta">{entry.section} · {entry.level}</p><footer class="ttod-meta">{entry.rights.holder ?? 'Rubén Vega Balbás'} · {entry.rights.license}</footer><FavoriteButton client:load quoteId={entry.id} initiallySaved={false} /></article>)}</div></section>
     </>}
   </main>
 </Page>

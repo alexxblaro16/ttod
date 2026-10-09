@@ -30,6 +30,12 @@ export interface WisdomEntry {
   };
 }
 
+export interface FavoriteEntry {
+  userId: string;
+  quoteId: string;
+  savedAt: string;
+}
+
 export interface GraphNode {
   id: string;
   section: string;

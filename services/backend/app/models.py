@@ -26,6 +26,10 @@ class AuthLoginResponse(BaseModel):
     user: AuthUser
 
 
+class FavoriteRequest(BaseModel):
+    quoteId: str = Field(min_length=1, max_length=200)
+
+
 class OracleQueryPayload(BaseModel):
     query: str = Field(min_length=1, max_length=8000)
     contextTag: str | None = None
