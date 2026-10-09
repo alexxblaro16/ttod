@@ -1,0 +1,42 @@
+---
+import Page from '../../../../layouts/Page.astro';
+import { SESSION_COOKIE_NAME, requireRole } from '../../../../lib/auth.server';
+import { isLocale } from '../../../../content/wisdom';
+
+export const prerender = false;
+
+const locale = Astro.params.locale;
+if (!isLocale(locale)) return new Response(null, { status: 404 });
+
+// Un estudiante con sesión recibe aquí el 403: la cola no se oculta solo en la interfaz.
+const reviewer = await requireRole(Astro.request, ['reviewer', 'instructor']);
+if (reviewer instanceof Response) return reviewer;
+
+const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
+const sessionCookie = `${SESSION_COOKIE_NAME}=${Astro.cookies.get(SESSION_COOKIE_NAME)?.value ?? ''}`;
+const response = await fetch(`${backend}/api/v1/proposals`, {
+  headers: { accept: 'application/json', cookie: sessionCookie }
+});
+if (!response.ok) throw new Error('Unable to load the reviewer queue');
+const proposals = await response.json() as Array<{
+  proposal_id: string;
+  status: string;
+  candidate_content: { text?: string; section?: string; origin?: string };
+}>;
+const copy = locale === 'es'
+  ? { title: 'Cola de revisión', empty: 'No hay propuestas pendientes.', status: 'Estado', section: 'Sección' }
+  : { title: 'Reviewer queue', empty: 'There are no pending proposals.', status: 'Status', section: 'Section' };
+---
+<Page lang={locale} title={copy.title}>
+  <main>
+    <h1>{copy.title}</h1>
+    <p class="meta">{reviewer.roles.join(', ')}</p>
+    {proposals.length === 0 ? <p>{copy.empty}</p> : <section aria-label={copy.title}>
+      {proposals.map((proposal) => <article>
+        <h2>{proposal.proposal_id}</h2>
+        <blockquote>{proposal.candidate_content.text}</blockquote>
+        <p class="meta">{copy.status}: {proposal.status} · {copy.section}: {proposal.candidate_content.section} · {proposal.candidate_content.origin}</p>
+      </article>)}
+    </section>}
+  </main>
+</Page>

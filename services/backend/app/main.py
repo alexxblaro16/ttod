@@ -134,6 +134,13 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
 
         return ProposalCreated(proposal_id=proposal.proposal_id, status=proposal.status.value)
 
+    # La cola solo la ve quien revisa: el rol se comprueba en el servidor, no ocultando la vista.
+    @app.get("/api/v1/proposals")
+    def list_proposals(claims: SessionClaims = Depends(require_session)):
+        if not {"reviewer", "instructor"}.intersection(claims.roles):
+            raise HTTPException(status_code=403, detail="Reviewer role required")
+        return [proposal.to_dict() for proposal in ProposalStore(settings.proposal_dir).list()]
+
     return app
 
 
