@@ -53,7 +53,7 @@ Read the [method and safeguards]({{ '/research/methodology/' | relative_url }}) 
 | Layer | Status | Next gate |
 | --- | --- | --- |
 | Engineering feasibility | locally observed; independent verification open | close the evidence report |
-| Teaching skeleton | in cohort use / Phase U–V | keep subtraction and assignment contracts frozen |
+| Teaching skeleton | in cohort use | keep subtraction and assignment contracts frozen |
 | Curriculum alignment | ongoing | bilingual semantic-parity review |
 | Strand A (philosophical) | parked | reopen only with its own design doc |
 | Strand B (pedagogical case) | protocol drafted; consent templates in repo; **ethics review in progress** | committee decision; then consented pseudonymized analysis after grades |
