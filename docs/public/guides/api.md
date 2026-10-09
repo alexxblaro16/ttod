@@ -48,7 +48,7 @@ The JSON on the wire is the same contract the frontend compiles against, in
 `user` in a login response:
 
 ```json
-{ "id": "usr-001", "email": "admin@ttod.local", "roles": ["reviewer", "instructor"] }
+{ "id": "usr-001", "email": "<the account address>", "roles": ["reviewer", "instructor"] }
 ```
 
 `roles` is a list of `SessionRole`: `student`, `reviewer` or `instructor`.
@@ -73,7 +73,7 @@ Log in and keep the session token:
 ```bash
 SESSION=$(curl -s -X POST http://localhost:8080/api/v1/auth/login \
   -H 'content-type: application/json' \
-  -d '{"email":"admin@ttod.local","password":"'"$TTOD_ADMIN_PASSWORD"'"}' \
+  -d '{"email":"'"$TTOD_ADMIN_EMAIL"'","password":"'"$TTOD_ADMIN_PASSWORD"'"}' \
   | python -c 'import json,sys; print(json.load(sys.stdin)["session_token"])')
 ```
 
@@ -117,13 +117,14 @@ dependencies beyond the standard library. Run it against a live instance:
 ```bash
 python examples/api_client.py \
   --base-url http://localhost:8080 \
+  --email "$TTOD_ADMIN_EMAIL" \
   --password "$TTOD_ADMIN_PASSWORD"
 ```
 
 Expected output:
 
 ```
-1. logged in as admin@ttod.local with roles ['reviewer', 'instructor']
+1. logged in as <the account address> with roles ['reviewer', 'instructor']
 2. the cookie resolves to AuthUser usr-001
 3. minted a bearer token valid for 3600s
 4. rrp-019 (remote-repo): Un informe para gobernarlos a todos, un gráfico para hallarlos...
