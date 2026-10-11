@@ -1,17 +1,18 @@
 ---
 import Page from '../../../layouts/Page.astro';
-import { fetchWisdom, isLocale, labels } from '../../../content/wisdom';
+import EmptyState from '../../../components/EmptyState.astro';
+import { isLocale, labels, loadWisdom } from '../../../content/wisdom';
 import '../../../styles/tokens.css';
 const locale = Astro.params.locale;
 if (!isLocale(locale)) return new Response(null, { status: 404 });
-const entries = await fetchWisdom(locale);
-const quote = entries.find((entry) => entry.id === Astro.params.slug);
+const { entries, failed } = await loadWisdom(locale);
+const quote = failed ? undefined : entries.find((entry) => entry.id === Astro.params.slug);
 const copy = labels[locale];
 ---
 <Page lang={locale} title={quote ? `${quote.id} · ${copy.wisdom}` : copy.notFound}>
   <main class="ttod-shell ttod-prose">
     <nav class="ttod-nav"><a href={`/${locale}/wisdom/`}>← {copy.back}</a><a href={`/${locale}/docs/`}>{copy.docs}</a></nav>
-    {!quote ? <p class="ttod-empty">{copy.empty}</p> : <>
+    {failed ? <EmptyState variant="error" title={copy.errorTitle} message={copy.errorMessage} /> : !quote ? <EmptyState title={copy.notFound} message={copy.notFoundMessage} action={{ label: copy.back, href: `/${locale}/wisdom/` }} /> : <>
       <article class="ttod-card"><blockquote>{quote.text}</blockquote><p><strong>{copy.teaches}:</strong> {quote.teaches}</p><p class="ttod-meta">{quote.id} · {quote.section} · {quote.level} · {quote.origin} · {quote.lang}</p><div class="ttod-clusters">{quote.tags.map((tag) => <a class="ttod-pill" href={`/${locale}/wisdom/tags/${tag}/`}>#{tag}</a>)}</div></article>
       <footer class="ttod-meta">{quote.rights.holder ?? 'Rubén Vega Balbás'} · {quote.rights.license} · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></footer>
     </>}
