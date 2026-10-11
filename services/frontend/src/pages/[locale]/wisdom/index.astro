@@ -1,18 +1,19 @@
 ---
 import Page from '../../../layouts/Page.astro';
+import EmptyState from '../../../components/EmptyState.astro';
 import FavoriteButton from '../../../components/favorites/FavoriteButton';
-import { fetchWisdom, frequencies, isLocale, labels, quoteSlug } from '../../../content/wisdom';
+import { frequencies, isLocale, labels, loadWisdom, quoteSlug } from '../../../content/wisdom';
 import '../../../styles/tokens.css';
 const locale = Astro.params.locale;
 if (!isLocale(locale)) return new Response(null, { status: 404 });
-const entries = await fetchWisdom(locale);
+const { entries, failed } = await loadWisdom(locale);
 const copy = labels[locale];
 ---
 <Page lang={locale} title={copy.wisdom}>
   <main class="ttod-shell">
-    <nav class="ttod-nav"><a href={`/${locale}/`}>← {locale === 'es' ? 'Inicio' : 'Home'}</a><a href={`/${locale}/docs/`}>{copy.docs}</a></nav>
+    <nav class="ttod-nav"><a href={`/${locale}/`}>← {locale === 'es' ? 'Inicio' : 'Home'}</a><a href={`/${locale}/docs/`}>{copy.docs}</a><a href={`/${locale}/wisdom/propose/`}>{copy.propose}</a></nav>
     <h1>{copy.wisdom}</h1>
-    {entries.length === 0 ? <p class="ttod-empty">{copy.empty}</p> : <>
+    {failed ? <EmptyState variant="error" title={copy.errorTitle} message={copy.errorMessage} /> : entries.length === 0 ? <EmptyState title={copy.emptyTitle} message={copy.empty} /> : <>
       <section><h2>{copy.sections}</h2><div class="ttod-clusters">{frequencies(entries, 'section').map(([value, count]) => <a class="ttod-pill" href={`/${locale}/wisdom/sections/${value}/`}>{value} ({count})</a>)}</div></section>
       <section><h2>{copy.levels}</h2><div class="ttod-clusters">{frequencies(entries, 'level').map(([value, count]) => <a class="ttod-pill" href={`/${locale}/wisdom/levels/${value}/`}>{value} ({count})</a>)}</div></section>
       <section><h2>{copy.tags}</h2><div class="ttod-clusters">{frequencies(entries, 'tags').map(([value, count]) => <a class="ttod-pill" href={`/${locale}/wisdom/tags/${value}/`}>{value} ({count})</a>)}</div></section>

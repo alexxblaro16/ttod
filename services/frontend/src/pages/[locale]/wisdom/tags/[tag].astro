@@ -1,10 +1,18 @@
 ---
 import Page from '../../../../layouts/Page.astro';
-import { fetchWisdom, isLocale, labels } from '../../../../content/wisdom';
+import EmptyState from '../../../../components/EmptyState.astro';
+import { isLocale, labels, loadWisdom } from '../../../../content/wisdom';
 import '../../../../styles/tokens.css';
 const locale = Astro.params.locale;
 if (!isLocale(locale)) return new Response(null, { status: 404 });
-const entries = (await fetchWisdom(locale)).filter((entry) => entry.tags.includes(Astro.params.tag ?? ''));
+const { entries: all, failed } = await loadWisdom(locale);
+const entries = all.filter((entry) => entry.tags.includes(Astro.params.tag ?? ''));
 const copy = labels[locale];
 ---
-<Page lang={locale} title={`${copy.tags}: ${Astro.params.tag}`}><main class="ttod-shell"><nav class="ttod-nav"><a href={`/${locale}/wisdom/`}>← {copy.back}</a></nav><h1>{copy.tags}: {Astro.params.tag}</h1>{entries.length === 0 ? <p class="ttod-empty">{copy.empty}</p> : <div class="ttod-grid">{entries.map((entry) => <article class="ttod-card"><blockquote>{entry.text}</blockquote><a href={`/${locale}/wisdom/${entry.id}/`}>{entry.id}</a><footer class="ttod-meta">{entry.rights.holder ?? 'Rubén Vega Balbás'} · {entry.rights.license}</footer></article>)}</div>}</main></Page>
+<Page lang={locale} title={`${copy.tags}: ${Astro.params.tag}`}>
+  <main class="ttod-shell">
+    <nav class="ttod-nav"><a href={`/${locale}/wisdom/`}>← {copy.back}</a></nav>
+    <h1>{copy.tags}: {Astro.params.tag}</h1>
+    {failed ? <EmptyState variant="error" title={copy.errorTitle} message={copy.errorMessage} /> : entries.length === 0 ? <EmptyState title={copy.emptyTitle} message={copy.empty} /> : <div class="ttod-grid">{entries.map((entry) => <article class="ttod-card"><blockquote>{entry.text}</blockquote><a href={`/${locale}/wisdom/${entry.id}/`}>{entry.id}</a><footer class="ttod-meta">{entry.rights.holder ?? 'Rubén Vega Balbás'} · {entry.rights.license}</footer></article>)}</div>}
+  </main>
+</Page>

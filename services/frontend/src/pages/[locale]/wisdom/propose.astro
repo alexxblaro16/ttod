@@ -1,0 +1,20 @@
+---
+import Page from '../../../layouts/Page.astro';
+import ProposeForm from '../../../components/ProposeForm';
+import { isLocale, labels } from '../../../content/wisdom';
+import { requireUser } from '../../../lib/auth.server';
+import '../../../styles/tokens.css';
+const locale = Astro.params.locale;
+if (!isLocale(locale)) return new Response(null, { status: 404 });
+const userId = requireUser(Astro.request);
+const copy = labels[locale];
+---
+<Page lang={locale} title={`${copy.propose} · ${copy.wisdom}`}>
+  <main class="ttod-shell ttod-prose">
+    <nav class="ttod-nav"><a href={`/${locale}/wisdom/`}>← {copy.back}</a></nav>
+    <h1>{copy.propose}</h1>
+    {userId
+      ? <ProposeForm client:load lang={locale} />
+      : <p class="ttod-empty">{copy.proposeLoginPrompt} <a href={`/${locale}/login/`}>{locale === 'es' ? 'Inicia sesión' : 'Log in'}</a></p>}
+  </main>
+</Page>
