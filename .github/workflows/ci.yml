@@ -35,4 +35,8 @@ jobs:
 
       - run: npm run check
 
+      # Unit + component tests (Team 3, Task 7). `vitest run` is non-watch by default, and
+      # vitest.config.ts excludes e2e/ (Playwright) and dist/, so this stays a CI-sized run.
+      - run: npm test
+
       - run: npm run build
