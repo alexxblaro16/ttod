@@ -22,6 +22,9 @@
 .oracle-citations { display: flex; flex-wrap: wrap; gap: .4rem; margin: .6rem 0 0; padding: 0; list-style: none; }
 .oracle-citations a { color: #a8e9cf; }
 .oracle-notice { border: 1px solid #97854e; padding: .65rem; color: #f1d67f; }
+.oracle-preparing { animation: oracle-pulse 1.4s ease-in-out infinite; }
+@keyframes oracle-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+.oracle-retry { margin-block-start: .5rem; }
 .oracle-proposal { border-block-start: 1px solid #5d4438; margin-block-start: .8rem; padding-block-start: .8rem; }
 .oracle-proposal p { color: #dcbda8; font-size: .85rem; }
 .oracle-terminal form { display: grid; grid-template-columns: 1fr auto; gap: .7rem; padding: 1rem 1.25rem .4rem; border-block-start: 1px solid #36382f; }
@@ -30,5 +33,5 @@
 .oracle-hint { margin: .2rem 1.25rem 1rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 @media (max-width: 36rem) { .oracle-terminal form { grid-template-columns: 1fr; } }
-@media (prefers-reduced-motion: reduce) { .oracle-terminal, .oracle-exchange { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) { .oracle-preparing { animation: none; } }
 
