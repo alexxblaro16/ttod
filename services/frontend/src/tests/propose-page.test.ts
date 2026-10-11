@@ -2,9 +2,11 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { loadRenderers } from 'astro:container';
 import { getContainerRenderer } from '@astrojs/react';
 import { JSDOM } from 'jsdom';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import ProposeRoute from '../pages/[locale]/wisdom/propose.astro';
+
+afterEach(() => vi.restoreAllMocks());
 
 const render = async (path: string, params: Record<string, string>, headers: Record<string, string> = {}) => {
   const renderers = await loadRenderers([getContainerRenderer()]);
@@ -26,7 +28,12 @@ describe('propose page session gate', () => {
   });
 
   it('with a session cookie: renders the ProposeForm mount point, not the login prompt', async () => {
-    const cookie = `ttod_session=${encodeURIComponent(JSON.stringify({ userId: 'demo-student' }))}`;
+    vi.spyOn(global, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({
+        id: 'demo-student', email: 'demo@example.com', roles: ['student'],
+      }), { status: 200, headers: { 'content-type': 'application/json' } }),
+    );
+    const cookie = 'ttod_session=signed-session-token';
     const main = await render('/en/wisdom/propose/', { locale: 'en' }, { cookie });
     expect(main.textContent).not.toContain('Log in to propose a quote.');
     expect(main.querySelector('astro-island')).not.toBeNull();
