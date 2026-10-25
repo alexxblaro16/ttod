@@ -172,6 +172,22 @@ class BackendTests(unittest.TestCase):
         after = snapshots.graph_bytes()
         self.assertNotEqual(before, after)
 
+    def test_wisdom_parses_the_source_only_when_it_changes(self):
+        import shutil
+        source = Path(self.temp.name) / "ttod.yml"
+        shutil.copy(self.settings.ttod_path, source)
+        snapshots = SnapshotService(source, self.settings.schema_dir)
+        with patch.object(snapshots.repository, "load", wraps=snapshots.repository.load) as load:
+            first = snapshots.wisdom()
+            self.assertIs(snapshots.wisdom(), first)
+            snapshots.graph_bytes()
+            self.assertEqual(load.call_count, 1)
+            root = yaml.safe_load(source.read_text(encoding="utf-8"))
+            root["quotes"] = [q for q in root["quotes"] if q.get("id") != root["quotes"][0]["id"]]
+            source.write_text(yaml.safe_dump(root, allow_unicode=True), encoding="utf-8")
+            self.assertIsNot(snapshots.wisdom(), first)
+            self.assertEqual(load.call_count, 2)
+
     def test_creative_stream_discloses_mode_without_citations(self):
         response = self.client.post(
             "/api/v1/oracle/stream",

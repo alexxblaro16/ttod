@@ -56,16 +56,18 @@ class SnapshotService:
         }
         return {key: json.loads((self.schema_dir / filename).read_text(encoding="utf-8")) for key, filename in names.items()}
 
-    def _source(self) -> tuple[tuple[int, str], dict[str, Any]]:
+    def _source_key(self) -> tuple[int, str]:
         raw = self.repository.read_bytes()
-        key = (self.ttod_path.stat().st_mtime_ns, hashlib.sha256(raw).hexdigest())
-        return key, self.repository.load()
+        return (self.ttod_path.stat().st_mtime_ns, hashlib.sha256(raw).hexdigest())
 
     def _refresh(self) -> None:
-        key, root = self._source()
+        # La clave (mtime + sha256 de los bytes) cuesta ~1 ms; cargar y validar el YAML
+        # de 450 KB, ~1 s. Solo se carga si el fichero cambió desde la última vez.
+        key = self._source_key()
         with self._lock:
             if key == self._cache_key:
                 return
+            root = self.repository.load()
             public_root = {**root, "quotes": [q for q in root.get("quotes", []) if is_public_active(q)]}
             self._wisdom = [self._wisdom_projection(q) for q in public_root["quotes"]]
             with tempfile.TemporaryDirectory(prefix="ttod-backend-graph-") as directory:
@@ -95,14 +97,6 @@ class SnapshotService:
         return self._wisdom
 
     def graph_bytes(self) -> bytes:
-        # Solo el grafo: la clave (mtime + sha256 de los bytes) cuesta ~1 ms; volver a
-        # parsear el YAML de 450 KB costaba ~1 s en cada petición aunque no hubiera cambiado.
-        # Si la clave coincide, el grafo guardado es el mismo que daría _refresh().
-        raw = self.repository.read_bytes()
-        key = (self.ttod_path.stat().st_mtime_ns, hashlib.sha256(raw).hexdigest())
-        with self._lock:
-            if key == self._cache_key:
-                return self._graph_bytes
         self._refresh()
         return self._graph_bytes
 

@@ -3,8 +3,10 @@ from __future__ import annotations
 import hashlib
 import logging
 import random
+from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import Response, StreamingResponse
 
 from ttod_core.proposals import create_proposal
@@ -45,7 +47,18 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
     )
     require_session = RequireSession(auth_service)
     require_access_token = RequireAccessToken(auth_service)
-    app = FastAPI(title="TTOD Oracle Backend", version="1.0.0")
+    @asynccontextmanager
+    async def lifespan(_app: FastAPI):
+        # El primer `ttod.yml` se lee al arrancar y no en la primera visita: cargarlo y
+        # validarlo cuesta ~1 s, y sin esto lo pagaba quien abriese la portada primero.
+        # Si falla, el backend arranca igual y la primera petición lo vuelve a intentar.
+        try:
+            await run_in_threadpool(snapshots.wisdom)
+        except Exception:  # noqa: BLE001
+            logging.getLogger(__name__).warning("No se pudo precargar ttod.yml al arrancar", exc_info=True)
+        yield
+
+    app = FastAPI(title="TTOD Oracle Backend", version="1.0.0", lifespan=lifespan)
 
     @app.get("/health")
     def health():
