@@ -20,6 +20,7 @@ class Settings:
     pat_ttl_seconds: int = 3600
     admin_email: str = "admin@ttod.local"
     admin_password_hash: str = ""
+    redis_url: str = ""
     ollama_mode: str = "host"
     ollama_model: str = ""
     ollama_embed_model: str = "nomic-embed-text"
@@ -43,6 +44,7 @@ class Settings:
             pat_ttl_seconds=int(os.getenv("TTOD_PAT_TTL_SECONDS", "3600")),
             admin_email=os.getenv("TTOD_ADMIN_EMAIL", "admin@ttod.local"),
             admin_password_hash=os.getenv("TTOD_ADMIN_PASSWORD_HASH", ""),
+            redis_url=os.getenv("REDIS_URL", ""),
             ollama_mode=mode,
             ollama_model=os.getenv("OLLAMA_MODEL", ""),
             ollama_embed_model=os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"),

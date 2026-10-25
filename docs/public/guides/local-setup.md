@@ -35,7 +35,8 @@ make ollama-pull
 
 `make up` copies `.env.example` to a local, untracked `.env` automatically if one doesn't exist yet
 (no values need editing — this stack needs no credentials), builds and starts every service
-including the app's own Ollama container, and prints the URL to open. `make ollama-pull` downloads
+including Redis and the app's own Ollama container, and prints the URL to open. Redis stores only
+per-user library references; it does not replace the governed `ttod.yml` corpus. `make ollama-pull` downloads
 both local models the stack needs — the small chat model for the Oracle and `nomic-embed-text` for
 quote retrieval — do this once, right after `make up`; it can take a few minutes on a fresh volume
 and only needs repeating if you later remove that volume.
@@ -67,6 +68,11 @@ web service. Never commit `.env`, credentials, or machine-specific coordinates.
 4. If the local Oracle model is ready, submit a small question and inspect its grounding or creative-mode disclosure.
 5. Confirm keyboard focus and readable status or error feedback on interactive controls.
 
+To use the personal library, authenticate through the account flow, open a quote, and choose
+**Save to library**. The library is available at `/en/library/` or `/es/library/`; saving the same
+quote twice is safe, and removal is explicit. The backend validates that saved quotes are still
+active and public before returning them.
+
 The content and graph remain useful when the optional Oracle model is unavailable. A plausible generated response is not the canonical source and may be incomplete or wrong.
 
 ## Inspect and stop
@@ -88,5 +94,8 @@ Stopping containers should not remove named data volumes. Delete volumes only wh
 - **Oracle unavailable:** verify service health and that both `llama3.2:1b` and `nomic-embed-text`
   are present (`docker compose exec ollama ollama list`).
 - **A route renders but data is empty:** inspect the browser network response and service logs without pasting secrets into an issue.
+- **The library returns 503:** Redis is unavailable. Check `docker compose ps redis` and
+  `docker compose logs --tail=100 redis`; do not replace `REDIS_URL` with a credential committed
+  to the repository.
 
 For support, report the command, route, operating system, and exact error. Replace personal paths, usernames, hostnames, addresses, tokens, and environment values with safe placeholders.

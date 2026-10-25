@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 from passlib.context import CryptContext
 
 from services.backend.app.config import REPOSITORY_ROOT, Settings
+from services.backend.app.favorites import RedisFavoriteStore
 from services.backend.app.main import create_app
 from services.backend.app.oracle import (
     CREATIVE_PROMPT,
@@ -44,6 +45,27 @@ class FakeRetrieval:
             "id": "wis-001", "text": "Nearest wisdom", "section": "wisdom",
             "tags": ["simplicity"], "origin": "human", "score": 0.1,
         }], "indexDigest": "digest", "indexedQuotes": 1}
+
+
+class FakeRedis:
+    def __init__(self):
+        self.values: dict[str, dict[str, str]] = {}
+
+    def hget(self, key: str, field: str) -> str | None:
+        return self.values.get(key, {}).get(field)
+
+    def hsetnx(self, key: str, field: str, value: str) -> int:
+        fields = self.values.setdefault(key, {})
+        if field in fields:
+            return 0
+        fields[field] = value
+        return 1
+
+    def hgetall(self, key: str) -> dict[str, str]:
+        return self.values.get(key, {})
+
+    def hdel(self, key: str, field: str) -> int:
+        return int(self.values.get(key, {}).pop(field, None) is not None)
 
 
 class BackendTests(unittest.TestCase):
@@ -387,6 +409,15 @@ class BackendTests(unittest.TestCase):
             "origin": "human", "score": 0.8,
         }], "indexDigest": "abc", "indexedQuotes": 1, "ignored": True}
         self.assertEqual(set(normalize_retrieval_envelope(payload)), {"results", "indexDigest", "indexedQuotes"})
+
+    def test_redis_favorite_store_is_idempotent_and_persistent(self):
+        store = RedisFavoriteStore("redis://unused", client=FakeRedis())
+        first = store.save("student-1", "wis-001")
+        second = store.save("student-1", "wis-001")
+        self.assertEqual(first, second)
+        self.assertEqual(store.list("student-1"), [first])
+        self.assertTrue(store.remove("student-1", "wis-001"))
+        self.assertFalse(store.remove("student-1", "wis-001"))
 
     def test_mcp_unavailable_fails_closed(self):
         import asyncio

@@ -37,6 +37,11 @@ localized route
 
 Astro posee el documento y las rutas orientadas al contenido. Las islas interactivas se usan donde el estado local o el streaming lo justifican. El backend se explica solo lo bastante para trazar la petición y el límite de confianza; el énfasis docente permanece en la arquitectura front-end.
 
+La biblioteca personal queda deliberadamente fuera del corpus gobernado: Redis almacena un hash
+por usuario de `quoteId → savedAt`, mientras el backend vuelve a validar cada referencia contra
+la instantánea pública y activa antes de devolverla. Así los datos de preferencias pueden cambiar
+sin permitir que modifiquen `ttod.yml`.
+
 <figure class="diagram-teaser">
   <a class="diagram-teaser-link" href="{{ '/assets/diagrams/ttod-system-overview.html' | relative_url }}">
     <img src="{{ '/assets/diagrams/ttod-system-overview.png' | relative_url }}" alt="Diagrama del sistema: agentes IDE y ttod-bridge proponen cambios, una persona revisora acepta hacia el almacén canónico ttod.yml, el entorno de solo lectura de Astro, la API Oracle y el servidor MCP dentro de la red Docker Compose, y Ollama mostrado dos veces: el contenedor propio de la aplicación (el valor por defecto de make up) y un Ollama personal tomado manualmente del host." loading="lazy">

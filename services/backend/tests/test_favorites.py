@@ -111,6 +111,14 @@ class FavoritesApiTests(FavoritesTestCase):
         self.assertEqual(second.json(), first.json())
         self.assertEqual(len(self.client.get("/api/v1/favorites", cookies=student).json()), 1)
 
+    def test_saving_an_unknown_quote_is_rejected(self):
+        student = self.session_for("student-1", "student")
+
+        response = self.client.post("/api/v1/favorites", json={"quoteId": "missing"}, cookies=student)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.client.get("/api/v1/favorites", cookies=student).json(), [])
+
     def test_removing_a_favorite_takes_it_out_of_the_library(self):
         student = self.session_for("student-1", "student")
         self.client.post("/api/v1/favorites", json={"quoteId": "wis-001"}, cookies=student)

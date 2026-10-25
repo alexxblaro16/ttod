@@ -36,6 +36,11 @@ localized route
 
 Astro owns the document and content-oriented routes. Interactive islands are used where local state or streaming warrants them. The backend is explained only far enough to trace the request and trust boundary; the teaching emphasis remains front-end architecture.
 
+The personal library is deliberately outside the governed corpus: Redis stores a per-user hash of
+`quoteId → savedAt`, while the backend re-validates each reference against the active public
+snapshot before returning it. This keeps user preference data mutable without allowing it to
+change `ttod.yml`.
+
 <figure class="diagram-teaser">
   <a class="diagram-teaser-link" href="{{ '/assets/diagrams/ttod-system-overview.html' | relative_url }}">
     <img src="{{ '/assets/diagrams/ttod-system-overview.png' | relative_url }}" alt="System diagram showing IDE agents and ttod-bridge staging proposals, a human reviewer accepting into the canonical ttod.yml store, the read-only Astro, Oracle API, and MCP runtime inside the Docker Compose network, and Ollama shown twice: the app's own container (the make up default) and a personal Ollama borrowed manually from the host." loading="lazy">

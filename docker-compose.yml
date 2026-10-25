@@ -45,14 +45,19 @@ services:
       TTOD_PAT_TTL_SECONDS: ${TTOD_PAT_TTL_SECONDS:-3600}
       TTOD_ADMIN_EMAIL: ${TTOD_ADMIN_EMAIL:-admin@ttod.local}
       TTOD_ADMIN_PASSWORD_HASH: ${TTOD_ADMIN_PASSWORD_HASH:-}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
       ORACLE_RETRIEVAL_THRESHOLD: ${ORACLE_RETRIEVAL_THRESHOLD:-0.575}
       ORACLE_RETRIEVAL_TOP_K: ${ORACLE_RETRIEVAL_TOP_K:-5}
       MCP_SERVER_URL: http://mcp-server:3001
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - mcp-server
-      - ollama
+      mcp-server:
+        condition: service_started
+      ollama:
+        condition: service_started
+      redis:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
       interval: 10s
@@ -74,6 +79,18 @@ services:
     depends_on:
       - ollama
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - ttod_redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   # The app's own Ollama — owned by this stack, not borrowed from the host.
   # This is the supported default for everyone (students included). Pointing
   # the app at an Ollama you already run yourself is a personal, manual
@@ -89,3 +106,4 @@ services:
 
 volumes:
   ttod_ollama_data:
+  ttod_redis_data:

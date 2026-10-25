@@ -5,6 +5,8 @@ import logging
 import random
 from contextlib import asynccontextmanager
 
+import redis
+
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import Response, StreamingResponse
@@ -14,7 +16,7 @@ from ttod_core.repository import ProposalStore
 
 from .auth import AccessTokenClaims, AuthService, RequireAccessToken, RequireSession, SessionClaims
 from .config import Settings
-from .favorites import add_favorite, get_favorites, remove_favorite
+from .favorites import FavoriteStore, MemoryFavoriteStore, RedisFavoriteStore
 from .models import (
     AuthLoginRequest,
     AuthLoginResponse,
@@ -33,10 +35,16 @@ from .storage import SnapshotService
 logger = logging.getLogger(__name__)
 
 
-def create_app(settings: Settings | None = None, oracle: OracleService | None = None) -> FastAPI:
+def create_app(
+    settings: Settings | None = None,
+    oracle: OracleService | None = None,
+    favorites: FavoriteStore | None = None,
+) -> FastAPI:
     settings = settings or Settings.from_env()
     snapshots = SnapshotService(settings.ttod_path, settings.schema_dir)
     oracle = oracle or OracleService(settings, snapshots)
+    # Sin REDIS_URL (tests, desarrollo fuera de Docker) los favoritos viven solo en memoria.
+    favorites = favorites or (RedisFavoriteStore(settings.redis_url) if settings.redis_url else MemoryFavoriteStore())
     auth_service = AuthService(
         settings.session_secret,
         settings.session_ttl_seconds,
@@ -127,15 +135,30 @@ def create_app(settings: Settings | None = None, oracle: OracleService | None = 
     # El usuario de cada favorito sale siempre de la sesión, nunca del cuerpo de la petición.
     @app.post("/api/v1/favorites", status_code=201)
     def create_favorite(payload: FavoriteRequest, claims: SessionClaims = Depends(require_session)):
-        return add_favorite(claims.user_id, payload.quoteId)
+        if not any(entry["id"] == payload.quoteId for entry in snapshots.wisdom()):
+            raise HTTPException(status_code=404, detail="Quote not found or not publicly active")
+        try:
+            return favorites.save(claims.user_id, payload.quoteId)
+        except redis.RedisError as exc:
+            raise HTTPException(status_code=503, detail="Favorites store unavailable") from exc
 
     @app.get("/api/v1/favorites")
     def list_favorites(claims: SessionClaims = Depends(require_session)):
-        return get_favorites(claims.user_id)
+        try:
+            entries = favorites.list(claims.user_id)
+        except redis.RedisError as exc:
+            raise HTTPException(status_code=503, detail="Favorites store unavailable") from exc
+        # Una cita retirada del corpus público deja de aparecer aunque siga guardada.
+        active_ids = {entry["id"] for entry in snapshots.wisdom()}
+        return [entry for entry in entries if entry["quoteId"] in active_ids]
 
     @app.delete("/api/v1/favorites/{quote_id}", status_code=204)
     def delete_favorite(quote_id: str, claims: SessionClaims = Depends(require_session)):
-        if not remove_favorite(claims.user_id, quote_id):
+        try:
+            removed = favorites.remove(claims.user_id, quote_id)
+        except redis.RedisError as exc:
+            raise HTTPException(status_code=503, detail="Favorites store unavailable") from exc
+        if not removed:
             raise HTTPException(status_code=404, detail="Favorite not found")
         return Response(status_code=204)
 
