@@ -7,13 +7,16 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch
 
+import redis
 from fastapi.testclient import TestClient
 
 from services.backend.app.auth import SESSION_COOKIE_NAME, AuthService, SessionClaims
 from services.backend.app.config import REPOSITORY_ROOT, Settings
+from services.backend.app.favorites import RedisFavoriteStore
 from services.backend.app.main import create_app
 from services.backend.app.oracle import OracleService
 from services.backend.app.storage import SnapshotService
+from services.backend.tests.test_backend import FakeRedis
 
 
 class FakeOllama:
@@ -165,6 +168,59 @@ class FavoritesApiTests(FavoritesTestCase):
         )
 
         self.assertEqual(self.settings.ttod_path.read_bytes(), before)
+
+
+class UnavailableRedis:
+    """Cliente que falla en cada llamada, como un Redis caído o inalcanzable."""
+
+    def __getattr__(self, name):
+        def fail(*args, **kwargs):
+            raise redis.ConnectionError("Redis is down")
+
+        return fail
+
+
+class RedisFavoritesApiTests(FavoritesTestCase):
+    """La misma API, pero con el almacén de Redis inyectado en `create_app`."""
+
+    def app_with(self, client) -> TestClient:
+        snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
+        oracle = OracleService(self.settings, snapshots, FakeOllama(), FakeRetrieval())
+        store = RedisFavoriteStore("redis://unused", client=client)
+        return TestClient(create_app(self.settings, oracle, favorites=store))
+
+    def test_each_user_gets_their_own_namespaced_key(self):
+        fake = FakeRedis()
+        client = self.app_with(fake)
+
+        client.post("/api/v1/favorites", json={"quoteId": "wis-001"}, cookies=self.session_for("student-1", "student"))
+        client.post("/api/v1/favorites", json={"quoteId": "wis-002"}, cookies=self.session_for("student-2", "student"))
+
+        self.assertEqual(set(fake.values), {"ttod:favorites:student-1", "ttod:favorites:student-2"})
+        self.assertEqual(list(fake.values["ttod:favorites:student-1"]), ["wis-001"])
+        self.assertEqual(list(fake.values["ttod:favorites:student-2"]), ["wis-002"])
+        listing = client.get("/api/v1/favorites", cookies=self.session_for("student-2", "student")).json()
+        self.assertEqual([entry["quoteId"] for entry in listing], ["wis-002"])
+        self.assertEqual(
+            client.delete("/api/v1/favorites/wis-001", cookies=self.session_for("student-2", "student")).status_code,
+            404,
+        )
+        self.assertIn("wis-001", fake.values["ttod:favorites:student-1"])
+
+    def test_redis_outage_answers_503_on_every_endpoint(self):
+        client = self.app_with(UnavailableRedis())
+        student = self.session_for("student-1", "student")
+
+        responses = (
+            client.post("/api/v1/favorites", json={"quoteId": "wis-001"}, cookies=student),
+            client.get("/api/v1/favorites", cookies=student),
+            client.delete("/api/v1/favorites/wis-001", cookies=student),
+        )
+
+        for response in responses:
+            self.assertEqual(response.status_code, 503)
+            self.assertEqual(response.json()["detail"], "Favorites store unavailable")
+            self.assertNotIn("Redis is down", response.text)
 
 
 if __name__ == "__main__":
