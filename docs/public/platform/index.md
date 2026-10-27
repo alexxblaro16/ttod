@@ -18,7 +18,7 @@ The instructor reference runs end to end on a local machine. Its areas are not s
 | Graph | explore related entries | a hydrated Svelte island with accessible textual state |
 | Oracle | ask and receive a streamed response | a React island, streaming state, grounding, and recovery |
 | Local operations | start and observe the stack | the browser/service boundary, not a DevOps syllabus |
-| Account & library | log in, save quotes, propose new ones | server-verified sessions, a bearer-token API, and the reviewed path a proposal takes into the governed collection |
+| Account & library | log in, save quotes, propose new ones | server-verified sessions (Redis shore + httpOnly cookie), a bearer-token API, personal library ids in Redis, proposal drafts dual-written for CLI accept — never writing the governed `ttod.yml` corpus from Redis |
 | Tests | locate evidence at useful layers | unit, component, contract, route, and accessibility reasoning |
 
 ## Architecture at teaching scale

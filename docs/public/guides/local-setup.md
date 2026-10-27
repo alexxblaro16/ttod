@@ -35,10 +35,13 @@ make ollama-pull
 
 `make up` copies `.env.example` to a local, untracked `.env` automatically if one doesn't exist yet
 (no values need editing — this stack needs no credentials), builds and starts every service
-including the app's own Ollama container, and prints the URL to open. `make ollama-pull` downloads
-both local models the stack needs — the small chat model for the Oracle and `nomic-embed-text` for
-quote retrieval — do this once, right after `make up`; it can take a few minutes on a fresh volume
-and only needs repeating if you later remove that volume.
+including Redis and the app's own Ollama container, and prints the URL to open. Redis is the
+**shore** store for accounts, sessions, the personal library, and proposal drafts (AOF under
+`./data/redis` on the host). It does not replace the governed `ttod.yml` corpus — that remains
+the temple, accepted only through the human review CLI. `make ollama-pull` downloads both local
+models the stack needs — the small chat model for the Oracle and `nomic-embed-text` for quote
+retrieval — do this once, right after `make up`; it can take a few minutes on a fresh volume and
+only needs repeating if you later remove that volume.
 
 **Without `make`**, the same steps by hand:
 
@@ -76,7 +79,9 @@ docker compose logs --tail=100
 docker compose down
 ```
 
-Stopping containers should not remove named data volumes. Delete volumes only when you explicitly intend to discard local model or application data and understand the recovery cost.
+Stopping containers should not remove named data volumes or the Redis bind directory
+(`./data/redis`). Delete those only when you explicitly intend to discard local model or
+shore/application data and understand the recovery cost.
 
 ## Common blockers
 
@@ -88,5 +93,8 @@ Stopping containers should not remove named data volumes. Delete volumes only wh
 - **Oracle unavailable:** verify service health and that both `llama3.2:1b` and `nomic-embed-text`
   are present (`docker compose exec ollama ollama list`).
 - **A route renders but data is empty:** inspect the browser network response and service logs without pasting secrets into an issue.
+- **Library / login / proposals return 503:** Redis is unavailable. Check `docker compose ps redis`
+  and `docker compose logs --tail=100 redis`; do not replace `REDIS_URL` with a credential committed
+  to the repository.
 
 For support, report the command, route, operating system, and exact error. Replace personal paths, usernames, hostnames, addresses, tokens, and environment values with safe placeholders.

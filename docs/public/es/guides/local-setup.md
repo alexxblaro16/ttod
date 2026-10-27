@@ -36,9 +36,12 @@ make ollama-pull
 
 `make up` copia `.env.example` a un `.env` local no versionado automáticamente si aún no existe
 (no hace falta editar ningún valor — esta pila no necesita credenciales), construye y arranca todos
-los servicios, incluido el contenedor propio de Ollama de la aplicación, e imprime la URL que hay
-que abrir. `make ollama-pull` descarga los dos modelos locales que necesita la pila — el modelo de
-chat pequeño para el Oráculo y `nomic-embed-text` para la recuperación de citas — hazlo una vez,
+los servicios, incluido Redis y el contenedor propio de Ollama de la aplicación, e imprime la URL
+que hay que abrir. Redis es el almacén de **orilla** (cuentas, sesiones, biblioteca personal y
+borradores de propuestas; AOF en `./data/redis` en el host). No sustituye el corpus gobernado
+`ttod.yml` — ese sigue siendo el templo, aceptado solo por la CLI de revisión humana.
+`make ollama-pull` descarga los dos modelos locales que necesita la pila — el modelo de chat
+pequeño para el Oráculo y `nomic-embed-text` para la recuperación de citas — hazlo una vez,
 justo después de `make up`; puede tardar unos minutos en un volumen nuevo y solo hace falta
 repetirlo si más adelante eliminas ese volumen.
 
@@ -78,7 +81,9 @@ docker compose logs --tail=100
 docker compose down
 ```
 
-Detener contenedores no debería eliminar volúmenes de datos con nombre. Borra volúmenes solo cuando pretendas de propósito descartar datos locales del modelo o de la aplicación y comprendas el coste de recuperación.
+Detener contenedores no debería eliminar volúmenes de datos con nombre ni el directorio bind de
+Redis (`./data/redis`). Bórralos solo cuando pretendas de propósito descartar datos locales del
+modelo o de la orilla/aplicación y comprendas el coste de recuperación.
 
 ## Bloqueos habituales
 
@@ -91,5 +96,8 @@ Detener contenedores no debería eliminar volúmenes de datos con nombre. Borra 
 - **Oracle no disponible:** verifica por separado la salud del servicio y que estén presentes tanto
   `llama3.2:1b` como `nomic-embed-text` (`docker compose exec ollama ollama list`).
 - **Una ruta se renderiza pero los datos están vacíos:** inspecciona la respuesta de red del navegador y los registros del servicio sin pegar secretos en una incidencia.
+- **Biblioteca / login / propuestas responden 503:** Redis no está disponible. Comprueba
+  `docker compose ps redis` y `docker compose logs --tail=100 redis`; no sustituyas `REDIS_URL`
+  por una credencial confirmada en el repositorio.
 
 Para pedir apoyo, informa el comando, la ruta, el sistema operativo y el error exacto. Sustituye rutas personales, nombres de usuario, nombres de máquina, direcciones, tokens y valores de entorno por marcadores seguros.

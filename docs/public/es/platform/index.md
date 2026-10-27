@@ -19,7 +19,7 @@ La referencia del profesorado se puede ejecutar de extremo a extremo en local. S
 | Grafo | explorar entradas relacionadas | una isla Svelte hidratada con estado textual accesible |
 | Oracle | preguntar y recibir una respuesta en flujo | una isla React, estado en streaming, fuentes y recuperación |
 | Operación local | arrancar y observar el conjunto | el límite navegador/servicio, no un temario de operaciones |
-| Cuenta y biblioteca | iniciar sesión, guardar citas, proponer nuevas | sesiones verificadas en servidor, una API con token de acceso, y el camino revisado que sigue una propuesta hasta la colección gobernada |
+| Cuenta y biblioteca | iniciar sesión, guardar citas, proponer nuevas | sesiones verificadas en servidor (orilla Redis + cookie httpOnly), API con token de acceso, ids de biblioteca en Redis, borradores de propuestas con doble escritura para el accept por CLI — Redis nunca escribe el corpus gobernado `ttod.yml` |
 | Pruebas | situar la evidencia en capas útiles | razonamiento unitario, de componente, de contrato, de ruta y de accesibilidad |
 
 ## Arquitectura a escala docente
