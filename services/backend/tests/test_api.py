@@ -85,7 +85,7 @@ class ProposalEndpointTests(AccountsTestCase):
         )
 
     def test_storage_failure_is_reported_without_leaking_the_path(self):
-        with patch("services.backend.app.main.ProposalStore.save", side_effect=OSError("disk full")):
+        with patch("services.backend.app.proposal_drafts.ProposalStore.save", side_effect=OSError("disk full")):
             response = self.client.post(
                 "/api/v1/proposals",
                 json={"text": "A useful quote", "section": "wisdom"},

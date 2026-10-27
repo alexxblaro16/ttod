@@ -69,6 +69,18 @@ class LoginTests(AccountsTestCase):
 
 
 class SessionGuardTests(AccountsTestCase):
+    def test_logout_revokes_a_login_issued_session(self):
+        login = self.client.post(
+            "/api/v1/auth/login",
+            json={"email": SEEDED_EMAIL, "password": SEEDED_PASSWORD},
+        )
+        token = login.json()["session_token"]
+        cookie = {SESSION_COOKIE_NAME: token}
+
+        self.assertEqual(self.client.get("/api/v1/auth/session", cookies=cookie).status_code, 200)
+        self.assertEqual(self.client.post("/api/v1/auth/logout", cookies=cookie).status_code, 204)
+        self.assertEqual(self.client.get("/api/v1/auth/session", cookies=cookie).status_code, 401)
+
     def test_request_without_a_session_is_rejected_and_reveals_no_account_data(self):
         response = self.client.get("/api/v1/auth/session")
 

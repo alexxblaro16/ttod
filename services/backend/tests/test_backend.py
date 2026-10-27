@@ -372,7 +372,7 @@ class BackendTests(unittest.TestCase):
 
     def test_proposal_api_reports_a_storage_failure_without_leaking_the_path(self):
         self.sign_in()
-        with patch("services.backend.app.main.ProposalStore.save", side_effect=OSError("disk full")):
+        with patch("services.backend.app.proposal_drafts.ProposalStore.save", side_effect=OSError("disk full")):
             response = self.client.post(
                 "/api/v1/proposals",
                 json={"text": "A useful quote", "section": "wisdom"},

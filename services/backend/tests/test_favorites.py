@@ -9,11 +9,52 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
+import redis
+
 from services.backend.app.auth import SESSION_COOKIE_NAME, AuthService, SessionClaims
 from services.backend.app.config import REPOSITORY_ROOT, Settings
+from services.backend.app.favorites import RedisFavoriteStore
 from services.backend.app.main import create_app
 from services.backend.app.oracle import OracleService
 from services.backend.app.storage import SnapshotService
+
+
+class FakeRedis:
+    def __init__(self):
+        self.values: dict[str, dict[str, str]] = {}
+
+    def hget(self, key: str, field: str) -> str | None:
+        return self.values.get(key, {}).get(field)
+
+    def hsetnx(self, key: str, field: str, value: str) -> int:
+        fields = self.values.setdefault(key, {})
+        if field in fields:
+            return 0
+        fields[field] = value
+        return 1
+
+    def hgetall(self, key: str) -> dict[str, str]:
+        return dict(self.values.get(key, {}))
+
+    def hdel(self, key: str, field: str) -> int:
+        return int(self.values.get(key, {}).pop(field, None) is not None)
+
+    def ping(self) -> bool:
+        return True
+
+
+class BrokenRedis(FakeRedis):
+    def hsetnx(self, key: str, field: str, value: str) -> int:
+        raise redis.RedisError("simulated outage")
+
+    def hgetall(self, key: str) -> dict[str, str]:
+        raise redis.RedisError("simulated outage")
+
+    def hdel(self, key: str, field: str) -> int:
+        raise redis.RedisError("simulated outage")
+
+    def ping(self) -> bool:
+        raise redis.RedisError("simulated outage")
 
 
 class FakeOllama:
@@ -56,9 +97,9 @@ class FavoritesTestCase(unittest.TestCase):
             proposal_dir=Path(self.temp.name),
             ollama_model="test-model",
         )
-        snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
-        oracle = OracleService(self.settings, snapshots, FakeOllama(), FakeRetrieval())
-        self.client = TestClient(create_app(self.settings, oracle))
+        self.snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
+        self.oracle = OracleService(self.settings, self.snapshots, FakeOllama(), FakeRetrieval())
+        self.client = TestClient(create_app(self.settings, self.oracle))
         self.auth_service = auth_service_for(self.settings)
         # El almacén es un diccionario de módulo: se aísla para que los tests no se contaminen.
         store = patch("services.backend.app.favorites._favorites", {})
@@ -157,6 +198,51 @@ class FavoritesApiTests(FavoritesTestCase):
         )
 
         self.assertEqual(self.settings.ttod_path.read_bytes(), before)
+
+    def test_saving_an_unknown_quote_is_rejected(self):
+        student = self.session_for("student-1", "student")
+
+        response = self.client.post("/api/v1/favorites", json={"quoteId": "missing"}, cookies=student)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.client.get("/api/v1/favorites", cookies=student).json(), [])
+
+
+class RedisFavoriteStoreTests(unittest.TestCase):
+    def test_redis_favorite_store_is_idempotent_and_persistent(self):
+        store = RedisFavoriteStore("redis://unused", client=FakeRedis())
+        first = store.save("student-1", "wis-001")
+        second = store.save("student-1", "wis-001")
+        self.assertEqual(first, second)
+        self.assertEqual(store.list("student-1"), [first])
+        self.assertTrue(store.remove("student-1", "wis-001"))
+        self.assertFalse(store.remove("student-1", "wis-001"))
+
+    def test_redis_keys_are_isolated_per_user(self):
+        client = FakeRedis()
+        store = RedisFavoriteStore("redis://unused", client=client)
+        store.save("student-1", "wis-001")
+        store.save("student-2", "wis-002")
+        self.assertEqual(set(client.values), {"ttod:favorites:student-1", "ttod:favorites:student-2"})
+        self.assertEqual([e["quoteId"] for e in store.list("student-1")], ["wis-001"])
+        self.assertEqual([e["quoteId"] for e in store.list("student-2")], ["wis-002"])
+
+
+class RedisFavoritesApiTests(FavoritesTestCase):
+    def setUp(self):
+        super().setUp()
+        self.client = TestClient(
+            create_app(self.settings, self.oracle, favorites=RedisFavoriteStore("redis://unused", client=FakeRedis()))
+        )
+
+    def test_redis_outage_returns_503(self):
+        broken = TestClient(
+            create_app(self.settings, self.oracle, favorites=RedisFavoriteStore("redis://unused", client=BrokenRedis()))
+        )
+        student = self.session_for("student-1", "student")
+        response = broken.post("/api/v1/favorites", json={"quoteId": "wis-001"}, cookies=student)
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json()["detail"], "Favorites store unavailable")
 
 
 if __name__ == "__main__":
