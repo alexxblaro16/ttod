@@ -45,14 +45,19 @@ services:
       TTOD_PAT_TTL_SECONDS: ${TTOD_PAT_TTL_SECONDS:-3600}
       TTOD_ADMIN_EMAIL: ${TTOD_ADMIN_EMAIL:-admin@ttod.local}
       TTOD_ADMIN_PASSWORD_HASH: ${TTOD_ADMIN_PASSWORD_HASH:-}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
       ORACLE_RETRIEVAL_THRESHOLD: ${ORACLE_RETRIEVAL_THRESHOLD:-0.575}
       ORACLE_RETRIEVAL_TOP_K: ${ORACLE_RETRIEVAL_TOP_K:-5}
       MCP_SERVER_URL: http://mcp-server:3001
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - mcp-server
-      - ollama
+      mcp-server:
+        condition: service_started
+      ollama:
+        condition: service_started
+      redis:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
       interval: 10s
@@ -73,6 +78,23 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - ollama
+
+  # Shore store — per-user / draft runtime state (not ttod.yml).
+  # Bind-mounted AOF under ./data/redis so permanence is inspectable on the host.
+  # No host ports: reachable only on the Compose network as redis:6379.
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
   # The app's own Ollama — owned by this stack, not borrowed from the host.
   # This is the supported default for everyone (students included). Pointing

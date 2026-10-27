@@ -80,3 +80,8 @@ docs/research/ethics/latex/*.synctex.gz
 docs/research/ethics/.~lock.*
 .~lock.*
 
+docs/DEV_PLAN/ASSIGNMENTS/gradebook-import/
+
+# Redis shore AOF/RDB (Compose bind mount ./data/redis) — keep README only
+data/redis/*
+!data/redis/README.md
