@@ -3,7 +3,8 @@
 **Audience:** instructor only (not published under `docs/public/`).
 **Rubric:** §5 — C25 · A25 · T20 · X10 · CI10 · P10 = 100.
 **Evidence pack:** [`pr-status-2026-10-11/`](./pr-status-2026-10-11/INDEX.md) (archive; live gates below).
-**Mail draft:** [`MAIL-PENDIENTES-DEFENSA-2026-10-15.es.md`](./MAIL-PENDIENTES-DEFENSA-2026-10-15.es.md) (historical).
+**Mail draft:** [`MAIL-PENDIENTES-DEFENSA-2026-10-15.es.md`](./MAIL-PENDIENTES-DEFENSA-2026-10-15.es.md) (historical).  
+**AI-critical usage (instructor):** [`ai-critical-usage-2026-10-25/index.html`](./ai-critical-usage-2026-10-25/index.html) · [`AI-CRITICAL-USAGE-CONCLUSIONS-2026-10-25.md`](./AI-CRITICAL-USAGE-CONCLUSIONS-2026-10-25.md).
 
 **Snapshot:** **0** student tip PRs open. Content #65/#67/#68 merged 2026-10-15.  
 **Complete seams (product):** Content Tasks 1–6 · Graph Tasks 1–8 · Oracle · PWA · Accounts.  

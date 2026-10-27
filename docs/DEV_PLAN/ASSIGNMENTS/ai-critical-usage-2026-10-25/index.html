@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TTOD · AI-critical usage — cohort report (instructor)</title>
+<style>
+  :root {
+    --paper: #F7F2E8;
+    --ink: #111111;
+    --accent: #C44536;
+    --muted: #5C5348;
+    --rule: #D4CBB8;
+    --chip: #EDE6D8;
+    --ok: #2F5D50;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 17px; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  header.hero {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2rem;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: clamp(1.85rem, 3.5vw, 2.6rem);
+    font-weight: 500;
+    line-height: 1.15;
+    margin: 0 0 0.75rem;
+    max-width: 18ch;
+  }
+  .lede {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 62ch;
+    margin: 0;
+  }
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin: 2.5rem 0 0.85rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+  }
+  h3 { font-size: 1.05rem; font-weight: 500; margin: 1.5rem 0 0.5rem; }
+  p, li { max-width: 68ch; }
+  a { color: var(--accent); }
+  .meta {
+    font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem;
+    margin-top: 1.25rem;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 820px) { .grid-2 { grid-template-columns: 1fr; } }
+  .panel {
+    background: #fff;
+    border: 1px solid var(--rule);
+    padding: 1.1rem 1.2rem;
+  }
+  .panel h3 { margin-top: 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.45rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th { color: var(--muted); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .chip {
+    display: inline-block;
+    background: var(--chip);
+    padding: 0.15rem 0.45rem;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.75rem;
+  }
+  .accent { color: var(--accent); }
+  .ok { color: var(--ok); }
+  figure { margin: 1rem 0 0; }
+  figcaption {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .bars { display: grid; gap: 0.65rem; margin: 1rem 0; }
+  .bar-row { display: grid; grid-template-columns: 7.5rem 1fr 2.5rem; gap: 0.6rem; align-items: center; font-family: "IBM Plex Sans", sans-serif; font-size: 0.82rem; }
+  .bar-track { height: 0.85rem; background: var(--chip); }
+  .bar-fill { height: 100%; background: var(--ink); }
+  .bar-fill.accent { background: var(--accent); }
+  .sign-matrix td { font-size: 0.8rem; }
+  .sign-matrix .dot {
+    display: inline-block; width: 0.65rem; height: 0.65rem; border-radius: 1px;
+  }
+  .s2 { background: var(--ok); }
+  .s1 { background: #A67C52; }
+  .s0 { background: var(--rule); }
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 0 0.75rem 1rem;
+    margin: 1.25rem 0;
+    color: var(--muted);
+  }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .radar-wrap { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Instructor base · anonymized by cohort · 2026-10-25</p>
+  <h1>AI-critical usage across the TTOD cohorts</h1>
+  <p class="lede">
+    A systematic reading of how each seam controlled AI assistance: disclosure quality,
+    verification, rejects, and learning signs — scored against your Unit&nbsp;6 / Oral Defence
+    rubric axes — as a base for human qualification.
+  </p>
+  <div class="meta">
+    <span>Rubric: Defer · Narrate · Critique · Verify</span>
+    <span>Evidence: tip PRs + Moodle M2 reflections</span>
+    <span>Names: cohorts only</span>
+  </div>
+</header>
+
+<section>
+  <h2>Claim under test</h2>
+  <p>
+    The course does not grade “AI volume.” It grades <em>corrective competence</em>:
+    can the human disclose help, verify the diff, reject bad advice, and defend ownership?
+    That is the Unit&nbsp;6 studio test — keep an ACCEPT/REJECT log and defend decisions —
+    and the Practical Guide’s verification checklist.
+  </p>
+  <div class="callout">
+    Product Mean Σ on tip PRs can be high while AI-critical signs stay thin.
+    This report separates those two surfaces on purpose.
+  </div>
+</section>
+
+<section class="grid-2">
+  <div>
+    <h2>Cohort snapshot</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Cohort</th>
+          <th>Seam</th>
+          <th class="num">Tip Mean Σ</th>
+          <th class="num">Signs /16</th>
+          <th class="num">Draft AI 0–10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>E1 Content</td><td>Content</td><td class="num">96</td><td class="num">15</td><td class="num accent"><strong>9.0</strong></td></tr>
+        <tr><td>E2 Graph</td><td>Graph</td><td class="num">96</td><td class="num">9</td><td class="num"><strong>6.5</strong></td></tr>
+        <tr><td>E3 Oracle</td><td>Oracle</td><td class="num">94</td><td class="num">8</td><td class="num"><strong>6.0</strong></td></tr>
+        <tr><td>E4 PWA</td><td>PWA</td><td class="num">96</td><td class="num">14</td><td class="num accent"><strong>9.0</strong></td></tr>
+        <tr><td>E5 Accounts</td><td>Accounts</td><td class="num">92</td><td class="num">12</td><td class="num"><strong>8.0</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="font-family:'IBM Plex Sans',sans-serif;font-size:0.8rem;color:var(--muted);margin-top:0.75rem;">
+      Draft AI 0–10 = signs/16 mapped to rubric bands (≈ ×0.625). Human override expected.
+    </p>
+  </div>
+  <div class="panel">
+    <h3>Tip quality vs AI control</h3>
+    <div class="bars" aria-label="Tip Mean Sigma by cohort">
+      <div class="bar-row"><span>E1 tip Σ</span><div class="bar-track"><div class="bar-fill" style="width:96%"></div></div><span class="num">96</span></div>
+      <div class="bar-row"><span>E1 AI</span><div class="bar-track"><div class="bar-fill accent" style="width:90%"></div></div><span class="num">9.0</span></div>
+      <div class="bar-row"><span>E2 tip Σ</span><div class="bar-track"><div class="bar-fill" style="width:96%"></div></div><span class="num">96</span></div>
+      <div class="bar-row"><span>E2 AI</span><div class="bar-track"><div class="bar-fill accent" style="width:65%"></div></div><span class="num">6.5</span></div>
+      <div class="bar-row"><span>E3 tip Σ</span><div class="bar-track"><div class="bar-fill" style="width:94%"></div></div><span class="num">94</span></div>
+      <div class="bar-row"><span>E3 AI</span><div class="bar-track"><div class="bar-fill accent" style="width:60%"></div></div><span class="num">6.0</span></div>
+      <div class="bar-row"><span>E4 tip Σ</span><div class="bar-track"><div class="bar-fill" style="width:96%"></div></div><span class="num">96</span></div>
+      <div class="bar-row"><span>E4 AI</span><div class="bar-track"><div class="bar-fill accent" style="width:90%"></div></div><span class="num">9.0</span></div>
+      <div class="bar-row"><span>E5 tip Σ</span><div class="bar-track"><div class="bar-fill" style="width:92%"></div></div><span class="num">92</span></div>
+      <div class="bar-row"><span>E5 AI</span><div class="bar-track"><div class="bar-fill accent" style="width:80%"></div></div><span class="num">8.0</span></div>
+    </div>
+    <figcaption>Black = tip Mean Σ /100 · Accent = draft AI-critical /10 (scaled to bar width).</figcaption>
+  </div>
+</section>
+
+<section>
+  <h2>Eight signs of AI understanding &amp; control</h2>
+  <p>Each sign scored 0 (absent) · 1 (partial) · 2 (clear) from PR bodies, memos, and Moodle M2 text.</p>
+  <table class="sign-matrix">
+    <thead>
+      <tr>
+        <th>Sign</th>
+        <th class="num">E1</th><th class="num">E2</th><th class="num">E3</th><th class="num">E4</th><th class="num">E5</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>S1 — AI Review Log on tip PRs</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">2</td></tr>
+      <tr><td>S2 — Verification named (test / cmd / browser)</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">2</td></tr>
+      <tr><td>S3 — Explicit REJECT / non-accept + reason</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">2</td></tr>
+      <tr><td>S4 — AI-run vs human-run distinguished</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num">1</td></tr>
+      <tr><td>S5 — Plan / defer before code</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
+      <tr><td>S6 — Mutation / adversarial self-check</td><td class="num">2</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0</td></tr>
+      <tr><td>S7 — M2 cites concrete control</td><td class="num">2</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">2</td></tr>
+      <tr><td>S8 — Extended artifact (memo / decision)</td><td class="num">2</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td class="num">0</td></tr>
+      <tr><td><strong>Total</strong></td><td class="num"><strong>15</strong></td><td class="num"><strong>9</strong></td><td class="num"><strong>8</strong></td><td class="num"><strong>14</strong></td><td class="num"><strong>12</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="grid-2">
+  <div>
+    <h2>Rubric axes — cohort radar</h2>
+    <div class="radar-wrap">
+      <!-- Formula-ish radar: five cohorts as concentric polygons on Defer/Narrate/Critique/Verify -->
+      <svg viewBox="0 0 420 360" width="100%" height="auto" role="img" aria-labelledby="radar-title radar-desc">
+        <title id="radar-title">Rubric axes by cohort</title>
+        <desc id="radar-desc">Radar chart of Defer, Narrate, Critique, Verify scores for five cohorts.</desc>
+        <g transform="translate(210,185)">
+          <!-- axes -->
+          <g stroke="#D4CBB8" stroke-width="1" fill="none">
+            <circle r="40" /><circle r="80" /><circle r="120" />
+            <line x1="0" y1="-120" x2="0" y2="120" />
+            <line x1="-120" y1="0" x2="120" y2="0" />
+            <line x1="-85" y1="-85" x2="85" y2="85" />
+            <line x1="85" y1="-85" x2="-85" y2="85" />
+          </g>
+          <!-- labels: N=Defer(0°), E=Narrate(90°), S=Critique(180°), W=Verify(270°) — use 4 axes -->
+          <text x="0" y="-132" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C5348">Defer</text>
+          <text x="138" y="4" text-anchor="start" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C5348">Narrate</text>
+          <text x="0" y="148" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C5348">Critique</text>
+          <text x="-138" y="4" text-anchor="end" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C5348">Verify</text>
+          <!-- helper: score 0-10 → radius = score*12 -->
+          <!-- E1: D9 N9 C9 V8 -->
+          <polygon fill="rgba(196,69,54,0.18)" stroke="#C44536" stroke-width="2"
+            points="0,-108 108,0 0,108 -96,0" />
+          <!-- E4: D7 N9 C9 V9 -->
+          <polygon fill="none" stroke="#111111" stroke-width="1.5" stroke-dasharray="4 3"
+            points="0,-84 108,0 0,108 -108,0" />
+          <!-- E5: D7 N8 C8 V8 -->
+          <polygon fill="none" stroke="#2F5D50" stroke-width="1.5"
+            points="0,-84 96,0 0,96 -96,0" />
+        </g>
+        <g font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C5348">
+          <rect x="24" y="318" width="14" height="3" fill="#C44536" /><text x="44" y="322">E1 Content</text>
+          <rect x="140" y="318" width="14" height="3" fill="#111" /><text x="160" y="322">E4 PWA</text>
+          <rect x="240" y="318" width="14" height="3" fill="#2F5D50" /><text x="260" y="322">E5 Accounts</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>E2/E3 omitted from overlay for legibility — both sit closer to the middle ring on Critique/Defer. Exact axis scores in the conclusions note.</figcaption>
+  </div>
+  <div>
+    <h2>Human ↔ AI boundary</h2>
+    <figure>
+      <img src="assets/rubric-allegory-human-ai.svg" width="100%" height="auto" alt="Allegory: human plan verify defend versus AI assist suggest review" />
+      <figcaption>From your shared oral-defence rubric allegory (visual-forger). Accountability stays human-side.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>Per-cohort reading</h2>
+
+  <h3>E1 Content — draft 9.0</h3>
+  <p>
+    Strongest alignment of product work and metacognition. Logs name mutation tests
+    (break the test deliberately to prove it bites). M2 names the ritual
+    <span class="chip">explore → plan → wait for approval</span> that caught stale task sheets.
+    Design-decision #68 documents a rejected alternative with file/line evidence.
+  </p>
+
+  <h3>E2 Graph — draft 6.5</h3>
+  <p>
+    Tip Mean Σ matches Content, but AI-control signs are thinner: logs are present and
+    verification commands listed, yet REJECT trails and M2 depth are lighter. M2 honesty
+    (“hard to use AI as the main tool”) is useful data — it is not the same as demonstrated
+    critique of model suggestions.
+  </p>
+
+  <h3>E3 Oracle — draft 6.0</h3>
+  <p>
+    Cumulative tip #42 includes a richer log schema (tool / verified / changed / uncertain).
+    Moodle M2 is minimal. Product seam is complete; AI-critical narration did not keep pace.
+  </p>
+
+  <h3>E4 PWA — draft 9.0</h3>
+  <p>
+    Best process artifact in the cohort: <code>docs/uso-ia-team-4.md</code> (#74) with a concrete
+    REJECT (drop <code>tsc</code> from the compatibility monitor). Multiple logs honestly state that
+    the assistant ran checks the human did not claim — that is Verify, not a confession of failure.
+  </p>
+
+  <h3>E5 Accounts — draft 8.0</h3>
+  <p>
+    M2 describes the AI Review Log as the thing that forced thinking; gives a domain example
+    (session cookie vs API token) where a working AI suggestion was refused for architectural fit.
+    Tip scores slightly lower than peers; AI-control narrative is strong.
+  </p>
+</section>
+
+<section>
+  <h2>How much AI for learning?</h2>
+  <p>Qualitative volume (not token counts) from declarations:</p>
+  <table>
+    <thead><tr><th>Cohort</th><th>Declared intensity</th><th>Learning use</th><th>Control maturity</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>E1</td>
+        <td>High, constrained</td>
+        <td>Scaffold + tests; human owns mutations</td>
+        <td class="ok">High</td>
+      </tr>
+      <tr>
+        <td>E2</td>
+        <td>Present but resisted as “main tool”</td>
+        <td>Implementation + PR text</td>
+        <td>Medium</td>
+      </tr>
+      <tr>
+        <td>E3</td>
+        <td>Wanted less; relies on agents.md</td>
+        <td>Context maintenance more than critique</td>
+        <td>Medium-low</td>
+      </tr>
+      <tr>
+        <td>E4</td>
+        <td>Very high (Claude Code / Codex)</td>
+        <td>Lifecycle teaching + repair loops</td>
+        <td class="ok">High (documented)</td>
+      </tr>
+      <tr>
+        <td>E5</td>
+        <td>High on rebuilds</td>
+        <td>Auth/library rebuilds; human curl checks</td>
+        <td class="ok">High on Critique</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Intensity alone does not predict the draft mark. E4’s high volume is redeemed by REJECT + honesty;
+    E3’s desire for “less IA” without a rich reject log still scores lower on Critique.
+  </p>
+</section>
+
+<section>
+  <h2>Moodle reflections — anonymized themes</h2>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>What changed practice</h3>
+      <ul>
+        <li>AI Review Log as forced accept/reject thinking (E1, E5)</li>
+        <li>Plan-before-code vs stale assignment sheets (E1)</li>
+        <li>Mutation testing as verification theatre that proves tests bite (E1)</li>
+        <li>Bugbot reviewing AI-shaped plans — human still decides (E1)</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>What felt like paperwork</h3>
+      <ul>
+        <li>Repeating AI sections on tiny PRs (E1, E1 teammate)</li>
+        <li>Re-pasting context every session (E1)</li>
+        <li>Confusing / contradictory AI review bot comments (E5)</li>
+        <li>Wanting less AI overall (E3)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>For your human qualification</h2>
+  <ol>
+    <li>Treat draft AI 0–10 as a <em>starting band</em>; adjust with oral memory.</li>
+    <li>Do not let tip Mean Σ overwrite Critique when signs are thin (E2, E3).</li>
+    <li>Credit honesty about AI-run checks (E4) as Verify maturity.</li>
+    <li>Enter Moodle grades from the companion conclusions note (private name map).</li>
+    <li>Optional formative ask: one written REJECT from E2/E3 if you want parity of evidence.</li>
+  </ol>
+</section>
+
+<footer>
+  <p>
+    Instructor-only · TTOD FE II cohort · Sources: Unit 6, AI Practical Guide, Oral Defence Rubric,
+    tip PR AI Review Logs, PWA AI memo #74, Moodle Evaluación TTOD export (2026-10-25).
+    Companion: <code>AI-CRITICAL-USAGE-CONCLUSIONS-2026-10-25.md</code>.
+    Studio palette: paper #F7F2E8 · ink #111 · accent #C44536 · allegory from visual-forger.
+  </p>
+  <p>Not a published research claim. Not for student distribution without further anonymization review.</p>
+</footer>
+
+</div>
+</body>
+</html>
