@@ -14,24 +14,38 @@ if (reviewer instanceof Response) return reviewer;
 
 const backend = import.meta.env.BACKEND_URL ?? 'http://backend:8000';
 const sessionCookie = `${SESSION_COOKIE_NAME}=${Astro.cookies.get(SESSION_COOKIE_NAME)?.value ?? ''}`;
-const response = await fetch(`${backend}/api/v1/proposals`, {
-  headers: { accept: 'application/json', cookie: sessionCookie }
-});
-if (!response.ok) throw new Error('Unable to load the reviewer queue');
-const proposals = await response.json() as Array<{
+type Proposal = {
   proposal_id: string;
   status: string;
   candidate_content: { text?: string; section?: string; origin?: string };
-}>;
+};
+let proposals: Proposal[] | null = null;
+try {
+  const response = await fetch(`${backend}/api/v1/proposals`, {
+    headers: { accept: 'application/json', cookie: sessionCookie }
+  });
+  if (response.ok) proposals = await response.json() as Proposal[];
+} catch (error) {
+  console.error('Unable to load the reviewer queue.', error);
+}
+// Sin respuesta no se sabe si hay propuestas: «no hay pendientes» sería falso.
+if (proposals === null) Astro.response.status = 503;
 const copy = locale === 'es'
-  ? { title: 'Cola de revisión', empty: 'No hay propuestas pendientes.', status: 'Estado', section: 'Sección' }
-  : { title: 'Reviewer queue', empty: 'There are no pending proposals.', status: 'Status', section: 'Section' };
+  ? {
+      title: 'Cola de revisión', empty: 'No hay propuestas pendientes.', status: 'Estado', section: 'Sección',
+      failed: 'No se ha podido cargar la cola porque el servicio no responde. Las propuestas siguen guardadas: vuelve a intentarlo en un momento.'
+    }
+  : {
+      title: 'Reviewer queue', empty: 'There are no pending proposals.', status: 'Status', section: 'Section',
+      failed: 'The queue could not be loaded because the service is not answering. The proposals are still stored: please try again in a moment.'
+    };
 ---
 <Page lang={locale} title={copy.title}>
   <main>
     <h1>{copy.title}</h1>
     <p class="meta">{reviewer.roles.join(', ')}</p>
-    {proposals.length === 0 ? <p>{copy.empty}</p> : <section aria-label={copy.title}>
+    {proposals === null ? <p role="alert">{copy.failed}</p>
+      : proposals.length === 0 ? <p>{copy.empty}</p> : <section aria-label={copy.title}>
       {proposals.map((proposal) => <article>
         <h2>{proposal.proposal_id}</h2>
         <blockquote>{proposal.candidate_content.text}</blockquote>
