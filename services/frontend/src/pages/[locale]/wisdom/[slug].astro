@@ -46,7 +46,7 @@ const crumbs = quote
     <nav class="ttod-nav"><a href={`/${locale}/wisdom/`}>← {copy.back}</a><a href={`/${locale}/docs/`}>{copy.docs}</a></nav>
     <Breadcrumbs locale={locale} items={crumbs} />
     {failed ? <EmptyState variant="error" title={copy.errorTitle} message={copy.errorMessage} /> : !quote ? <EmptyState title={copy.notFound} message={copy.notFoundMessage} action={{ label: copy.back, href: `/${locale}/wisdom/` }} /> : <>
-      <article class="ttod-card"><blockquote>{quote.text}</blockquote><p><strong>{copy.teaches}:</strong> {quote.teaches}</p><p class="ttod-meta">{quote.id} · {quote.section} · {quote.level} · {quote.origin} · {quote.lang}</p><div class="ttod-clusters">{quote.tags.map((tag) => <a class="ttod-pill" href={`/${locale}/wisdom/tags/${tag}/`}>#{tag}</a>)}</div>{user && <FavoriteButton client:load quoteId={quote.id} initiallySaved={alreadySaved} />}</article>
+      <article class="ttod-card"><blockquote>{quote.text}</blockquote><p><strong>{copy.teaches}:</strong> {quote.teaches}</p><p class="ttod-meta">{quote.id} · {quote.section} · {quote.level} · {quote.origin} · {quote.lang}</p><div class="ttod-clusters">{quote.tags.map((tag) => <a class="ttod-pill" href={`/${locale}/wisdom/tags/${tag}/`}>#{tag}</a>)}</div>{user && <FavoriteButton client:load quoteId={quote.id} initiallySaved={alreadySaved} locale={locale} />}</article>
       {relatedEntries.length > 0 && <section aria-labelledby="related-wisdom-title"><h2 id="related-wisdom-title">{copy.related}</h2><nav class="ttod-clusters" aria-label={copy.related}>{relatedEntries.map((relatedEntry) => <a class="ttod-pill" href={`/${locale}/wisdom/${relatedEntry.id}/`}>{relatedEntry.id}</a>)}</nav></section>}
       <ProvenanceBlock entry={quote} locale={locale} />
     </>}
