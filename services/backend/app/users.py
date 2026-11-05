@@ -44,6 +44,7 @@ class UserStore(Protocol):
     def get_by_id(self, user_id: str) -> UserRecord | None: ...
     def get_by_email(self, email: str) -> UserRecord | None: ...
     def upsert(self, user: UserRecord) -> None: ...
+    def create(self, user: UserRecord) -> bool: ...
     def ensure_admin(self, email: str, password_hash: str, *, user_id: str = "usr-001") -> None: ...
 
 
@@ -66,6 +67,14 @@ class MemoryUserStore:
         with self._lock:
             self._by_id[user.user_id] = user
             self._email_index[user.email.strip().casefold()] = user.user_id
+
+    def create(self, user: UserRecord) -> bool:
+        """Da de alta al usuario; devuelve False si el correo ya tiene cuenta."""
+        with self._lock:
+            if user.email.strip().casefold() in self._email_index:
+                return False
+            self.upsert(user)
+            return True
 
     def ensure_admin(self, email: str, password_hash: str, *, user_id: str = "usr-001") -> None:
         if not email.strip() or not password_hash.strip():
@@ -107,6 +116,20 @@ class RedisUserStore:
         pipe.hset(self._user_key(user.user_id), mapping=user.to_hash())
         pipe.set(self._email_key(user.email), user.user_id)
         pipe.execute()
+
+    def create(self, user: UserRecord) -> bool:
+        """Da de alta al usuario; devuelve False si el correo ya tiene cuenta.
+
+        El correo se reserva con SET NX: de dos altas simultáneas solo gana una.
+        Primero se escribe el perfil, con un id nuevo al que todavía nadie llega,
+        para que un fallo a medias no deje un correo reservado sin usuario.
+        """
+        user_key = self._user_key(user.user_id)
+        self.client.hset(user_key, mapping=user.to_hash())
+        if self.client.set(self._email_key(user.email), user.user_id, nx=True):
+            return True
+        self.client.delete(user_key)
+        return False
 
     def ensure_admin(self, email: str, password_hash: str, *, user_id: str = "usr-001") -> None:
         if not email.strip() or not password_hash.strip():

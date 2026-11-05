@@ -26,6 +26,7 @@ from .favorites import FavoriteStore, MemoryFavoriteStore, RedisFavoriteStore
 from .models import (
     AuthLoginRequest,
     AuthLoginResponse,
+    AuthRegisterRequest,
     AuthUser,
     FavoriteRequest,
     OracleProposeRequest,
@@ -159,6 +160,22 @@ def create_app(
             user=AuthUser(id=claims.user_id, email=claims.email, roles=list(claims.roles)),
         )
 
+    @app.post("/api/v1/auth/register", status_code=201, response_model=AuthLoginResponse)
+    def register(payload: AuthRegisterRequest):
+        try:
+            claims = auth_service.register(payload.email, payload.password)
+            if claims is None:
+                raise HTTPException(status_code=409, detail="Email already registered")
+            # Tras el alta la sesión ya queda abierta: no se vuelve a pedir la contraseña.
+            session_token = auth_service.issue_session(claims)
+        except redis.RedisError as exc:
+            raise HTTPException(status_code=503, detail="User store unavailable") from exc
+        return AuthLoginResponse(
+            session_token=session_token,
+            expires_in=auth_service.session_ttl_seconds,
+            user=AuthUser(id=claims.user_id, email=claims.email, roles=list(claims.roles)),
+        )
+
     @app.get("/api/v1/auth/session", response_model=AuthUser)
     def auth_session(claims: SessionClaims = Depends(require_session)):
         return AuthUser(id=claims.user_id, email=claims.email, roles=list(claims.roles))
@@ -213,6 +230,10 @@ def create_app(
         if not any(entry["id"] == payload.quoteId for entry in snapshots.wisdom()):
             raise HTTPException(status_code=404, detail="Quote not found or not publicly active")
         try:
+            # Una sesión puede sobrevivir a su usuario: sin este control se guardarían
+            # favoritos a nombre de alguien que no existe en el almacén de usuarios.
+            if users.get_by_id(claims.user_id) is None:
+                raise HTTPException(status_code=401, detail="Authentication required")
             return favorites.save(claims.user_id, payload.quoteId)
         except redis.RedisError as exc:
             raise HTTPException(status_code=503, detail="Favorites store unavailable") from exc

@@ -16,10 +16,11 @@ would force the corpus to know that users exist at all. The dependency runs the
 other way: the favorites store knows quote identifiers, the corpus knows nothing
 about favorites.
 
-The current adapter is an in-memory dictionary guarded by an `RLock`
-(`services/backend/app/favorites.py`). It is enough for the current scope and
-keeps the boundary explicit; swapping it for SQLite or any user database is a
-change behind the same three functions, with no effect on the HTTP contract.
+With `REDIS_URL` set, as in Compose, favorites live in the Redis hash
+`ttod:favorites:{userId}` (`services/backend/app/favorites.py`). Without it they
+fall back to an in-memory dictionary guarded by an `RLock`, which is lost on
+restart. Both sit behind the same `FavoriteStore`, with no effect on the HTTP
+contract.
 
 ## The contract
 
@@ -48,10 +49,15 @@ no rows. The page at `/[locale]/library` applies the matching server-side guard
 (`requireUser` from `services/frontend/src/lib/auth.server.ts`) in the Astro
 frontmatter, so the redirect happens before anything renders.
 
+Saving also checks that the owner exists in the user store
+(`ttod:user:{userId}`): a session that outlives its user, such as an old signed
+cookie, gets `401` instead of writing favorites for nobody. Accounts are created
+through `POST /api/v1/auth/register`, always with the `student` role.
+
 ## How to verify
 
 ```bash
-python -m unittest services.backend.tests.test_favorites
+python -m unittest services.backend.tests.test_favorites services.backend.tests.test_user_persistence
 npm --prefix services/frontend run check && npm --prefix services/frontend run build
 ```
 

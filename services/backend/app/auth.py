@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import secrets
+import uuid
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -8,6 +9,8 @@ from fastapi import Cookie, Header, HTTPException
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from passlib.context import CryptContext
 from passlib.exc import UnknownHashError
+
+from .users import UserRecord
 
 
 SESSION_COOKIE_NAME = "ttod_session"
@@ -28,6 +31,7 @@ class AccessTokenClaims:
 
 class _UserStore(Protocol):
     def get_by_email(self, email: str) -> Any: ...
+    def create(self, user: UserRecord) -> bool: ...
     def ensure_admin(self, email: str, password_hash: str, *, user_id: str = "usr-001") -> None: ...
 
 
@@ -112,6 +116,21 @@ class AuthService:
         if user is None or not password_is_valid:
             return None
         return SessionClaims(user_id=user.user_id, email=user.email, roles=tuple(user.roles))
+
+    def register(self, email: str, password: str) -> SessionClaims | None:
+        """Crea una cuenta de estudiante; devuelve None si el correo ya está registrado."""
+        if self._users is None:
+            raise RuntimeError("Registering an account requires a user store")
+        # El rol lo decide el servidor: un alta nunca da permisos de revisión.
+        user = UserRecord(
+            user_id=f"usr-{uuid.uuid4().hex}",
+            email=email.strip(),
+            password_hash=self._password_context.hash(password),
+            roles=("student",),
+        )
+        if not self._users.create(user):
+            return None
+        return SessionClaims(user_id=user.user_id, email=user.email, roles=user.roles)
 
     def issue_session(self, claims: SessionClaims) -> str:
         if not claims.user_id.strip() or not claims.email.strip():

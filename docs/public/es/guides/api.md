@@ -32,6 +32,7 @@ local con Compose — porque Caddy redirige `/api/*` al backend.
 | Método y ruta | Credencial | Respuesta |
 | --- | --- | --- |
 | `POST /api/v1/auth/login` | ninguna (correo + contraseña) | `200` con `AuthLoginResponse`; `401` si las credenciales no valen |
+| `POST /api/v1/auth/register` | ninguna (correo + contraseña de 8 caracteres o más y 72 bytes como mucho) | `201` con `AuthLoginResponse` y rol `student`; `409` si el correo ya tiene cuenta; `422` si los datos no valen |
 | `GET /api/v1/auth/session` | cookie de sesión | `200` con `AuthUser`; `401` sin cookie válida |
 | `POST /api/v1/auth/token` | cookie de sesión | `200` con `access_token`, `token_type: "Bearer"` y `expires_in` |
 | `GET /api/v1/wisdom/random` | **solo Bearer** | `200` con un `WisdomEntry`; `401` a cualquier otra cosa |

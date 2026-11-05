@@ -17,6 +17,7 @@ from services.backend.app.favorites import RedisFavoriteStore
 from services.backend.app.main import create_app
 from services.backend.app.oracle import OracleService
 from services.backend.app.storage import SnapshotService
+from services.backend.app.users import MemoryUserStore, UserRecord
 
 
 class FakeRedis:
@@ -99,7 +100,8 @@ class FavoritesTestCase(unittest.TestCase):
         )
         self.snapshots = SnapshotService(self.settings.ttod_path, self.settings.schema_dir)
         self.oracle = OracleService(self.settings, self.snapshots, FakeOllama(), FakeRetrieval())
-        self.client = TestClient(create_app(self.settings, self.oracle))
+        self.users = MemoryUserStore()
+        self.client = TestClient(create_app(self.settings, self.oracle, users=self.users))
         self.auth_service = auth_service_for(self.settings)
         # El almacén es un diccionario de módulo: se aísla para que los tests no se contaminen.
         store = patch("services.backend.app.favorites._favorites", {})
@@ -107,9 +109,11 @@ class FavoritesTestCase(unittest.TestCase):
         self.addCleanup(store.stop)
 
     def session_for(self, user_id: str, *roles: str) -> dict[str, str]:
-        """Cookie de sesión firmada para un usuario con los roles indicados."""
+        """Cookie de sesión firmada para un usuario existente con los roles indicados."""
+        email = f"{user_id}@ttod.local"
+        self.users.upsert(UserRecord(user_id=user_id, email=email, password_hash="", roles=tuple(roles)))
         token = self.auth_service.issue_session(
-            SessionClaims(user_id=user_id, email=f"{user_id}@ttod.local", roles=tuple(roles))
+            SessionClaims(user_id=user_id, email=email, roles=tuple(roles))
         )
         return {SESSION_COOKIE_NAME: token}
 
@@ -232,12 +236,22 @@ class RedisFavoritesApiTests(FavoritesTestCase):
     def setUp(self):
         super().setUp()
         self.client = TestClient(
-            create_app(self.settings, self.oracle, favorites=RedisFavoriteStore("redis://unused", client=FakeRedis()))
+            create_app(
+                self.settings,
+                self.oracle,
+                favorites=RedisFavoriteStore("redis://unused", client=FakeRedis()),
+                users=self.users,
+            )
         )
 
     def test_redis_outage_returns_503(self):
         broken = TestClient(
-            create_app(self.settings, self.oracle, favorites=RedisFavoriteStore("redis://unused", client=BrokenRedis()))
+            create_app(
+                self.settings,
+                self.oracle,
+                favorites=RedisFavoriteStore("redis://unused", client=BrokenRedis()),
+                users=self.users,
+            )
         )
         student = self.session_for("student-1", "student")
         response = broken.post("/api/v1/favorites", json={"quoteId": "wis-001"}, cookies=student)
