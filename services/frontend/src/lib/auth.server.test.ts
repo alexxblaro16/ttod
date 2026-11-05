@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getSessionUser, loginWithBackend, requireRole, requireUser, safeNextPath } from './auth.server';
+import { getSessionUser, loginWithBackend, registerWithBackend, requireRole, requireUser, safeNextPath } from './auth.server';
 
 const reviewer = { id: 'usr-001', email: 'admin@ttod.local', roles: ['reviewer', 'instructor'] };
 const student = { id: 'usr-002', email: 'student@ttod.local', roles: ['student'] };
@@ -147,8 +147,51 @@ describe('login against the backend', () => {
 describe('where login returns to', () => {
   it('keeps a path of this site and refuses anything that leaves it', () => {
     expect(safeNextPath('/es/wisdom/wis-034?x=1', 'es')).toBe('/es/wisdom/wis-034?x=1');
-    for (const bad of ['//evil.com', '/\\evil.com', 'https://evil.com', '/es/login', '/en/login?next=/x', null, 42]) {
+    for (const bad of ['//evil.com', '/\\evil.com', 'https://evil.com', '/es/login', '/en/login?next=/x', '/es/register', '/en/register?next=/x', null, 42]) {
       expect(safeNextPath(bad, 'es')).toBe('/es/account');
     }
+  });
+});
+
+describe('registerWithBackend', () => {
+  const issued = {
+    session_token: 'sid-nuevo', token_type: 'Session', expires_in: 3600,
+    user: { id: 'usr-nuevo', email: 'ana@ttod.local', roles: ['student'] }
+  };
+
+  it('returns the session the backend issues for the new account', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(issued, { status: 201 }));
+
+    await expect(registerWithBackend(' ana@ttod.local ', 'una-clave-larga')).resolves.toEqual({
+      ok: true, sessionToken: 'sid-nuevo', expiresIn: 3600
+    });
+
+    const [url, init] = fetchSpy.mock.calls[0];
+    expect(String(url)).toContain('/api/v1/auth/register');
+    expect(JSON.parse(String(init?.body))).toEqual({ email: 'ana@ttod.local', password: 'una-clave-larga' });
+  });
+
+  it.each([
+    [409, 'taken'],
+    [422, 'invalid'],
+    [503, 'service']
+  ])('maps a %i answer to the reason %s', async (status, reason) => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(null, { status }));
+
+    await expect(registerWithBackend('ana@ttod.local', 'una-clave-larga')).resolves.toEqual({ ok: false, reason });
+  });
+
+  it('treats a malformed success as a service failure instead of opening a session', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ ...issued, session_token: '' }, { status: 201 }));
+
+    await expect(registerWithBackend('ana@ttod.local', 'una-clave-larga')).resolves.toEqual({ ok: false, reason: 'service' });
+  });
+
+  it('rejects empty data without calling the backend', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+
+    await expect(registerWithBackend('   ', 'una-clave-larga')).resolves.toEqual({ ok: false, reason: 'invalid' });
+    await expect(registerWithBackend('ana@ttod.local', '')).resolves.toEqual({ ok: false, reason: 'invalid' });
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 });

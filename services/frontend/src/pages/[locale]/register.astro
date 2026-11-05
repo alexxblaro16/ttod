@@ -1,0 +1,145 @@
+---
+import CieloRuyi from '../../components/estilo/CieloRuyi.astro';
+import '../../components/estilo/acceso.css';
+import Page from '../../layouts/Page.astro';
+import { isLocale } from '../../content/wisdom';
+import { SESSION_COOKIE_NAME, getSessionUser, registerWithBackend, safeNextPath } from '../../lib/auth.server';
+
+export const prerender = false;
+
+const locale = Astro.params.locale;
+if (!isLocale(locale)) return new Response(null, { status: 404 });
+
+let next = safeNextPath(Astro.url.searchParams.get('next'), locale);
+let registerError: 'taken' | 'invalid' | 'service' | null = null;
+let email = '';
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const rawEmail = formData.get('email');
+  const password = formData.get('password');
+  next = safeNextPath(formData.get('next'), locale);
+  email = typeof rawEmail === 'string' ? rawEmail : '';
+
+  if (typeof rawEmail !== 'string' || typeof password !== 'string') {
+    registerError = 'invalid';
+  } else {
+    // La contraseña solo viaja al backend, que guarda su hash bcrypt en Redis.
+    const result = await registerWithBackend(rawEmail, password);
+    if (result.ok) {
+      Astro.cookies.set(SESSION_COOKIE_NAME, result.sessionToken, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: import.meta.env.PROD,
+        path: '/',
+        maxAge: result.expiresIn
+      });
+      return Astro.redirect(next, 303);
+    }
+    registerError = result.reason;
+  }
+} else if (await getSessionUser(Astro.request)) {
+  // Ya hay sesión: no hace falta otra cuenta.
+  return Astro.redirect(next);
+}
+
+const copy = locale === 'es'
+  ? {
+      title: 'Crear cuenta · TTOD',
+      description: 'Crea tu cuenta de TTOD para guardar citas en favoritos y proponer nuevas al corpus.',
+      eyebrow: 'Tu cuenta',
+      heading: 'Crear cuenta',
+      lead: 'Tus favoritos quedan guardados en tu cuenta y los encuentras al volver a entrar.',
+      email: 'Correo electrónico',
+      password: 'Contraseña',
+      passwordHint: 'Entre 8 y 72 caracteres.',
+      show: 'Mostrar',
+      hide: 'Ocultar',
+      showLabel: 'Mostrar contraseña',
+      submit: 'Crear cuenta',
+      busy: 'Creando la cuenta…',
+      takenError: 'Ese correo ya tiene cuenta. Inicia sesión con él.',
+      invalidError: 'Revisa el correo y que la contraseña tenga entre 8 y 72 caracteres.',
+      serviceError: 'El servicio de cuentas no responde ahora mismo. Inténtalo de nuevo en un momento.',
+      note: '¿Ya tienes cuenta?',
+      login: 'Iniciar sesión'
+    }
+  : {
+      title: 'Create account · TTOD',
+      description: 'Create your TTOD account to save favourite quotes and propose new ones to the corpus.',
+      eyebrow: 'Your account',
+      heading: 'Create account',
+      lead: 'Your favourites stay saved in your account, ready when you log in again.',
+      email: 'Email',
+      password: 'Password',
+      passwordHint: 'Between 8 and 72 characters.',
+      show: 'Show',
+      hide: 'Hide',
+      showLabel: 'Show password',
+      submit: 'Create account',
+      busy: 'Creating your account…',
+      takenError: 'That email already has an account. Log in with it instead.',
+      invalidError: 'Check the email and that the password has between 8 and 72 characters.',
+      serviceError: 'The account service is not answering right now. Please try again in a moment.',
+      note: 'Already have an account?',
+      login: 'Log in'
+    };
+const errorText = registerError === 'taken' ? copy.takenError
+  : registerError === 'invalid' ? copy.invalidError
+  : registerError === 'service' ? copy.serviceError : '';
+const loginHref = `/${locale}/login?next=${encodeURIComponent(next)}`;
+---
+
+<Page lang={locale} title={copy.title} description={copy.description}>
+  <main class="acceso">
+    <CieloRuyi semilla={11} />
+    <div class="acceso-caja">
+      <p class="acceso-ojo">{copy.eyebrow}</p>
+      <h1>{copy.heading}</h1>
+      <p class="acceso-lead">{copy.lead}</p>
+
+      <div id="register-error" class="acceso-error" role="alert" aria-live="assertive" aria-atomic="true">
+        {errorText && <p>{errorText}</p>}
+      </div>
+
+      <form method="post" class="acceso-form">
+        <input type="hidden" name="next" value={next} />
+        <div class="campo">
+          <label for="email">{copy.email}</label>
+          <input
+            id="email" name="email" type="email" required
+            autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false"
+            value={email}
+            aria-invalid={registerError === 'taken' ? 'true' : undefined}
+            aria-describedby={registerError ? 'register-error' : undefined}
+          />
+        </div>
+        <div class="campo">
+          <label for="password">{copy.password}</label>
+          <div class="campo-clave">
+            <input
+              id="password" name="password" type="password" required minlength="8" maxlength="72"
+              autocomplete="new-password"
+              aria-invalid={registerError === 'invalid' ? 'true' : undefined}
+              aria-describedby={registerError ? 'password-hint register-error' : 'password-hint'}
+            />
+            <button
+              type="button" class="ver-clave" hidden
+              aria-controls="password" aria-pressed="false" aria-label={copy.showLabel}
+              data-show={copy.show} data-hide={copy.hide}
+            >{copy.show}</button>
+          </div>
+          <p id="password-hint" class="acceso-pista">{copy.passwordHint}</p>
+        </div>
+        <button type="submit" class="acceso-entrar" data-busy={copy.busy}>{copy.submit}</button>
+      </form>
+
+      <p class="acceso-nota">{copy.note} <a href={loginHref}>{copy.login}</a></p>
+    </div>
+  </main>
+</Page>
+
+<script>
+  import { prepararAcceso } from '../../components/estilo/acceso';
+  prepararAcceso();
+</script>

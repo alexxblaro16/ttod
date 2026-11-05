@@ -1,0 +1,83 @@
+/* El login en el cielo ruyi (el fondo de nubes que se van
+   dibujando, y un poco de humo). El formulario va sobre su folio de
+   papel opaco, con la misma curva de retablo que el oráculo: el cielo nunca toca el texto. */
+.acceso {
+  position: relative; isolation: isolate;
+  min-height: calc(100svh - 5rem);
+  display: grid; align-content: center; justify-items: center;
+  padding: clamp(1.25rem, 5vh, 4.5rem) 1rem clamp(3rem, 12vh, 7rem);
+}
+.acceso-caja {
+  position: relative; z-index: 1; box-sizing: border-box; width: min(100%, 28rem);
+  padding: 3rem clamp(1.25rem, 5vw, 2.25rem) 1.75rem;
+  background: radial-gradient(120% 60% at 50% 0%, rgb(var(--ttod-paper-rgb)) 55%, #f6efdf 100%);
+  border: 1px solid #dccfb3; border-radius: 50% 50% 1.5rem 1.5rem / 4rem 4rem 1.5rem 1.5rem;
+  box-shadow: 0 2.5rem 5rem #5b4a3026, 0 .25rem 1rem #5b4a3014;
+}
+.acceso-ojo {
+  margin: 0 0 .5rem; font-family: var(--ttod-font-ui); font-size: var(--ttod-text-ui);
+  letter-spacing: var(--ttod-tracking-ui); text-transform: uppercase; font-weight: 500; color: var(--ttod-color-seal);
+}
+.acceso h1 { margin: 0; font-family: var(--ttod-font-titular); font-weight: 300; font-size: clamp(2.4rem, 10vw, 3.5rem); line-height: 1.05; }
+.acceso-lead { margin: .9rem 0 0; color: var(--ttod-color-muted); }
+
+.acceso-error:not(:has(p)) { display: none; }
+.acceso-error {
+  margin-top: 1.25rem; padding: .85rem 1rem; border-radius: .9rem;
+  background: rgb(154 51 36 / .09); border-inline-start: 3px solid var(--ttod-color-seal);
+  color: #7a2619; font-family: var(--ttod-font-ui); font-size: .9375rem; line-height: 1.5;
+}
+.acceso-error p { margin: 0; }
+
+.acceso-form { display: grid; gap: 1.1rem; margin-top: 1.5rem; }
+.acceso .campo { display: grid; gap: .4rem; }
+.acceso .campo label { font-family: var(--ttod-font-ui); font-size: .9375rem; font-weight: 500; }
+.acceso .campo input {
+  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem;
+  border: 1px solid var(--ttod-color-line); border-radius: .9rem;
+  background: rgb(250 247 238); color: var(--ttod-color-ink);
+  /* 16 px como mínimo: por debajo, Safari en iPhone amplía la página al enfocar. */
+  font: 1rem/1.4 var(--ttod-font-ui);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.acceso .campo input:hover { border-color: var(--ttod-color-ink); }
+.acceso .campo input:focus-visible {
+  outline: none; border-color: var(--ttod-color-focus);
+  box-shadow: 0 0 0 3px rgb(36 93 146 / .35);
+}
+.acceso .campo input[aria-invalid='true'] { border-color: var(--ttod-color-seal); }
+.acceso .campo-clave { position: relative; }
+.acceso .campo-clave input { padding-inline-end: 5.5rem; }
+.ver-clave {
+  position: absolute; inset-block: 4px; inset-inline-end: 4px; min-width: 44px; padding: 0 .9rem;
+  border: 0; border-radius: .7rem; background: transparent; color: var(--ttod-color-ink); cursor: pointer;
+  font: 500 var(--ttod-text-ui)/1 var(--ttod-font-ui); letter-spacing: .08em; text-transform: uppercase;
+}
+.ver-clave:hover { background: rgb(27 23 16 / .07); }
+.ver-clave:focus-visible { outline: 3px solid var(--ttod-color-focus); outline-offset: 0; }
+
+.acceso-entrar {
+  min-height: 54px; margin-top: .35rem; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--ttod-color-ink); color: rgb(var(--ttod-paper-rgb));
+  font: 500 .875rem/1 var(--ttod-font-ui); letter-spacing: .12em; text-transform: uppercase;
+  transition: background-color .25s ease, transform .3s cubic-bezier(.2, .7, .3, 1);
+}
+.acceso-entrar:hover { background: #000; }
+.acceso-entrar:active { transform: scale(.985); }
+.acceso-entrar:focus-visible { outline: 3px solid var(--ttod-color-focus); outline-offset: 3px; }
+.acceso-entrar[aria-disabled='true'] { cursor: progress; opacity: .8; }
+
+.acceso-nota { margin: 1.5rem 0 .25rem; font-family: var(--ttod-font-ui); font-size: .9375rem; line-height: 1.55; color: var(--ttod-color-muted); }
+.acceso-nota a { color: var(--ttod-color-accent); text-decoration: underline; text-underline-offset: .2em; }
+.acceso-nota a:focus-visible { outline: 3px solid var(--ttod-color-focus); outline-offset: 2px; border-radius: 4px; }
+.acceso-pista { margin: 0; font-family: var(--ttod-font-ui); font-size: .9375rem; line-height: 1.4; color: var(--ttod-color-muted); }
+.acceso-volver {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font-family: var(--ttod-font-ui); font-size: .9375rem; color: var(--ttod-color-accent);
+}
+.acceso-volver:focus-visible { outline: 3px solid var(--ttod-color-focus); outline-offset: 2px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .acceso-caja { animation: llega .9s cubic-bezier(.2, .7, .3, 1) .15s both; }
+}
+@keyframes llega { from { opacity: 0; transform: translateY(.5rem); } }

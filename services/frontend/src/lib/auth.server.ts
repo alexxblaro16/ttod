@@ -9,6 +9,10 @@ export type LoginResult =
   | { ok: true; sessionToken: string; expiresIn: number }
   | { ok: false; reason: 'credentials' | 'service' };
 
+export type RegisterResult =
+  | { ok: true; sessionToken: string; expiresIn: number }
+  | { ok: false; reason: 'taken' | 'invalid' | 'service' };
+
 function isAuthUser(value: unknown): value is AuthUser {
   if (typeof value !== 'object' || value === null) return false;
   const candidate = value as Partial<AuthUser>;
@@ -33,6 +37,17 @@ function readSessionToken(request: Request): string | null {
   return null;
 }
 
+function readIssuedSession(value: unknown): { sessionToken: string; expiresIn: number } | null {
+  const login = value as Partial<AuthLoginResponse>;
+  if (
+    typeof login.session_token !== 'string' || login.session_token.length === 0 ||
+    login.token_type !== 'Session' ||
+    typeof login.expires_in !== 'number' || login.expires_in <= 0 ||
+    !isAuthUser(login.user)
+  ) return null;
+  return { sessionToken: login.session_token, expiresIn: login.expires_in };
+}
+
 function localeOf(request: Request): 'en' | 'es' {
   return new URL(request.url).pathname.split('/')[1] === 'es' ? 'es' : 'en';
 }
@@ -49,17 +64,31 @@ export async function loginWithBackend(email: string, password: string): Promise
     if (response.status === 401 || response.status === 422) return { ok: false, reason: 'credentials' };
     if (!response.ok) return { ok: false, reason: 'service' };
 
-    const login = await response.json() as Partial<AuthLoginResponse>;
-    if (
-      typeof login.session_token !== 'string' || login.session_token.length === 0 ||
-      login.token_type !== 'Session' ||
-      typeof login.expires_in !== 'number' || login.expires_in <= 0 ||
-      !isAuthUser(login.user)
-    ) return { ok: false, reason: 'service' };
-
-    return { ok: true, sessionToken: login.session_token, expiresIn: login.expires_in };
+    const session = readIssuedSession(await response.json());
+    return session ? { ok: true, ...session } : { ok: false, reason: 'service' };
   } catch (error) {
     console.error('The authentication service could not complete the login request.', error);
+    return { ok: false, reason: 'service' };
+  }
+}
+
+export async function registerWithBackend(email: string, password: string): Promise<RegisterResult> {
+  if (email.trim() === '' || password === '') return { ok: false, reason: 'invalid' };
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/v1/auth/register`, {
+      method: 'POST',
+      headers: { accept: 'application/json', 'content-type': 'application/json' },
+      body: JSON.stringify({ email: email.trim(), password })
+    });
+    if (response.status === 409) return { ok: false, reason: 'taken' };
+    if (response.status === 422) return { ok: false, reason: 'invalid' };
+    if (!response.ok) return { ok: false, reason: 'service' };
+
+    const session = readIssuedSession(await response.json());
+    return session ? { ok: true, ...session } : { ok: false, reason: 'service' };
+  } catch (error) {
+    console.error('The authentication service could not complete the sign-up request.', error);
     return { ok: false, reason: 'service' };
   }
 }
@@ -90,7 +119,7 @@ export function safeNextPath(value: unknown, locale: 'en' | 'es'): string {
   const fallback = `/${locale}/account`;
   if (typeof value !== 'string' || !value.startsWith('/') || value.startsWith('//')) return fallback;
   if (/[\\\u0000-\u001f]/.test(value)) return fallback;
-  if (/^\/(en|es)\/login\/?(\?|$)/.test(value)) return fallback;
+  if (/^\/(en|es)\/(login|register)\/?(\?|$)/.test(value)) return fallback;
   return value;
 }
 
