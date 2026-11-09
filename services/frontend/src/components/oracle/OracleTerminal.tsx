@@ -308,6 +308,8 @@ export default function OracleTerminal({ locale }: Props) {
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [syncing, setSyncing] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const shellRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const exchangesRef = useRef(exchanges);
   const syncingRef = useRef(false);
   const submittingRef = useRef(false);
@@ -452,8 +454,11 @@ export default function OracleTerminal({ locale }: Props) {
         event.preventDefault();
         setOpen(true);
         requestAnimationFrame(() => inputRef.current?.focus());
-      } else if (event.key === 'Escape' && open) {
+      } else if (event.key === 'Escape' && open && shellRef.current?.contains(document.activeElement)) {
+        // Only from inside the oracle, so Escape elsewhere on the page (a menu, a dialog) does not
+        // close it, and focus moves to the toggle instead of vanishing with the hidden folio.
         setOpen(false);
+        toggleRef.current?.focus();
       }
     };
     window.addEventListener('keydown', onKeyDown);
@@ -548,8 +553,8 @@ export default function OracleTerminal({ locale }: Props) {
 
   return (
     <LazyMotion features={domAnimation} strict>
-    <section className="oracle-shell" aria-label={copy.title}>
-          <button className="oracle-toggle" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+    <section ref={shellRef} className="oracle-shell" aria-label={copy.title}>
+          <button ref={toggleRef} className="oracle-toggle" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
             {open ? copy.close : copy.open}
           </button>
           <div className="oracle-terminal" hidden={!open}>

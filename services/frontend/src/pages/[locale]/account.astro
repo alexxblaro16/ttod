@@ -18,23 +18,49 @@ const roleNames: Record<'en' | 'es', Record<SessionRole, string>> = {
   es: { student: 'Estudiante', reviewer: 'Revisor', instructor: 'Profesor' },
   en: { student: 'Student', reviewer: 'Reviewer', instructor: 'Instructor' }
 };
+// El enlace a la cola solo sale para quien puede abrirla; la página la protege igualmente.
+const canReview = authenticatedUser.roles.some((role) => role === 'reviewer' || role === 'instructor');
+// Lo pone /logout cuando el backend no pudo revocar la sesión.
+const logoutFailed = Astro.url.searchParams.get('logout') === 'failed';
 
 const copy = locale === 'es'
-  ? { title: 'Mi cuenta · TTOD', home: 'Inicio', heading: 'Mi cuenta', email: 'Correo electrónico', roles: 'Roles' }
-  : { title: 'My account · TTOD', home: 'Home', heading: 'My account', email: 'Email', roles: 'Roles' };
+  ? {
+      title: 'Mi cuenta · TTOD', description: 'Tu correo, tus roles y tus accesos en TTOD.',
+      home: 'Inicio', heading: 'Mi cuenta', email: 'Correo electrónico', roles: 'Roles',
+      shortcuts: 'Accesos de tu cuenta', library: 'Mi biblioteca', queue: 'Cola de revisión',
+      logout: 'Cerrar sesión',
+      logoutFailed: 'No se ha podido cerrar la sesión porque el servicio de cuentas no responde. Sigues dentro: inténtalo de nuevo en un momento.'
+    }
+  : {
+      title: 'My account · TTOD', description: 'Your email, your roles and your shortcuts in TTOD.',
+      home: 'Home', heading: 'My account', email: 'Email', roles: 'Roles',
+      shortcuts: 'Account shortcuts', library: 'My library', queue: 'Reviewer queue',
+      logout: 'Log out',
+      logoutFailed: 'The session could not be closed because the account service is not answering. You are still logged in: please try again in a moment.'
+    };
 ---
 
-<Page lang={locale} title={copy.title}>
+<Page lang={locale} title={copy.title} description={copy.description}>
   <nav aria-label={locale === 'es' ? 'Navegación de cuenta' : 'Account navigation'}>
     <a href={`/${locale}/`}>{copy.home}</a>
   </nav>
   <main>
     <h1>{copy.heading}</h1>
+    {logoutFailed && <p role="alert">{copy.logoutFailed}</p>}
     <dl>
       <dt>{copy.email}</dt>
       <dd>{authenticatedUser.email}</dd>
       <dt>{copy.roles}</dt>
       <dd>{authenticatedUser.roles.map((role) => roleNames[locale][role]).join(', ')}</dd>
     </dl>
+    <nav aria-label={copy.shortcuts}>
+      <ul>
+        <li><a href={`/${locale}/library`}>{copy.library}</a></li>
+        {canReview && <li><a href={`/${locale}/account/reviewer`}>{copy.queue}</a></li>}
+      </ul>
+    </nav>
+    <form method="post" action={`/${locale}/logout`}>
+      <button type="submit">{copy.logout}</button>
+    </form>
   </main>
 </Page>

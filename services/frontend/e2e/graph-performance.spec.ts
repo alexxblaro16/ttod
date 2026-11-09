@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 import type { GraphLink, GraphNode, WisdomEntry } from '../src/types/domain';
 
+test.use({ serviceWorkers: 'block' });
+
 const sectionCount = 8;
 const nodesPerSection = 250;
 const largeGraphNodes: GraphNode[] = Array.from({ length: sectionCount * nodesPerSection }, (_, index) => {

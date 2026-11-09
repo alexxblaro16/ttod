@@ -1,0 +1,29 @@
+# TTOD Spanish controlled glossary — human-curated only.
+# Models may consult; they must not add preferred terms.
+# Empty `terms` is schema-valid; do not invent entries to look complete.
+
+glossary_id: TTOD-ES-GLOSSARY
+version: "0.0.0"
+schema_version: "1.0.0"
+status: draft
+language: es
+policy_id: TTOD-ES-POLICY
+policy_version: "1.0.0-draft"
+updated_at: "2026-11-08"
+notes: >
+  No human-approved glossary terms existed at S5E1 draft time.
+  Prefer term / allowed_variants / forbidden / rationale / examples
+  when the product owner curates entries. Until then, terms stays [].
+
+# Each term object (when added) MUST use this shape:
+# - id: stable slug (string)
+# - en: English source term or phrase
+# - preferred_es: preferred Spanish rendering
+# - allowed_variants: list of acceptable Spanish variants (may be empty)
+# - forbidden: list of false friends / banned renderings (may be empty)
+# - rationale: why this entry exists
+# - examples: short usage notes (may be empty)
+# - approved_by: human reviewer id
+# - approved_at: ISO date (YYYY-MM-DD)
+
+terms: []

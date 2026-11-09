@@ -29,15 +29,17 @@ const mockBackend = (favorites: unknown, session: unknown = student, includeRela
     const url = String(input);
     if (url.includes('/api/v1/auth/session')) return Response.json(session, { status: session ? 200 : 401 });
     if (url.includes('/api/v1/favorites')) return Response.json(favorites);
-    return Response.json(includeRelated ? [entry, relatedEntry] : [entry]);
+    const corpus = includeRelated ? [entry, relatedEntry] : [entry];
+    // El backend sirve los dos idiomas y cada página filtra el suyo.
+    return Response.json([...corpus, ...corpus.map((quote) => ({ ...quote, lang: 'es' }))]);
   });
 
-const renderDetail = async (headers: Record<string, string> = {}) => {
+const renderDetail = async (headers: Record<string, string> = {}, locale: 'en' | 'es' = 'en') => {
   const renderers = await loadRenderers([getContainerRenderer()]);
   const container = await AstroContainer.create({ renderers });
   const html = await container.renderToString(SlugRoute, {
-    params: { locale: 'en', slug: 'arch-001' },
-    request: new Request('http://localhost/en/wisdom/arch-001/', { headers }),
+    params: { locale, slug: 'arch-001' },
+    request: new Request(`http://localhost/${locale}/wisdom/arch-001/`, { headers }),
   });
   const main = new JSDOM(html).window.document.querySelector('main');
   if (!main) throw new Error('route rendered no <main>');
@@ -76,15 +78,22 @@ describe('favorite button on the quote detail page', () => {
     mockBackend([]);
     const button = (await renderDetail({ cookie })).querySelector('astro-island button');
 
-    expect(button?.getAttribute('aria-pressed')).toBe('false');
-    expect(button?.getAttribute('aria-label')).toBe('Save quote arch-001 to favorites');
+    expect(button?.getAttribute('aria-label')).toBe('Save to favorites (arch-001)');
   });
 
   it('with a session and the quote already in the library: shows it as saved', async () => {
     mockBackend([{ userId: 'usr-002', quoteId: 'arch-001', savedAt: '2026-10-01T10:00:00Z' }]);
     const button = (await renderDetail({ cookie })).querySelector('astro-island button');
 
-    expect(button?.getAttribute('aria-pressed')).toBe('true');
+    expect(button?.getAttribute('aria-label')).toBe('Remove from favorites (arch-001)');
+  });
+
+  it('on a Spanish page the button speaks Spanish', async () => {
+    mockBackend([]);
+    const button = (await renderDetail({ cookie }, 'es')).querySelector('astro-island button');
+
+    expect(button?.textContent).toBe('Guardar en favoritos');
+    expect(button?.getAttribute('aria-label')).toBe('Guardar en favoritos (arch-001)');
   });
 
   it('a session the backend rejects is treated as anonymous', async () => {

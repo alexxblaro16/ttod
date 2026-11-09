@@ -1,5 +1,64 @@
 import type { GraphLink, GraphNode, WisdomEntry } from '../../types/domain';
 
+export const SECTION_COLORS = {
+  images: '#8b5cf6',
+  css: '#06b6d4',
+  html: '#f59e0b',
+  javascript: '#eab308',
+  accessibility: '#3b82f6',
+  performance: '#10b981',
+  git: '#a16207',
+  debugging: '#a855f7',
+  'qa-tooling': '#f97316',
+  operations: '#ef4444',
+  networking: '#0ea5e9',
+  ux: '#ec4899',
+  'code-craft': '#14b8a6',
+  wisdom: '#d946ef',
+  devops: '#22c55e',
+  general: '#6366f1',
+  architecture: '#0d9488',
+  'remote-repo': '#84cc16'
+} as const;
+
+export const SECTION_LABELS = {
+  images: 'Web Images',
+  css: 'CSS & Styling',
+  html: 'HTML & Semantics',
+  javascript: 'JavaScript',
+  accessibility: 'Accessibility',
+  performance: 'Performance',
+  git: 'Version Control',
+  debugging: 'Debugging',
+  'qa-tooling': 'Quality Assurance & Tooling',
+  operations: 'Operations & Reliability',
+  networking: 'Networking',
+  ux: 'User Experience',
+  'code-craft': 'Code Craft',
+  wisdom: 'Wisdom',
+  devops: 'DevOps',
+  general: 'General Wisdom',
+  architecture: 'Architecture & Modularization',
+  'remote-repo': 'Remote Repository Processing'
+} as const;
+
+export type SectionColorKey = keyof typeof SECTION_COLORS | 'fallback';
+
+export function sectionColorKey(section: string): SectionColorKey {
+  return section in SECTION_COLORS ? section as keyof typeof SECTION_COLORS : 'fallback';
+}
+
+export function sectionColor(section: string): string {
+  const colorKey = sectionColorKey(section);
+  return colorKey === 'fallback' ? '#777' : SECTION_COLORS[colorKey];
+}
+
+export function sectionLabel(section: string): string {
+  return section in SECTION_LABELS
+    ? SECTION_LABELS[section as keyof typeof SECTION_LABELS]
+    : section;
+}
+
 export interface PositionedNode extends GraphNode {
   x: number;
   y: number;

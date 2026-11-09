@@ -213,6 +213,15 @@ git operations is good practice on its own merits, but it does not unlock or
 simplify this MCP server's setup — the PAT/OAuth step is separate and
 unavoidable if a student wants it.
 
+**`gh` merge vs workflow files (instructor):** merging a PR that creates or
+updates `.github/workflows/*` via `gh pr merge` requires the logged-in OAuth
+token to include the **`workflow` scope**. Without it, GraphQL returns
+*Repository rule violations* / *refusing to allow an OAuth App to create or
+update workflow … without `workflow` scope* — and `--admin` does not help.
+Refresh with `gh auth refresh -h github.com -s workflow`, or merge in the web
+UI. Documented for operators in
+`docs/public/guides/reviewing-cohort-prs.md` and `agentic/ide-mcp/README.md`.
+
 **Rejected alternative — studio-hosted MCP gateway for students:** DevIAC's
 own `mcp.crea-comm.loc` gateway is LAN-only by permanent architectural
 constraint (`deviac/docs/DEV_PLAN/DEVIAC-STUDIO-READINESS/RATIONALE.md`:

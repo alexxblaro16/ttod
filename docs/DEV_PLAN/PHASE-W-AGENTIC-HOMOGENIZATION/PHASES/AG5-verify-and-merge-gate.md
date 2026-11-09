@@ -59,6 +59,9 @@ gh pr create --base main --head agentic/homogenize-landings \
 # 2. Confirm `git diff main...agentic/homogenize-landings -- ttod.yml` is empty.
 # 3. Record MERGE_APPROVED in PHASE-AG5-REPORT.md.
 # 4. gh pr merge --merge --delete-branch   # or --squash, human's call
+#    If the PR touches .github/workflows/*, the gh OAuth token needs `workflow`
+#    scope first: `gh auth refresh -h github.com -s workflow` — `--admin` does
+#    not bypass that (see docs/public/guides/reviewing-cohort-prs.md).
 ```
 
 ## Acceptance
