@@ -83,6 +83,26 @@ export async function getSessionUser(request: Request): Promise<AuthUser | null>
 }
 
 /**
+ * Cierra la sesión en el backend, que es quien la guarda (Redis): borrar solo la
+ * cookie dejaría viva una sesión que se podría reutilizar. Devuelve `false` si el
+ * backend no la pudo revocar, para que la página lo diga en vez de fingir que sí.
+ */
+export async function logoutWithBackend(request: Request): Promise<boolean> {
+  const sessionToken = readSessionToken(request);
+  if (!sessionToken) return true;
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/v1/auth/logout`, {
+      method: 'POST',
+      headers: { accept: 'application/json', cookie: `${SESSION_COOKIE_NAME}=${sessionToken}` }
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('The authentication service could not revoke the session.', error);
+    return false;
+  }
+}
+
+/**
  * La ruta a la que volver tras entrar. Solo rutas de este mismo sitio («/algo»):
  * «//otro.com», «/\\otro.com» o una URL completa serían una redirección abierta.
  */
