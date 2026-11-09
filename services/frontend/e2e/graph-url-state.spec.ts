@@ -2,6 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 import { buildUrl, parseUrlState, resolveUrlState } from '../src/components/graph/urlState';
 import type { GraphLink, GraphNode, WisdomEntry } from '../src/types/domain';
 
+test.use({ serviceWorkers: 'block' });
+
 const graphNodes: GraphNode[] = [
 	{ id: 'arch-001', section: 'architecture', origin: 'human', status: 'active', text: 'Keep boundaries clear.', lang: 'en' },
 	{ id: 'arch-002', section: 'architecture', origin: 'studio', status: 'active', text: 'Share pure functions.', lang: 'en' },

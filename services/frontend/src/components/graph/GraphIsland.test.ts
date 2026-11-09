@@ -7,17 +7,15 @@ import type { GraphNode, WisdomEntry } from '../../types/domain';
 
 const graphNodes: GraphNode[] = [
 	{ id: 'arch-001', section: 'architecture', origin: 'human', status: 'active', text: 'Keep boundaries clear.', lang: 'en' },
-	{ id: 'wis-001', section: 'wisdom', origin: 'studio', status: 'active', text: 'Question the obvious.', lang: 'en' }
+	{ id: 'wis-001', section: 'wisdom', origin: 'studio', status: 'active', text: 'Question the obvious.', lang: 'en' },
+	{ id: 'unknown-001', section: 'new-section', origin: 'legacy-unknown', status: 'active', text: 'Leave room for change.', lang: 'en' }
 ];
 
-const wisdomEntries: WisdomEntry[] = graphNodes.map((node) => ({
-	...node,
-	level: 'beginner',
-	teaches: '',
-	tags: [`tag-${node.id}`],
-	related: [],
-	rights: { license: 'CC-BY-NC-SA-4.0' }
-}));
+const wisdomEntries: WisdomEntry[] = [
+	{ ...graphNodes[0], level: 'beginner', teaches: '', tags: ['boundaries', 'shared'], related: [], rights: { license: 'CC-BY-NC-SA-4.0' } },
+	{ ...graphNodes[1], level: 'beginner', teaches: '', tags: [], related: [], rights: { license: 'CC-BY-NC-SA-4.0' } },
+	{ ...graphNodes[2], level: 'beginner', teaches: '', tags: ['change'], related: [], rights: { license: 'CC-BY-NC-SA-4.0' } }
+];
 
 afterEach(() => {
 	vi.unstubAllGlobals();
@@ -44,8 +42,16 @@ describe('GraphIsland', () => {
 		expect(firstNode).toHaveAttribute('tabindex', '0');
 		expect(firstNode).toHaveAttribute(
 			'aria-label',
-			'arch-001: Keep boundaries clear., tags: tag-arch-001'
+			'arch-001: Keep boundaries clear., section: architecture, origin: human, tags: boundaries, shared'
 		);
+		expect(target.querySelector('[data-node-id="wis-001"]')).toHaveAttribute(
+			'aria-label',
+			'wis-001: Question the obvious., section: wisdom, origin: studio'
+		);
+		expect(target.querySelector('[data-node-id="unknown-001"]')).toHaveAttribute('data-section-color', 'fallback');
+		expect(target.querySelector('.legend')).toHaveAccessibleName('Section legend');
+		expect(target.querySelector('.legend')).toHaveTextContent('Architecture & Modularization');
+		expect(target.querySelector('.legend')).toHaveTextContent('new-section');
 
 		firstNode?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
