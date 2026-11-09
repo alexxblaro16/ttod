@@ -143,6 +143,25 @@ Never paste a token directly into `.cursor/mcp.json` or any other file the repo
 tracks — the `${env:GITHUB_PERSONAL_ACCESS_TOKEN}` interpolation keeps the secret
 out of git entirely.
 
+### Related: `gh` CLI and the `workflow` scope
+
+Separate from this MCP opt-in, instructor merges via `gh pr merge` use the **`gh auth`
+OAuth token**. If a PR creates or updates `.github/workflows/*`, GitHub refuses the
+merge unless that token has the **`workflow` scope**:
+
+```text
+GraphQL: Repository rule violations found
+refusing to allow an OAuth App to create or update workflow `.github/workflows/…`
+without `workflow` scope
+```
+
+`--admin` does not bypass this. Fix: `gh auth refresh -h github.com -s workflow`, then
+retry the merge (or merge in the web UI). Same class of gap as the documented
+`project` scope for GitHub Projects — interactive refresh, human-only. Operational
+home: [`docs/public/guides/reviewing-cohort-prs.md`](../../docs/public/guides/reviewing-cohort-prs.md)
+Troubleshooting. If your PAT for this MCP must also mutate workflows, grant `workflow`
+(classic) or the equivalent fine-grained permission on Actions/workflows.
+
 ## `llms/` — vendored docs index
 
 See [`llms/README.md`](llms/README.md) — a vendored Svelte prompts index for when

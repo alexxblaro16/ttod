@@ -46,18 +46,25 @@ export async function readOracleStream(
     }
   };
 
-  while (true) {
-    const { done, value } = await reader.read();
-    buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
-    let boundary = buffer.indexOf('\n\n');
-    while (boundary >= 0) {
-      consume(buffer.slice(0, boundary));
-      buffer = buffer.slice(boundary + 2);
-      boundary = buffer.indexOf('\n\n');
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
+      let boundary = buffer.indexOf('\n\n');
+      while (boundary >= 0) {
+        consume(buffer.slice(0, boundary));
+        buffer = buffer.slice(boundary + 2);
+        boundary = buffer.indexOf('\n\n');
+      }
+      if (done) break;
     }
-    if (done) break;
+    if (buffer.trim()) consume(buffer);
+    return count;
+  } catch (error) {
+    // Closing the connection lets the backend stop the local model instead of writing an answer
+    // nobody will read; the original error is what the caller needs to see.
+    await reader.cancel().catch(() => undefined);
+    throw error;
   }
-  if (buffer.trim()) consume(buffer);
-  return count;
 }
 

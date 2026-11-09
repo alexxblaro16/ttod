@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { parseSseEvent, readOracleStream } from './sse';
 
@@ -51,6 +51,19 @@ describe('oracle SSE reader', () => {
     ).rejects.toThrow('invalid response chunk');
     // The good chunk already reached the caller — nothing is buffered until the stream closes.
     expect(delivered).toEqual([{ mode: 'creative', text: 'before' }]);
+  });
+
+  it('cancels the stream when an envelope is malformed, so the model stops writing', async () => {
+    const encoder = new TextEncoder();
+    const cancel = vi.fn();
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(encoder.encode('data: {"mode":"creative"}\n\n'));
+      },
+      cancel,
+    });
+    await expect(readOracleStream(new Response(body), () => undefined)).rejects.toThrow('invalid response chunk');
+    expect(cancel).toHaveBeenCalledTimes(1);
   });
 
   it('rejects a response with no body instead of resolving with zero chunks', async () => {

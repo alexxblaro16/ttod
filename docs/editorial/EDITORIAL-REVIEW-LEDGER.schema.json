@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://crea-comm.net/ttod/editorial/EDITORIAL-REVIEW-LEDGER.schema.json",
+  "title": "TTOD Editorial Review Ledger",
+  "description": "Private item-level bilingual review ledger. Public docs must not store reviewer notes. S5E3 gates expect .entries[] with translation_id and both passes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_version",
+    "glossary_version",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Ledger document schema version"
+    },
+    "policy_id": {
+      "type": "string",
+      "const": "TTOD-ES-POLICY"
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Frozen EDITORIAL-TRANSLATION-POLICY version applied to these entries"
+    },
+    "glossary_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "TTOD-ES-GLOSSARY.yml version applied to these entries"
+    },
+    "entries": {
+      "type": "array",
+      "description": "One record per Spanish translation under review",
+      "items": {
+        "$ref": "#/$defs/ledgerEntry"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase hex SHA-256 content digest"
+    },
+    "quoteId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*-[0-9]+$",
+      "description": "Canonical TTOD quote ID"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "major",
+        "minor",
+        "preference"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "accept",
+        "accept-after-edit",
+        "second-opinion",
+        "retranslate",
+        "hold",
+        "reject"
+      ]
+    },
+    "reviewPass": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "severity",
+        "rationale",
+        "reviewer",
+        "timestamp"
+      ],
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human reviewer identity (email or reviewer-id)"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp of this pass"
+        }
+      }
+    },
+    "ledgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "translation_id",
+        "source_id",
+        "source_digest",
+        "target_digest",
+        "fidelity_pass",
+        "spanish_pass",
+        "policy_version",
+        "glossary_version"
+      ],
+      "properties": {
+        "translation_id": {
+          "$ref": "#/$defs/quoteId",
+          "description": "Spanish sister quote ID (required; reject if missing)"
+        },
+        "source_id": {
+          "$ref": "#/$defs/quoteId",
+          "description": "English source quote ID (required; reject if missing)"
+        },
+        "source_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "English source content_digest at review time (required)"
+        },
+        "target_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "Spanish target content_digest at review time (required)"
+        },
+        "fidelity_pass": {
+          "$ref": "#/$defs/reviewPass",
+          "description": "Pass A — bilingual fidelity"
+        },
+        "spanish_pass": {
+          "$ref": "#/$defs/reviewPass",
+          "description": "Pass B — Spanish editorial review"
+        },
+        "policy_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "glossary_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional private notes; never publish"
+        }
+      }
+    }
+  }
+}

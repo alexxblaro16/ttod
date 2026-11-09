@@ -112,7 +112,9 @@ Run every command below from the `ttod-review` worktree, not your main checkout.
    - Wrong direction or missing the task's own acceptance criteria → `gh pr review <N> --request-changes --body "..."`
 5. **Merge only what's actually ready.** `gh pr merge <N> --squash` — branch protection already
    requires the `typecheck-and-build` check and one approval, so a merge attempt fails loudly if
-   either is missing; you're not relying on memory to enforce that.
+   either is missing; you're not relying on memory to enforce that. If the PR touches
+   `.github/workflows/*`, your `gh` OAuth token also needs the **`workflow` scope** (see
+   Troubleshooting) — `--admin` does not bypass that.
 
 ## When the local review isn't enough
 
@@ -155,3 +157,4 @@ clone never needs to know review is happening. Concretely:
 | Review comment only shows the generic rubric | Branch name didn't match `<seam>-task<N>` | Ask the student to rename the branch, or just run `/code-review <N> --comment` yourself for that one |
 | `gh pr checkout <N>` fails or leaves stray files | You ran it from your main clone instead of the review worktree | `cd` into the `ttod-review` worktree first — this is the one command in this whole guide that must run from the right directory |
 | Merge blocked despite an approval | `typecheck-and-build` hasn't reported yet, or reports failing | `gh pr checks <N>` to see which; don't override with an admin merge unless you know exactly why it's failing |
+| `gh pr merge` → `Repository rule violations` / *refusing to allow an OAuth App to create or update workflow `.github/workflows/…` without `workflow` scope* | PR adds or edits a workflow file; the logged-in `gh` token lacks the OAuth **`workflow` scope**. This is a credential scope gap, not branch protection — `--admin` will not fix it | `gh auth refresh -h github.com -s workflow`, complete the device flow, then retry `gh pr merge`. Or merge from the GitHub web UI (browser session can update workflows). Check the PR file list first: `gh pr view <N> --json files` |

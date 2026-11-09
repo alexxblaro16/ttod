@@ -46,7 +46,10 @@ itself runs via its own official Docker image — this project already requires 
 `.env`, set your own `GITHUB_PERSONAL_ACCESS_TOKEN` there, and merge the `github` block from
 [`examples/github.json`](https://github.com/ruvebal/ttod/blob/main/agentic/ide-mcp/examples/github.json)
 into your own `.cursor/mcp.json`. The config references `${env:GITHUB_PERSONAL_ACCESS_TOKEN}` —
-never paste a token into a file this repo tracks.
+never paste a token into a file this repo tracks. Instructor note (separate from this MCP):
+`gh pr merge` of PRs that touch `.github/workflows/*` needs the `gh` OAuth **`workflow` scope**
+(`gh auth refresh -h github.com -s workflow`); see
+[Reviewing the cohort's PRs]({{ '/guides/reviewing-cohort-prs/' | relative_url }}).
 
 ## IDE MCP is not the product's MCP
 

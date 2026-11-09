@@ -397,3 +397,25 @@ describe('OracleTerminal test coverage (Task 7)', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Ask' })).not.toBeDisabled());
   });
 });
+
+describe('OracleTerminal open and close', () => {
+  afterEach(() => cleanup());
+  beforeEach(() => vi.clearAllMocks());
+
+  it('closes on Escape from inside the oracle and returns focus to the toggle', () => {
+    render(<OracleTerminal locale="en" />);
+    const input = screen.getByPlaceholderText(/practice question/);
+    input.focus();
+    fireEvent.keyDown(input, { key: 'Escape' });
+
+    const toggle = screen.getByRole('button', { name: 'Open oracle' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(toggle).toHaveFocus();
+  });
+
+  it('ignores Escape pressed elsewhere on the page', () => {
+    render(<OracleTerminal locale="en" />);
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    expect(screen.getByRole('button', { name: 'Close oracle' })).toHaveAttribute('aria-expanded', 'true');
+  });
+});
